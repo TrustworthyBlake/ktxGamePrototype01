@@ -9,7 +9,7 @@
             android:label="@string/app_name"
             android:theme="@style/GdxTheme">
         <activity
-                android:name="com.github.TrustworthyBlake.ktxGamePrototype01.AndroidLauncher"
+                android:name="com.github.TrustworthyBlake.ktxGamePrototype01.ktxGamePrototype01.AndroidLauncher"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape"
                 android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout">
