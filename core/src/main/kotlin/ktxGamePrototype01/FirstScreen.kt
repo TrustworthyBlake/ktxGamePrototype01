@@ -1,4 +1,4 @@
-package com.github.TrustworthyBlake.ktxGamePrototype01
+package ktxGamePrototype01
 
 import com.badlogic.gdx.Screen
 

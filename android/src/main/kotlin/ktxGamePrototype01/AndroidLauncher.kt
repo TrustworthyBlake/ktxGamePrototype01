@@ -3,7 +3,7 @@ package ktxGamePrototype01
 import com.badlogic.gdx.backends.android.AndroidApplication
 import android.os.Bundle
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import com.github.TrustworthyBlake.ktxGamePrototype01.Prot01
+import ktxGamePrototype01.Prot01
 
 /** Launches the Android application.  */
 class AndroidLauncher : AndroidApplication() {
