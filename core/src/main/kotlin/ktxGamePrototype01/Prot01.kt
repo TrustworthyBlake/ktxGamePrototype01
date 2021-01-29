@@ -1,10 +1,12 @@
 package ktxGamePrototype01
 
 import com.badlogic.gdx.Game
+import ktx.app.KtxGame
+import ktx.app.KtxScreen
 
-/** [com.badlogic.gdx.ApplicationListener] implementation shared by all platforms.  */
-class Prot01 : Game() {
+class Prot01 : KtxGame<KtxScreen>() {
     override fun create() {
-        setScreen(FirstScreen())
+        addScreen(FirstScreen())
+        setScreen<FirstScreen>()
     }
 }
