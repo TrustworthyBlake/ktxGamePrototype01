@@ -9,7 +9,7 @@ import ktxGamePrototype01.Prot01
     fun main() {
         Lwjgl3Application(Prot01(), Lwjgl3ApplicationConfiguration().apply {
             setTitle("gamePrototype01")
-            setWindowedMode(640, 480)
+            setWindowedMode(9 * 48, 16 * 48)
             setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png")
         })
     }

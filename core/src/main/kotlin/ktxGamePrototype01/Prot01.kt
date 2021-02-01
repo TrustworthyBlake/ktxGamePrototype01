@@ -10,6 +10,7 @@ import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.SecondScreen
 
 private val LOG = logger<Prot01>()
+const val unitScale = 1 / 16f
 
 class Prot01 : KtxGame<KtxScreen>() {
     override fun create() {
