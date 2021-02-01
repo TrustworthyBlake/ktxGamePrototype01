@@ -45,6 +45,8 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
     }
 
     override fun dispose() {
+        super.dispose()
+        LOG.debug { "Number of sprites in current batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         texture.dispose()
         batch.dispose()
     }
