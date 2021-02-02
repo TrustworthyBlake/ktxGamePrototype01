@@ -10,6 +10,7 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.entityComponentSystem.system.RenderSystem2D
 import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.SecondScreen
 
@@ -17,8 +18,8 @@ private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
 
 class Prot01 : KtxGame<KtxScreen>() {
-    val engine : Engine by lazy { PooledEngine() }
-    val batch : Batch by lazy { SpriteBatch() }
+    val batch : Batch by lazy { SpriteBatch()}
+    val engine : Engine by lazy { PooledEngine().apply { addSystem(RenderSystem2D(batch)) }  }
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
