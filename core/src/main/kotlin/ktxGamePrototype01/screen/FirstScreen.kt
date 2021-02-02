@@ -56,10 +56,14 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
            game.setScreen<SecondScreen>()
         }
        viewport.apply()
-       batch.use(viewport.camera.combined){
-            player[GraphicComponent.mapper]?.let {
-                player[TransformComponent.mapper]?.let {
-                    graphic.sprite.run{}
+       batch.use(viewport.camera.combined){batch->
+            player[GraphicComponent.mapper]?.let {graphic->
+                player[TransformComponent.mapper]?.let {transform->
+                    graphic.sprite.run{
+                        rotation = transform.rotationDeg
+                        setBounds(transform.posVec3.x, transform.posVec3.y, transform.sizeVec2.x, transform.sizeVec2.y)
+                        draw(batch)
+                    }
                 }
             }
        }
