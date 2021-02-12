@@ -10,10 +10,7 @@ import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
-import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
-import ktxGamePrototype01.entityComponentSystem.components.OrientationComponent
-import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
-import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
+import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
 /** First screen of the application. Displayed after the application is created.  */
@@ -27,6 +24,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<TransformComponent>{
             posVec3.set(1f,1f,0f)
         }
+        with<MovementComponent>()
         with<GraphicComponent>{
             sprite.run{
                 setRegion(playerTexture)

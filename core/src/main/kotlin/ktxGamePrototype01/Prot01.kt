@@ -11,6 +11,7 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.entityComponentSystem.system.MovementSystem
 import ktxGamePrototype01.entityComponentSystem.system.NukePooledSystem
 import ktxGamePrototype01.entityComponentSystem.system.PlayerInputSystem
 import ktxGamePrototype01.entityComponentSystem.system.RenderSystem2D
@@ -25,6 +26,7 @@ class Prot01 : KtxGame<KtxScreen>() {
     val batch : Batch by lazy { SpriteBatch()}
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
+        addSystem(MovementSystem())
         addSystem(RenderSystem2D(batch))
         addSystem(NukePooledSystem())}  }
 
