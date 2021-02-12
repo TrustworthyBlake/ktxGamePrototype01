@@ -4,16 +4,16 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class OriantationComponent : Component, Pool.Poolable{
-    var direction = FaceingDirection.up
+class OrientationComponent : Component, Pool.Poolable{
+    var direction = OrientationDirection.up
     override fun reset() {
-        direction = FaceingDirection.up
+        direction = OrientationDirection.up
     }
     companion object{
-        val mapper = mapperFor<OriantationComponent>()
+        val mapper = mapperFor<OrientationComponent>()
     }
 }
 
-enum class FaceingDirection {
+enum class OrientationDirection {
     left, right, up, down
 }

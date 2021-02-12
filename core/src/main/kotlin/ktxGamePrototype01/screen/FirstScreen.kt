@@ -1,25 +1,17 @@
 package ktxGamePrototype01.screen
 
-import com.badlogic.ashley.core.Engine
-import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
-import ktx.app.KtxScreen
 import ktx.ashley.entity
-import ktx.ashley.get
 import ktx.ashley.with
 import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
-import ktxGamePrototype01.entityComponentSystem.components.OriantationComponent
+import ktxGamePrototype01.entityComponentSystem.components.OrientationComponent
 import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 import ktxGamePrototype01.unitScale
@@ -43,7 +35,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
             }
         }
         with<PlayerComponent>()
-        with<OriantationComponent>()
+        with<OrientationComponent>()
     }
 
     override fun show() {
