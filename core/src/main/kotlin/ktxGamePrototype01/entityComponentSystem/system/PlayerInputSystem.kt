@@ -26,8 +26,8 @@ class PlayerInputSystem(
         gameViewport.unproject(tempPosVec)
         val diffDistX = tempPosVec.x - transform.posVec3.x - transform.sizeVec2.x * 0.5f
         orientation.direction = when {
-            diffDistX > 0f -> OrientationDirection.right
-            diffDistX < 0f -> OrientationDirection.left
+            diffDistX > 0.1f -> OrientationDirection.right
+            diffDistX < -0.1f -> OrientationDirection.left
             else -> OrientationDirection.up
 
         }

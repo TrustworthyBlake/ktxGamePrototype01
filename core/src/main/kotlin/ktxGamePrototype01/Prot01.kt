@@ -6,10 +6,12 @@ import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.entityComponentSystem.system.PlayerInputSystem
 import ktxGamePrototype01.entityComponentSystem.system.RenderSystem2D
 import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.SecondScreen
@@ -18,8 +20,11 @@ private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
 
 class Prot01 : KtxGame<KtxScreen>() {
+    val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
-    val engine : Engine by lazy { PooledEngine().apply { addSystem(RenderSystem2D(batch)) }  }
+    val engine : Engine by lazy { PooledEngine().apply {
+        addSystem(PlayerInputSystem(gameViewport))
+        addSystem(RenderSystem2D(batch)) }  }
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
