@@ -19,6 +19,8 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
+import ktxGamePrototype01.entityComponentSystem.components.OriantationComponent
+import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 import ktxGamePrototype01.unitScale
 
@@ -40,6 +42,8 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                 setOriginCenter()
             }
         }
+        with<PlayerComponent>()
+        with<OriantationComponent>()
     }
 
     override fun show() {

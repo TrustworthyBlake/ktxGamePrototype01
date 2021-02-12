@@ -28,9 +28,9 @@ class RenderSystem2D(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transformComp = entity[TransformComponent.mapper]
-        require(transformComp != null) { "Error: 5001" }    // Entity is missing its transformation component
+        require(transformComp != null) { "Error: 5001. entity=$entity" }    // Entity is missing its transformation component
         val graphicComp = entity[GraphicComponent.mapper]
-        require(graphicComp != null) { "Error: 5002" }      // Entity is missing its graphics component
+        require(graphicComp != null) { "Error: 5002. entity=$entity" }      // Entity is missing its graphics component
         if(graphicComp.sprite.texture != null) {
             graphicComp.sprite.run{
                 rotation = transformComp.rotationDeg
@@ -39,7 +39,7 @@ class RenderSystem2D(
             }
         }
         else {
-            LOG.error { "Error: 5003" }                          // Entity is missing its texture component
+            LOG.error { "Error: 5003. entity=$entity" }                          // Entity is missing its texture component
         }
     }
 }
