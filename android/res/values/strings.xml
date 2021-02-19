@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">gamePrototype01</string>
+    <string name="app_name">αBSc</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dark_mode">darkMode</string>
+    <string name="settings">Settings</string>
+    <string name="red_theme">Red Theme</string>
+    <string name="green_theme">Green Theme</string>
+    <string name="purple_theme">Purple Theme</string>
+    <string name="orange_theme">Orange Theme</string>
+    <string name="default_theme">Default Theme</string>
+    <string name="title_activity_game">GameActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>

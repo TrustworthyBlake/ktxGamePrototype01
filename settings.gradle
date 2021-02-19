@@ -1,1 +1,3 @@
 include 'core', 'android', 'lwjgl3'
+include ':app'
+rootProject.name = "bBSc"

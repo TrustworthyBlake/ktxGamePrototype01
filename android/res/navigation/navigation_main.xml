@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@+id/dest_start">
+
+    <fragment
+        android:id="@+id/dest_start"
+        android:name="ktxGamePrototype01.fragments.MainFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_start_to_login"
+            app:destination="@id/dest_login" />
+        <action
+            android:id="@+id/action_start_to_classroom_index"
+            app:destination="@id/dest_classroom_index" />
+        <action
+            android:id="@+id/action_start_to_register"
+            app:destination="@id/dest_register" />
+        <action
+            android:id="@+id/action_start_to_profile"
+            app:destination="@id/dest_profile" />
+        <action
+            android:id="@+id/action_start_to_setting"
+            app:destination="@id/dest_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_login"
+        android:name="ktxGamePrototype01.fragments.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_user"
+            app:destination="@id/dest_user" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_user"
+        android:name="ktxGamePrototype01.fragments.UserFragment"
+        android:label="User screen"
+        tools:layout="@layout/fragment_user" />
+
+    <fragment
+        android:id="@+id/dest_classroom_index"
+        android:name="ktxGamePrototype01.fragments.ClassroomIndexFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_classroom_index" />
+
+    <fragment
+        android:id="@+id/dest_register"
+        android:name="ktxGamePrototype01.fragments.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/dest_profile"
+        android:name="ktxGamePrototype01.fragments.ProfileFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/dest_settings"
+        android:name="ktxGamePrototype01.fragments.SettingFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_setting" />
+
+
+</navigation>

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.github.TrustworthyBlake.ktxGamePrototype01">
+    package="com.github.trustworthyblake.ktxGamePrototype01">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <application
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:isGame="true"
-            android:appCategory="game"
-            android:label="@string/app_name"
-            android:theme="@style/GdxTheme">
+        android:allowBackup="true"
+        android:appCategory="game"
+        android:icon="@drawable/ic_launcher"
+        android:isGame="true"
+        android:label="@string/app_name"
+        android:theme="@style/GdxTheme">
         <activity
-                android:name="com.github.TrustworthyBlake.ktxGamePrototype01.ktxGamePrototype01.AndroidLauncher"
-                android:label="@string/app_name"
-                android:screenOrientation="landscape"
-                android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout">
+            android:name="ktxGamePrototype01.GameActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name="ktxGamePrototype01.AndroidLauncher"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

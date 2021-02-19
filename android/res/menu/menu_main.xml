@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dest_start"
+        android:title="Home"
+        android:icon="@drawable/ic_home_black_24dp" />
+
+    <item
+        android:id="@+id/dest_classroom_index"
+        android:title="Classroom"
+        android:icon="@drawable/ic_attach_money_black_24dp" />
+
+    <item
+        android:id="@+id/dest_profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_info_outline_black_24dp"/>
+
+    <item
+        android:id="@+id/dest_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings_black_24dp"/>
+
+</menu>
