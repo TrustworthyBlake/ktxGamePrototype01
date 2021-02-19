@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomIndexBinding
+import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
 import java.util.*
@@ -44,7 +45,7 @@ class ClassroomIndexFragment : Fragment() {
             */
 
             //initialize(Prot01(), AndroidApplicationConfiguration())
-
+            (activity as AppActivity?)!!.launchGame(1)
         }
         return binding.root
     }

@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_main.*
 import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.GameActivity
+import ktxGamePrototype01.AppActivity
 
 class LoginFragment : Fragment() {
 
@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
                 ) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        (activity as GameActivity?)!!.showMenu()
+                        (activity as AppActivity?)!!.showMenu()
                         Toast.makeText(activity,"Logged in!",Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.dest_user)
                         // Sign in success

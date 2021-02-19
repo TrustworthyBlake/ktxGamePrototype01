@@ -18,7 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.GameActivity
+import ktxGamePrototype01.AppActivity
 
 class UserFragment : Fragment() {
 
@@ -42,7 +42,7 @@ class UserFragment : Fragment() {
 
         buttonLogout.setOnClickListener() {
             auth.signOut()
-            (activity as GameActivity?)!!.hideMenu()
+            (activity as AppActivity?)!!.hideMenu()
             findNavController().navigate(R.id.dest_start)
         }
 

@@ -26,11 +26,16 @@ class AndroidLauncher : AndroidApplication() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intent = Intent(this, GameActivity::class.java)
+
+        val intent = Intent(this, AppActivity::class.java)
         startActivity(intent)
         }
 
-    fun startGame(){
-        initialize(Prot01(), AndroidApplicationConfiguration())
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==2){
+            initialize(Prot01(), AndroidApplicationConfiguration())
+        }
     }
 }
+
