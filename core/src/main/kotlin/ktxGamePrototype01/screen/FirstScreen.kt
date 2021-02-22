@@ -1,25 +1,16 @@
 package ktxGamePrototype01.screen
 
-import com.badlogic.ashley.core.Engine
-import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
-import ktx.app.KtxScreen
 import ktx.ashley.entity
-import ktx.ashley.get
 import ktx.ashley.with
 import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
-import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
-import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
+import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
 /** First screen of the application. Displayed after the application is created.  */
@@ -33,6 +24,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<TransformComponent>{
             posVec3.set(1f,1f,0f)
         }
+        with<MovementComponent>()
         with<GraphicComponent>{
             sprite.run{
                 setRegion(playerTexture)
@@ -40,6 +32,8 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                 setOriginCenter()
             }
         }
+        with<PlayerComponent>()
+        with<OrientationComponent>()
     }
 
     override fun show() {
