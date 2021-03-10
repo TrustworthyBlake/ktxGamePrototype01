@@ -1,6 +1,10 @@
 package ktxGamePrototype01
 
 import android.util.Log
+import android.widget.Toast
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -26,54 +30,6 @@ object DBObject {
                 )
             }
         }
-    }
-
-
-    // function that retrieves data from user database and displays it
-    fun getDocSnapshot(userID: String): Task<DocumentSnapshot> {
-        val db = getInstance()
-        // returning document snapshot
-
-        return db.collection("users").document(userID).get().addOnCompleteListener() {  task->
-            if (task.isComplete)
-                task.result.toString()
-        }
-    }
-
-    // function that retrieves data from user database and displays it
-    fun getUserName(userID: String): String {
-        val db = getInstance()
-        var name = ""
-        // returning the query as a string
-        db.collection("users").document(userID).get().addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                name = task.result?.get("name").toString()
-            }
-        }
-        return name
-    }
-
-    // function that retrieves data from user database and displays it
-    fun getUserEmail(userID: String): String {
-        val db = getInstance()
-        // returning the query as a string
-
-        return db.collection("users").document(userID).get().result!!.get("email").toString()
-    }
-
-    // function that retrieves data from user database and displays it
-    fun getUserScore(userID: String): Int {
-        val db = getInstance()
-        // returning query as int
-        return db.collection("users").document(userID).get().result!!.get("score").toString().toInt()
-    }
-
-    // set a given users score
-    fun setScore(userID: String, newScore: Int) {
-        val db = getInstance()
-        db.collection("users")
-                .document(userID)
-                .update("score", newScore)
     }
 
     // creating a database entry for a new user
@@ -131,6 +87,53 @@ object DBObject {
                     .document(item)
                     .update("courses", FieldValue.arrayUnion(className))
         }
+    }
+
+    // set a given users score
+    fun setScore(userID: String, newScore: Int) {
+        val db = getInstance()
+        db.collection("users")
+                .document(userID)
+                .update("score", newScore)
+    }
+
+    // function that retrieves data from user database and displays it
+    fun getDocSnapshot(userID: String): Task<DocumentSnapshot> {
+        val db = getInstance()
+        // returning document snapshot
+
+        return db.collection("users").document(userID).get().addOnCompleteListener() {  task->
+            if (task.isComplete)
+                task.result.toString()
+        }
+    }
+
+    // function that retrieves data from user database and displays it
+    fun getUserName(userID: String): String {
+        val db = getInstance()
+        var name = ""
+        // returning the query as a string
+        db.collection("users").document(userID).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                name = task.result?.get("name").toString()
+            }
+        }
+        return name
+    }
+
+    // function that retrieves data from user database and displays it
+    fun getUserEmail(userID: String): String {
+        val db = getInstance()
+        // returning the query as a string
+
+        return db.collection("users").document(userID).get().result!!.get("email").toString()
+    }
+
+    // function that retrieves data from user database
+    fun getUserScore(userID: String): Int {
+        val db = getInstance()
+        // returning query as int
+        return db.collection("users").document(userID).get().result!!.get("score").toString().toInt()
     }
 
     // find a user by the users name  NOT WORKING
