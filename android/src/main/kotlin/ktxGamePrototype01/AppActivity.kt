@@ -18,6 +18,8 @@ class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
     private val FIRST_GAME_REQUEST_CODE = 0
 
+    var userObject = User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppBinding.inflate(layoutInflater)

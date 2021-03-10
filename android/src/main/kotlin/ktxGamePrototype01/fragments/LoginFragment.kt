@@ -22,6 +22,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_main.*
 import ktxGamePrototype01.AndroidLauncher
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.DBObject
 
 class LoginFragment : Fragment() {
 
@@ -41,6 +42,8 @@ class LoginFragment : Fragment() {
         val textFieldUsername = binding.root.findViewById<EditText>(R.id.et_login_email)
         val textFieldPassword = binding.root.findViewById<EditText>(R.id.et_login_password)
         val buttonLogin = binding.root.findViewById<Button>(R.id.loginButton)
+
+
         buttonLogin.setOnClickListener() {
             val userEmail = textFieldUsername.text.toString()
             val password = textFieldPassword.text.toString()
@@ -57,6 +60,68 @@ class LoginFragment : Fragment() {
 
     // function to login user using input values from user
     private fun login(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                ) { task ->
+                    if (task.isSuccessful) {   // Sign in success
+                        val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
+                        DBObject.getUserData(userID)
+                        // check if user data has been loaded, and if user is teacher or student
+                        checkTeacherDB(userID)
+                    } else {
+                        loginError()
+                    }
+                }
+    }
+
+    // TODO Fix so you can move these four functions into db object, so we don't need to have identical functions in main-, register- and loginFragment
+    // checking userObject if user is teacher NOT WORKING AS INTENDED - HAS TO PRESS LOGIN BUTTON TWICE
+    fun checkTeacherObject() {
+        if (AppActivity().userObject.isUSerLoaded()) {
+            if (AppActivity().userObject.checkForTeacher()) {
+                logInAsTeacher() // sign in as teacher
+            } else logInAsStudent() // sign in as student
+        } else Log.w("Failed to read database", "Error checking specified user in database") // database read fail
+    }
+
+    // checking db if the user is a teacher
+    private fun checkTeacherDB(userID: String) {
+        db.collection("users").document(userID).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val res = task.result?.get("teacher")
+                // check if user logging in is teacher or student
+                if (res as Boolean) {
+                    logInAsTeacher() // sign in as teacher
+                } else logInAsStudent() // sign in as student
+            } else {
+                // database read fail
+                Log.w("Failed to read database", "Error checking specified user in database")
+            }
+        }
+    }
+
+    // log in as teacher, go to teacher page
+    private fun logInAsTeacher() {
+        Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.dest_user)
+    }
+
+    // log in as student, go to student page
+    private fun logInAsStudent() {
+        Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.dest_user)
+    }
+
+    // error displaying if logon fail
+    private fun loginError() {
+        // If sign in fails, display a message to the user.
+        Toast.makeText(activity,"Login failed!",Toast.LENGTH_SHORT).show()
+        Log.w("Failed to log in", "Error logging in to specified user")
+    }
+
+    // OLD NOT IN USE function to login user using input values from user
+    private fun oldLogin(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
                 ) { task ->
@@ -94,9 +159,5 @@ class LoginFragment : Fragment() {
                     }
                 }
     }
-
-    // set navigation bar to visible
-
-
 
 }
