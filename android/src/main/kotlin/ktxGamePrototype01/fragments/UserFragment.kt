@@ -17,9 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.AppActivity
-import ktxGamePrototype01.DBTest
+import kotlinx.android.synthetic.main.fragment_user.view.*
+import ktxGamePrototype01.*
 
 class UserFragment : Fragment() {
 
@@ -43,12 +42,23 @@ class UserFragment : Fragment() {
         // display user data
         showUserData()
 
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+
         // log off button and listener
         val buttonLogout = binding.root.findViewById<Button>(R.id.btn_logout)
         buttonLogout.setOnClickListener() {
             auth.signOut()
             (activity as AppActivity?)!!.hideMenu()
             findNavController().navigate(R.id.dest_start)
+        }
+
+        // button to navigate to createClassRoom fragment
+        val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
+        buttonCreateClassroom.setOnClickListener() {
+            if (User.checkForTeacher()) {
+                findNavController().navigate(R.id.dest_create_classroom)
+            } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
+
         }
 
         return binding.root
@@ -86,6 +96,11 @@ class UserFragment : Fragment() {
             }
         }
     }
+
+    fun getName(name: String): String {
+        return name
+    }
+
 
 
 }
