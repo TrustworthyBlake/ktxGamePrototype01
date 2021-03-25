@@ -42,7 +42,7 @@ class MainFragment : Fragment() {
             val currentUser = auth.currentUser
             if (currentUser != null) {
                 // checking if there is an active user session, if there is user gets sent directly to profile page
-                findNavController().navigate(R.id.dest_user)
+                findNavController().navigate(R.id.dest_user_profile)
             } else {
                 // else they get sent to login page
                 findNavController().navigate(R.id.dest_login)

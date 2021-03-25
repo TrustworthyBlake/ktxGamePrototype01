@@ -17,22 +17,9 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.ActivityAppBin
 class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
     private val FIRST_GAME_REQUEST_CODE = 0
+    private lateinit var savedDarkData: sharedprefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAppBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //binding.toolbar.setupWithNavController(navController, appBarConfig)
-        val navController = findNavController(R.id.nav_fragment)
-        val appBarConfig = AppBarConfiguration(navController.graph, binding.mainDrawerLayout)
-
-        binding.navigationView.setupWithNavController(navController)
-        binding.bottomNav.setupWithNavController(navController)
-
-
-
-        /*
 
         savedDarkData = sharedprefs(this)
         if(savedDarkData.loadDarkModeState() == true){
@@ -53,7 +40,21 @@ class AppActivity : AppCompatActivity() {
             setTheme((R.style.AppTheme))
         }
 
-         */
+        super.onCreate(savedInstanceState)
+        binding = ActivityAppBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //binding.toolbar.setupWithNavController(navController, appBarConfig)
+        val navController = findNavController(R.id.nav_fragment)
+        val appBarConfig = AppBarConfiguration(navController.graph, binding.mainDrawerLayout)
+
+        binding.navigationView.setupWithNavController(navController)
+        binding.bottomNav.setupWithNavController(navController)
+
+        showMenu()
+
+
+
         //val btn = findViewById<Button>(R.id.btnLogin)
         //btn.setOnClickListener(){ initialize(Prot01(), AndroidApplicationConfiguration()) }
     }
@@ -64,7 +65,7 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.VISIBLE
         val menu = binding.navigationView.menu
         menu.findItem(R.id.dest_classroom_index).isVisible = true
-        menu.findItem(R.id.dest_profile).isVisible = true
+        menu.findItem(R.id.dest_user_profile).isVisible = true
         menu.findItem(R.id.dest_settings).isVisible = true
     }
 
