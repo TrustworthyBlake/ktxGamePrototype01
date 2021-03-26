@@ -19,6 +19,8 @@ class AppActivity : AppCompatActivity() {
     private val FIRST_GAME_REQUEST_CODE = 0
     private lateinit var savedDarkData: sharedprefs
 
+    var userObject = User
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         savedDarkData = sharedprefs(this)

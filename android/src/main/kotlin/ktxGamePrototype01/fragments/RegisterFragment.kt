@@ -19,6 +19,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_main.*
+import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.DBObject
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
@@ -65,9 +67,11 @@ class RegisterFragment : Fragment() {
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
                         // Sign in success
-                        createDatabaseEntry(email, name, isTeacher)
+                        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+                        DBObject.createDatabaseEntry(email, name, isTeacher, userID)
                         Toast.makeText(activity,"User successfully created!",Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.dest_start)
+                        DBObject.getUserData(userID)
+                        checkTeacherDB(userID)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(activity,"Error registering user!",Toast.LENGTH_SHORT).show()
@@ -76,21 +80,43 @@ class RegisterFragment : Fragment() {
                 }
     }
 
-    private fun createDatabaseEntry(email: String, name: String, isTeacher: Boolean) {
-        val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        // Create a new user entry in the database
-        val user = hashMapOf(
-                "userid" to userID,
-                "email" to email,
-                "name" to name,
-                "score" to 0,
-                "teacher" to isTeacher
-        )
-        // add selected data to database
-        db.collection("users").document(userID)
-                .set(user)
-                .addOnSuccessListener { Log.d("Successfully added to DB", "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w("Failed adding to DB", "Error writing document", e) }
+    // TODO Fix so you can move these four functions into db object, so we don't need to have identical functions in main-, register- and loginFragment
+    // checking userObject if user is teacher NOT WORKING AS INTENDED - HAS TO PRESS LOGIN BUTTON TWICE
+    fun checkTeacherObject() {
+        if (AppActivity().userObject.isUSerLoaded()) {
+            if (AppActivity().userObject.checkForTeacher()) {
+                logInAsTeacher() // sign in as teacher
+            } else logInAsStudent() // sign in as student
+        } else Log.w("Failed to read database", "Error checking specified user in database") // database read fail
+    }
+
+    // checking db if the user is a teacher
+    private fun checkTeacherDB(userID: String) {
+        db.collection("users").document(userID).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val res = task.result?.get("teacher")
+                // check if user logging in is teacher or student
+                if (res as Boolean) {
+                    logInAsTeacher() // sign in as teacher
+                } else logInAsStudent() // sign in as student
+            } else {
+                // database read fail
+                Log.w("Failed to read database", "Error checking specified user in database")
+            }
+        }
+    }
+
+    // log in as teacher, go to teacher page
+    private fun logInAsTeacher() {
+        Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.dest_user)
+    }
+
+    // log in as student, go to student page
+    private fun logInAsStudent() {
+        Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.dest_user)
     }
 
 }    

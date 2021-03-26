@@ -17,8 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.AppActivity
+import kotlinx.android.synthetic.main.fragment_user.view.*
+import ktxGamePrototype01.*
 
 class UserFragment : Fragment() {
 
@@ -34,9 +34,15 @@ class UserFragment : Fragment() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
-        // get current user id
+        // To test db functionality (Adding classrooms and adding students to classrooms)
+        val test = DBTest()
+
+        // display bottom navigation menu bar
+        (activity as AppActivity?)!!.showMenu()
+        // display user data
+        showUserData()
+
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        readData(userID)
 
         val buttonProfile = binding.root.findViewById<Button>(R.id.btn_profile)
 
@@ -44,18 +50,39 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.dest_user_profile)
         }
 
+        // log off button and listener
         val buttonLogout = binding.root.findViewById<Button>(R.id.btn_logout)
-
         buttonLogout.setOnClickListener() {
             auth.signOut()
             (activity as AppActivity?)!!.hideMenu()
             findNavController().navigate(R.id.dest_start)
         }
 
+        // button to navigate to createClassRoom fragment
+        val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
+        buttonCreateClassroom.setOnClickListener() {
+            if (User.checkForTeacher()) {
+                findNavController().navigate(R.id.dest_create_classroom)
+            } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
+
+        }
+
         return binding.root
     }
 
-    // function that retrieves data from user database and displays it
+    // function to cast user data from the user object to the on-screen elements
+    private fun showUserData() {
+        // getting the reference to the textViews
+        val userName = binding.root.findViewById<TextView>(R.id.user_name)
+        val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
+        val userScore = binding.root.findViewById<TextView>(R.id.user_score)
+        // displaying the data in the textViews
+        userName.text = AppActivity().userObject.getName()
+        userEmail.text = AppActivity().userObject.getEmail()
+        userScore.text = AppActivity().userObject.getScore().toString()
+    }
+
+    // OLD NOT IN USE function that retrieves data from user database and displays it
     private fun readData(userID: String) {
         // making the query
         db.collection("users").document(userID).get().addOnCompleteListener() { task ->
@@ -76,31 +103,10 @@ class UserFragment : Fragment() {
         }
     }
 
-    // old function for getting data from FireStore
-    private fun getData(userID: String) {
-        db.collection("users")
-                .get()
-                .addOnCompleteListener() {
-                    var name = ""
-                    var email = ""
-                    var score = -1
-                    if (it.isSuccessful) {
-                        for (document in it.result!!) {
-                            if (document.data.getValue("userid").toString() == userID) {
-                                name = document.data.getValue("name").toString()
-                                email = document.data.getValue("email").toString()
-                                score = document.data.getValue("score").toString().toInt()
-                            }
-                        }
-                    }
-                    val userName = binding.root.findViewById<TextView>(R.id.user_name)
-                    val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
-                    val userScore = binding.root.findViewById<TextView>(R.id.user_score)
-
-                    userName.text = name
-                    userEmail.text = email
-                    userScore.text = score.toString()
-                }
+    fun getName(name: String): String {
+        return name
     }
+
+
 
 }

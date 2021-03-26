@@ -96,6 +96,7 @@
             android:id="@+id/action_dest_user_teacher_to_dest_teacher_profile"
             app:destination="@id/dest_teacher_profile" />
     </fragment>
+  
     <fragment
         android:id="@+id/dest_teacher_profile"
         android:name="ktxGamePrototype01.fragments.UserTeacherProfileFragment"
@@ -108,6 +109,18 @@
             android:id="@+id/action_dest_teacher_profile_to_dest_settings"
             app:destination="@id/dest_settings" />
     </fragment>
+  
+  <fragment
+        android:id="@+id/dest_create_classroom"
+        android:name="ktxGamePrototype01.fragments.NewClassroomFragment"
+        android:label="Create new classroom"
+        tools:layout="@layout/fragment_new_classroom" />
+
+    <fragment
+        android:id="@+id/dest_add_students"
+        android:name="ktxGamePrototype01.fragments.AddStudentsFragment"
+        android:label="Add students to classroom"
+        tools:layout="@layout/fragment_add_students"/>
 
 
 </navigation>
