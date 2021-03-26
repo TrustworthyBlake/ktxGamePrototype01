@@ -14,91 +14,86 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/settings"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="-87dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="224dp"
             android:layout_height="58dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="168dp"
+            android:layout_marginEnd="172dp"
             android:text="@string/red_theme"
             android:textColor="@color/colorTextWhite"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.06" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="224dp"
             android:layout_height="58dp"
-            android:layout_marginEnd="168dp"
+            android:layout_marginEnd="172dp"
             android:text="@string/green_theme"
             android:textColor="@color/colorTextWhite"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.145" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="224dp"
             android:layout_height="58dp"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="168dp"
+            android:layout_marginEnd="172dp"
             android:text="@string/purple_theme"
             android:textColor="@color/colorTextWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.316" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="224dp"
             android:layout_height="58dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="168dp"
+            android:layout_marginEnd="172dp"
             android:text="@string/orange_theme"
             android:textColor="@color/colorTextWhite"
-            app:layout_constraintBottom_toTopOf="@+id/button5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.231" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="224dp"
             android:layout_height="58dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="168dp"
+            android:layout_marginEnd="172dp"
             android:text="@string/default_theme"
             android:textColor="@color/colorTextWhite"
-            app:layout_constraintBottom_toTopOf="@+id/d_modes"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.402" />
 
         <Switch
             android:id="@+id/d_modes"
             android:layout_width="219dp"
             android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="172dp"
+            android:layout_marginEnd="176dp"
             android:text="@string/dark_mode"
             android:textColor="@color/colorText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.639" />
+            app:layout_constraintVertical_bias="0.481" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
