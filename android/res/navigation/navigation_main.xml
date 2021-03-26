@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_dest_user_to_dest_create_classroom"
             app:destination="@id/dest_create_classroom" />
+        <action
+            android:id="@+id/action_dest_user_to_dest_add_students"
+            app:destination="@id/dest_add_students" />
     </fragment>
 
     <fragment
@@ -76,6 +79,12 @@
         android:name="ktxGamePrototype01.fragments.NewClassroomFragment"
         android:label="Create new classroom"
         tools:layout="@layout/fragment_new_classroom" />
+
+    <fragment
+        android:id="@+id/dest_add_students"
+        android:name="ktxGamePrototype01.fragments.AddStudentsFragment"
+        android:label="Add students to classroom"
+        tools:layout="@layout/fragment_add_students"/>
 
 
 </navigation>

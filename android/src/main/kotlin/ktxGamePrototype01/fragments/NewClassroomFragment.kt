@@ -46,18 +46,6 @@ class NewClassroomFragment : Fragment() {
         return binding.root
     }
 
-    // find a user by the users name
-    private fun findUserByName(name: String) {
-        val db = FirebaseFirestore.getInstance()
-        val doc = db.collection("users").whereEqualTo("name", name).get()
-        doc.addOnSuccessListener { documents ->
-            for (document in documents) {
-                val uid = document["userid"].toString()
-                Toast.makeText(activity, uid, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     private fun getData() {
         // getting user input from the text fields
         val textFieldCourseName = binding.root.findViewById<EditText>(R.id.et_course_name)

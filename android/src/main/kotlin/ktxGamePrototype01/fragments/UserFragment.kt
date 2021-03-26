@@ -61,6 +61,14 @@ class UserFragment : Fragment() {
 
         }
 
+        // button to navigate to add students fragment
+        val buttonAddStudents = binding.root.findViewById<Button>(R.id.btn_add_students)
+        buttonAddStudents.setOnClickListener() {
+            if (User.checkForTeacher()) {
+                findNavController().navigate(R.id.dest_add_students)
+            } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
+        }
+
         return binding.root
     }
 
