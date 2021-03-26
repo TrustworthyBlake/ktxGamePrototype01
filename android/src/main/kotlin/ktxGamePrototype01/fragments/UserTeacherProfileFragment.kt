@@ -24,7 +24,7 @@ class UserTeacherProfileFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile_teacher, container, false)
         // Initialize Firebase Auth
         auth = Firebase.auth
 
@@ -41,7 +41,7 @@ class UserTeacherProfileFragment : Fragment(){
         }
 
         buttonUserInfo.setOnClickListener(){
-            findNavController().navigate(R.id.dest_user)
+            findNavController().navigate(R.id.dest_user_teacher)
         }
 
         buttonLogout.setOnClickListener(){

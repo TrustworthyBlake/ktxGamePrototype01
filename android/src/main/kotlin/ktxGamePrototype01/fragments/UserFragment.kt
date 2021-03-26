@@ -59,13 +59,14 @@ class UserFragment : Fragment() {
         }
 
         // button to navigate to createClassRoom fragment
+        /*
         val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
         buttonCreateClassroom.setOnClickListener() {
             if (User.checkForTeacher()) {
                 findNavController().navigate(R.id.dest_create_classroom)
             } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
 
-        }
+        } */
 
         return binding.root
     }

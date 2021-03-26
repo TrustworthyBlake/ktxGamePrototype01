@@ -26,7 +26,7 @@ class UserTeacherFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_teacher, container, false)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -38,7 +38,7 @@ class UserTeacherFragment : Fragment() {
         val buttonProfile = binding.root.findViewById<Button>(R.id.btn_profileT)
 
         buttonProfile.setOnClickListener() {
-            findNavController().navigate(R.id.dest_user_profile)
+            findNavController().navigate(R.id.dest_teacher_profile)
         }
 
         val buttonLogout = binding.root.findViewById<Button>(R.id.btn_logout)
