@@ -102,7 +102,7 @@ class UserFragment : Fragment() {
                 // displaying the data in the textViews
                 userName.text = name.toString()
                 userEmail.text = email.toString()
-                //userScore.text = score.toString()
+                userScore.text = score.toString()
             }
         }
     }
