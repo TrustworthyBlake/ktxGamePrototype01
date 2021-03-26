@@ -79,11 +79,9 @@ class UserFragment : Fragment() {
         // getting the reference to the textViews
         val userName = binding.root.findViewById<TextView>(R.id.user_name)
         val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
-        val userScore = binding.root.findViewById<TextView>(R.id.user_score)
         // displaying the data in the textViews
         userName.text = AppActivity().userObject.getName()
         userEmail.text = AppActivity().userObject.getEmail()
-        userScore.text = AppActivity().userObject.getScore().toString()
     }
 
     // OLD NOT IN USE function that retrieves data from user database and displays it
