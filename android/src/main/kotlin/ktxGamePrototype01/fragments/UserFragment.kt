@@ -58,6 +58,7 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.dest_start)
         }
 
+        /*
         // button to navigate to createClassRoom fragment
         /*
         val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
@@ -67,6 +68,8 @@ class UserFragment : Fragment() {
             } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
 
         } */
+
+         */
 
         return binding.root
     }
