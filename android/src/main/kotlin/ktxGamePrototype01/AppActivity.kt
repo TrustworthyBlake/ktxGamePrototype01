@@ -75,7 +75,7 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.INVISIBLE
         val menu = binding.navigationView.menu
         menu.findItem(R.id.dest_classroom_index).isVisible = false
-        menu.findItem(R.id.dest_profile).isVisible = false
+        //menu.findItem(R.id.dest_profile).isVisible = false
         menu.findItem(R.id.dest_settings).isVisible = false
     }
 
