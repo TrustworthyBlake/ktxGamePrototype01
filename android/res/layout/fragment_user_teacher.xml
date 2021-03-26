@@ -29,7 +29,7 @@
             android:layout_height="28dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="160dp"
-            android:text="Username"
+            android:text="Faculty"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +110,7 @@
             android:layout_height="37dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="104dp"
-            android:text="Classes/Modules"
+            android:text="Classes"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -121,11 +121,10 @@
             android:layout_height="122dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
-            android:text="User Info"
+            android:text="Teacher Info"
             android:textSize="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="108dp"
@@ -137,7 +136,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
         <Button
-            android:id="@+id/btn_profile"
+            android:id="@+id/btn_profileT"
             android:layout_width="108dp"
             android:layout_height="30dp"
             android:layout_marginTop="152dp"

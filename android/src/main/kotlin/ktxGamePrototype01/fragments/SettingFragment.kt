@@ -12,6 +12,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentSettingBinding
 import kotlinx.android.synthetic.main.fragment_setting.*
 import ktxGamePrototype01.AndroidLauncher
+import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.sharedprefs
 
 class SettingFragment : Fragment() {
@@ -31,82 +32,70 @@ class SettingFragment : Fragment() {
 
         binding.dModes.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+                savedDarkData = sharedprefs(requireContext() as AppActivity)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 savedDarkData.setDarkModeState(true)
             } else{
-                savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+                savedDarkData = sharedprefs(requireContext() as AppActivity)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 savedDarkData.setDarkModeState(false)
             }
         }
 
-        savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
 
         if(savedDarkData.loadDarkModeState() == true){
             binding.dModes.toggle()                   //because the switch is defaulted to off, toggle will set that on on but only if darkmode was enabled after closing the app.
         }
 
         binding.button.setOnClickListener{
-            savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+            savedDarkData = sharedprefs(requireContext() as AppActivity)
 
             savedDarkData.setRedModeState(true)
             savedDarkData.setPurpleModeState(false)
             savedDarkData.setGreenModeState(false)
             savedDarkData.setOrangeModeState(false)
-            val toast = Toast.makeText(requireContext() as AndroidLauncher, "Please restart the app to apply the Red theme", Toast.LENGTH_SHORT)
-            toast.show()
-
-
+            (activity as AppActivity).recreate();
         }
 
         binding.button2.setOnClickListener{
-            savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+            savedDarkData = sharedprefs(requireContext() as AppActivity)
 
             savedDarkData.setRedModeState(false)
             savedDarkData.setPurpleModeState(false)
             savedDarkData.setGreenModeState(true)
             savedDarkData.setOrangeModeState(false)
-            val toast = Toast.makeText(requireContext() as AndroidLauncher, "Please restart the app to apply the Green theme", Toast.LENGTH_SHORT)
-            toast.show()
-
+            (activity as AppActivity).recreate();
         }
 
         binding.button3.setOnClickListener{
-            savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+            savedDarkData = sharedprefs(requireContext() as AppActivity)
 
             savedDarkData.setRedModeState(false)
             savedDarkData.setPurpleModeState(true)
             savedDarkData.setGreenModeState(false)
             savedDarkData.setOrangeModeState(false)
-
-            val toast = Toast.makeText(requireContext() as AndroidLauncher, "Please restart the app to apply the Purple theme", Toast.LENGTH_SHORT)
-            toast.show()
-
+            (activity as AppActivity).recreate();
         }
 
         binding.button4.setOnClickListener{
-            savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+            savedDarkData = sharedprefs(requireContext() as AppActivity)
 
             savedDarkData.setRedModeState(false)
             savedDarkData.setOrangeModeState(true)
             savedDarkData.setGreenModeState(false)
             savedDarkData.setPurpleModeState(false)
-            val toast = Toast.makeText(requireContext() as AndroidLauncher, "Please restart the app to apply the Orange theme", Toast.LENGTH_SHORT)
-            toast.show()
-
+            (activity as AppActivity).recreate();
         }
 
         binding.button5.setOnClickListener{
-            savedDarkData = sharedprefs(requireContext() as AndroidLauncher)
+            savedDarkData = sharedprefs(requireContext() as AppActivity)
 
             savedDarkData.setRedModeState(false)
             savedDarkData.setOrangeModeState(false)
             savedDarkData.setGreenModeState(false)
             savedDarkData.setPurpleModeState(false)
-            val toast = Toast.makeText(requireContext() as AndroidLauncher, "Please restart the app to apply the Default theme", Toast.LENGTH_SHORT)
-            toast.show()
-
+            (activity as AppActivity).recreate();
         }
 
     }

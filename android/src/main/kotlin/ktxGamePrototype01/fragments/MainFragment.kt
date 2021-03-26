@@ -100,13 +100,13 @@ class MainFragment : Fragment() {
     // log in as teacher, go to teacher page
     private fun logInAsTeacher() {
         Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user)
+        findNavController().navigate(R.id.dest_teacher_profile)
     }
 
     // log in as student, go to student page
     private fun logInAsStudent() {
         Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user)
+        findNavController().navigate(R.id.dest_user_profile)
     }
 
 
