@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "153170505035",
+    "project_id": "bsctest-9c29f",
+    "storage_bucket": "bsctest-9c29f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153170505035:android:2154067892568cc192ccce",
+        "android_client_info": {
+          "package_name": "com.github.trustworthyblake.ktxGamePrototype01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153170505035-32m7k82qj6qh4pbenktgjre108tfmurr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLrgykElKVXMQeXUwND62di5jY-ZRxbVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153170505035-32m7k82qj6qh4pbenktgjre108tfmurr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153170505035:android:d642faae5e1106d992ccce",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153170505035-6ae9id7p8d15qq3t5lkeu9u7tm12817r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.test",
+            "certificate_hash": "9375fb38b3643e865a0fd5cf9a5f0f6e1f6397ed"
+          }
+        },
+        {
+          "client_id": "153170505035-32m7k82qj6qh4pbenktgjre108tfmurr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLrgykElKVXMQeXUwND62di5jY-ZRxbVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153170505035-32m7k82qj6qh4pbenktgjre108tfmurr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -36,6 +36,8 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
             moveEntity(transform, movement, deltaTime)
         }
     }
+
+
     private fun movePlayer(transform: TransformComponent, movement: MovementComponent, playerComponent: PlayerComponent, direction: OrientationComponent, deltaTime: Float){
         movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
             OrientationDirection.left -> min(0f, movement.velocity.x - 15f * deltaTime)
@@ -48,9 +50,13 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
             OrientationDirection.up -> max(0f, movement.velocity.y + 15f * deltaTime)
             else -> 0f
         }
+
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)
+
         moveEntity(transform, movement, deltaTime)
     }
+
+
     private fun moveEntity(transform: TransformComponent, movement: MovementComponent, deltaTime: Float) {
         transform.posVec3.x = MathUtils.clamp(transform.posVec3.x + movement.velocity.x * deltaTime, 0f, 9f - transform.sizeVec2.x)
         transform.posVec3.y = MathUtils.clamp(transform.posVec3.y + movement.velocity.y * deltaTime, 1f, 1f+16f - transform.sizeVec2.y)

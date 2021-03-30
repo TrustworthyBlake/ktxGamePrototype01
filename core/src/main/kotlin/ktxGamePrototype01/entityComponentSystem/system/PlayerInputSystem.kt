@@ -24,7 +24,7 @@ class PlayerInputSystem(
         val transform = entity[TransformComponent.mapper]
         require(transform != null) {"Error: 5005. entity=$entity"}
 
-        tempPosVec.x = Gdx.input.x.toFloat()
+        tempPosVec.y = 0f
         tempPosVec.y = Gdx.input.y.toFloat()
         gameViewport.unproject(tempPosVec)
 
