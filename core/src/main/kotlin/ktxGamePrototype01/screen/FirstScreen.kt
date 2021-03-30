@@ -20,6 +20,7 @@ private val LOG = logger<FirstScreen>()
 class FirstScreen(game:Prot01) : AbstractScreen(game) {
     private val viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
+    private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val player = engine.entity{
         with<TransformComponent>{
             posVec3.set(1f,1f,0f)
@@ -35,7 +36,17 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<PlayerComponent>()
         with<OrientationComponent>()
     }
+    private val tree = engine.entity {
+        with<TransformComponent> { posVec3.set(8f, 8f, 0f) }
 
+        with<GraphicComponent> {
+            sprite.run {
+                setRegion(treeTexture)
+                setSize(texture.width * unitScale, texture.height * unitScale)
+                setOriginCenter()
+            }
+        }
+    }
     override fun show() {
         LOG.debug { "First screen is displayed" }
     }

@@ -21,7 +21,7 @@ import ktxGamePrototype01.screen.SecondScreen
 private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
 
-class Prot01 : KtxGame<KtxScreen>() {
+class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
     val engine : Engine by lazy { PooledEngine().apply {
@@ -36,6 +36,9 @@ class Prot01 : KtxGame<KtxScreen>() {
         addScreen(FirstScreen(this))
         addScreen(SecondScreen(this))
         setScreen<FirstScreen>()
+        if(x == 2){
+            LOG.debug {" is 2" }
+        }
     }
 
     override fun dispose() {

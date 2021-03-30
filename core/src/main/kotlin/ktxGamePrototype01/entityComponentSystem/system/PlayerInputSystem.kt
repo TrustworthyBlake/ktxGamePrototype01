@@ -3,6 +3,8 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.Input.Keys.ANY_KEY
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
@@ -23,13 +25,30 @@ class PlayerInputSystem(
         require(transform != null) {"Error: 5005. entity=$entity"}
 
         tempPosVec.x = Gdx.input.x.toFloat()
+        tempPosVec.y = Gdx.input.y.toFloat()
         gameViewport.unproject(tempPosVec)
-        val diffDistX = tempPosVec.x - transform.posVec3.x - transform.sizeVec2.x * 0.5f
-        orientation.direction = when {
-            diffDistX > 0.1f -> OrientationDirection.right
-            diffDistX < -0.1f -> OrientationDirection.left
-            else -> OrientationDirection.up
 
+        /*val diffDistX = tempPosVec.x - transform.posVec3.x - transform.sizeVec2.x * 0.5f
+        val diffDistY = tempPosVec.y - transform.posVec3.y - transform.sizeVec2.y * 0.5f
+        orientation.direction = when {
+            diffDistX > 0.2f -> OrientationDirection.right
+            diffDistX < -0.2f -> OrientationDirection.left
+            diffDistY > 0.2f -> OrientationDirection.up
+            diffDistY < -0.2f -> OrientationDirection.down
+            else -> OrientationDirection.tempOri
+
+        }*/
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+            orientation.direction = OrientationDirection.left
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D)){
+            orientation.direction = OrientationDirection.right
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
+            orientation.direction = OrientationDirection.up
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
+            orientation.direction = OrientationDirection.down
         }
     }
 }

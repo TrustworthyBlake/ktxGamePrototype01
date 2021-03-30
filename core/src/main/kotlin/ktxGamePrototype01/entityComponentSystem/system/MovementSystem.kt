@@ -44,8 +44,8 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
         }
         movement.velocity.x = MathUtils.clamp(movement.velocity.x, -6f, 6f)
         movement.velocity.y = when(direction.direction){
-            OrientationDirection.down -> min(0f, movement.velocity.x - 15f * deltaTime)
-            OrientationDirection.up -> max(0f, movement.velocity.x + 15f * deltaTime)
+            OrientationDirection.down -> min(0f, movement.velocity.y - 15f * deltaTime)
+            OrientationDirection.up -> max(0f, movement.velocity.y + 15f * deltaTime)
             else -> 0f
         }
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)

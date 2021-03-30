@@ -9,6 +9,6 @@ import ktxGamePrototype01.Prot01
 class AndroidLauncher : AndroidApplication() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initialize(Prot01(), AndroidApplicationConfiguration()
+        initialize(Prot01(2), AndroidApplicationConfiguration()
         )}
 }
