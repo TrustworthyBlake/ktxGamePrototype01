@@ -33,15 +33,22 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_login_to_user"
-            app:destination="@id/dest_user" />
+            android:id="@+id/action_dest_login_to_dest_user_profile"
+            app:destination="@id/dest_user_profile" />
+        <action
+            android:id="@+id/action_dest_login_to_userTeacherProfileFragment"
+            app:destination="@id/dest_teacher_profile" />
     </fragment>
 
     <fragment
         android:id="@+id/dest_user"
         android:name="ktxGamePrototype01.fragments.UserFragment"
-        android:label="User screen"
-        tools:layout="@layout/fragment_user" />
+        android:label="UserInfo"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_dest_user_to_dest_user_profile"
+            app:destination="@id/dest_user_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_classroom_index"
@@ -66,6 +73,49 @@
         android:name="ktxGamePrototype01.fragments.SettingFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/dest_user_profile"
+        android:name="ktxGamePrototype01.fragments.UserProfileFragment"
+        android:label="UserProfile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_dest_user_profile_to_dest_settings2"
+            app:destination="@id/dest_settings" />
+        <action
+            android:id="@+id/action_dest_user_profile_to_dest_user"
+            app:destination="@id/dest_user" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_user_teacher"
+        android:name="ktxGamePrototype01.fragments.UserTeacherFragment"
+        android:label="UserTeacherFragment"
+        tools:layout="@layout/fragment_user_teacher">
+        <action
+            android:id="@+id/action_dest_user_teacher_to_dest_teacher_profile"
+            app:destination="@id/dest_teacher_profile" />
+    </fragment>
+  
+    <fragment
+        android:id="@+id/dest_teacher_profile"
+        android:name="ktxGamePrototype01.fragments.UserTeacherProfileFragment"
+        android:label="UserTeacherProfileFragment"
+        tools:layout="@layout/fragment_user_profile_teacher">
+    <action
+        android:id="@+id/action_userTeacherProfileFragment_to_userTeacherFragment"
+        app:destination="@id/dest_user_teacher" />
+        <action
+            android:id="@+id/action_dest_teacher_profile_to_dest_settings"
+            app:destination="@id/dest_settings" />
+    </fragment>
+  
+  <fragment
+        android:id="@+id/dest_create_classroom"
+        android:name="ktxGamePrototype01.fragments.NewClassroomFragment"
+        android:label="Create new classroom"
+        tools:layout="@layout/fragment_new_classroom" />
+
 
 
 </navigation>

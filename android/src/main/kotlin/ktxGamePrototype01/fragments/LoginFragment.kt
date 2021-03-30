@@ -104,13 +104,17 @@ class LoginFragment : Fragment() {
     // log in as teacher, go to teacher page
     private fun logInAsTeacher() {
         Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user)
+
+        findNavController().navigate(R.id.dest_teacher_profile)
+
+        findNavController().navigate(R.id.dest_user_teacher)
+
     }
 
     // log in as student, go to student page
     private fun logInAsStudent() {
         Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user)
+        findNavController().navigate(R.id.dest_user_profile)
     }
 
     // error displaying if logon fail
@@ -129,7 +133,7 @@ class LoginFragment : Fragment() {
                         // Sign in success, update UI with the signed-in user's information
                         (activity as AppActivity?)!!.showMenu()
                         Toast.makeText(activity,"Logged in!",Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.dest_user)
+                        findNavController().navigate(R.id.dest_user_profile)
                         // Sign in success
                         // get current user id
                         val userID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -141,11 +145,11 @@ class LoginFragment : Fragment() {
                                 if (res as Boolean) {
                                     // Sign in success, update UI with the signed-in teacher's information
                                     Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
-                                    findNavController().navigate(R.id.dest_user)
+                                    findNavController().navigate(R.id.dest_teacher_profile)
                                 } else {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
-                                    findNavController().navigate(R.id.dest_user)
+                                    findNavController().navigate(R.id.dest_user_profile)
                                 }
                             } else {
                                 // database read fail

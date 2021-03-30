@@ -17,9 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.AppActivity
-import ktxGamePrototype01.DBTest
+import kotlinx.android.synthetic.main.fragment_user.view.*
+import ktxGamePrototype01.*
 
 class UserFragment : Fragment() {
 
@@ -43,6 +42,14 @@ class UserFragment : Fragment() {
         // display user data
         showUserData()
 
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+
+        val buttonProfile = binding.root.findViewById<Button>(R.id.btn_profile)
+
+        buttonProfile.setOnClickListener() {
+            findNavController().navigate(R.id.dest_user_profile)
+        }
+
         // log off button and listener
         val buttonLogout = binding.root.findViewById<Button>(R.id.btn_logout)
         buttonLogout.setOnClickListener() {
@@ -50,6 +57,19 @@ class UserFragment : Fragment() {
             (activity as AppActivity?)!!.hideMenu()
             findNavController().navigate(R.id.dest_start)
         }
+
+        /*
+        // button to navigate to createClassRoom fragment
+        /*
+        val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
+        buttonCreateClassroom.setOnClickListener() {
+            if (User.checkForTeacher()) {
+                findNavController().navigate(R.id.dest_create_classroom)
+            } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
+
+        } */
+
+         */
 
         return binding.root
     }
@@ -59,11 +79,9 @@ class UserFragment : Fragment() {
         // getting the reference to the textViews
         val userName = binding.root.findViewById<TextView>(R.id.user_name)
         val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
-        val userScore = binding.root.findViewById<TextView>(R.id.user_score)
         // displaying the data in the textViews
         userName.text = AppActivity().userObject.getName()
         userEmail.text = AppActivity().userObject.getEmail()
-        userScore.text = AppActivity().userObject.getScore().toString()
     }
 
     // OLD NOT IN USE function that retrieves data from user database and displays it
@@ -86,6 +104,11 @@ class UserFragment : Fragment() {
             }
         }
     }
+
+    fun getName(name: String): String {
+        return name
+    }
+
 
 
 }

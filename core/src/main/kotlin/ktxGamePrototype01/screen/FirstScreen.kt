@@ -12,6 +12,7 @@ import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
+import sun.rmi.runtime.Log
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -24,9 +25,9 @@ private val LOG = logger<FirstScreen>()
 class FirstScreen(game:Prot01) : AbstractScreen(game) {
     private val viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
-    private val grassTexture = Texture(Gdx.files.internal("graphics/grass.png"))
-    private val test = Gdx.files.internal("map0.txt")
-
+    private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
+    private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+    private val quizMap = Gdx.files.internal("maps/map0.txt");
 
 
     private val player = engine.entity{
@@ -45,27 +46,13 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<OrientationComponent>()
     }
 
-    private val Thing2 = engine.entity {
-        with<TransformComponent> {
-            posVec3.set(2f, 1f, 0f)
-        }
-        with<GraphicComponent> {
-            sprite.run {
-                setRegion(grassTexture)
-                setSize(texture.width * unitScale, texture.height * unitScale)
-                setOriginCenter()
-            }
-        }
-    }
-
     override fun show() {
         LOG.debug { "First screen is displayed" }
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
             var lineNr = 0
-            val fileName = "assets/map0.txt"
-            val lines:List<String> = File(fileName).readLines()
+            val lines:List<String> = (quizMap.readString()).lines()
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
@@ -75,7 +62,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                         }
                         with<GraphicComponent> {
                             sprite.run {
-                                if(char == '1'){setRegion(playerTexture)}
+                                if(char == '1'){setRegion(holeTexture)}
                                 if(char == '0') {setRegion(grassTexture)}
                                 setSize(texture.width * unitScale, texture.height * unitScale)
                                 setOriginCenter()

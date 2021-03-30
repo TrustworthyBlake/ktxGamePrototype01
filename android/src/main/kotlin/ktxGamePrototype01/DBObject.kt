@@ -11,10 +11,13 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestore.getInstance
+import java.util.concurrent.Future
 
 object DBObject {
 
     private lateinit var auth: FirebaseAuth
+    private const val failTAG = "DATABASE ENTRY FAILED"
+    private const val successTAG = "DATABASE ENTRY SUCCESS"
 
     // getting all data from a user and storing it in a user object
     fun getUserData(userID: String) {
@@ -49,29 +52,8 @@ object DBObject {
         // add selected data to database
         db.collection("users").document(userID)
             .set(user)
-            .addOnSuccessListener { Log.d("Successfully added to DB", "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w("Failed adding to DB", "Error writing document", e) }
-    }
-
-    // add a new classroom to the database
-    fun addClassroom(courseName: String, grade: String, teacher: String, year: Int) {
-        val db = getInstance()
-        // create data entry for the course
-        val studentList: List<String> = emptyList()
-        //val userID = findUserByName(capitalize(teacher))
-
-        val course = hashMapOf(
-            "course name" to courseName,
-            "grade" to grade,
-            "teacher name" to capitalize(teacher),
-            "year" to year,
-            "students" to studentList
-        )
-        // add the data into the database
-        db.collection("classrooms").document("$grade grade $courseName $year")
-            .set(course)
-            .addOnSuccessListener { Log.d("Successfully added to DB", "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w("Failed adding to DB", "Error writing document", e) }
+            .addOnSuccessListener { Log.d(successTAG, "Successfully added user to DB") }
+            .addOnFailureListener { e -> Log.w(failTAG, "Error adding user to DB", e) }
     }
 
     // function for adding students to a class
@@ -111,16 +93,15 @@ object DBObject {
 
     // TODO - NOT WORKING
     // function that retrieves data from user database and displays it
-    fun getUserName(userID: String): String {
+    fun getUserName(userID: String, onComplete: (String) -> Unit) {
         val db = getInstance()
-        var name = ""
         // returning the query as a string
         db.collection("users").document(userID).get().addOnCompleteListener() { task ->
             if (task.isSuccessful) {
-                name = task.result?.get("name").toString()
+                onComplete(task.result?.get("name").toString())
             }
         }
-        return name
+
     }
 
     // TODO - NOT WORKING
@@ -140,22 +121,8 @@ object DBObject {
         return db.collection("users").document(userID).get().result!!.get("score").toString().toInt()
     }
 
-    // TODO - NOT WORKING
-    // find a user by the users name
-    fun findUserByName(name: String): String{
-        val db = getInstance()
-        val doc = db.collection("users").whereEqualTo("name", name).get()
-        var uid = ""
-        doc.addOnSuccessListener { documents ->
-            for (document in documents) {
-                uid = document["userid"].toString()
-            }
-        }
-        return uid
-    }
-
     // capitalize a string
-    private fun capitalize(s: String): String {
+    fun capitalize(s: String): String {
         return s.split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
     }
 

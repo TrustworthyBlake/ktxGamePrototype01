@@ -14,7 +14,6 @@ class GameActivity : AndroidApplication() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var gameID = intent.getIntExtra("Game", 1)
-
         when (gameID) {
             1 -> {
                 initialize(Prot01(), AndroidApplicationConfiguration())

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-class sharedprefs(context: AndroidLauncher) {
+class sharedprefs(context: AppActivity) {
 
 
 
