@@ -27,6 +27,8 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+    private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
+
     private val quizMap = Gdx.files.internal("maps/map0.txt");
 
 
@@ -45,7 +47,17 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<PlayerComponent>()
         with<OrientationComponent>()
     }
+    private val tree = engine.entity {
+        with<TransformComponent> { posVec3.set(8f, 8f, 0f) }
 
+        with<GraphicComponent> {
+            sprite.run {
+                setRegion(treeTexture)
+                setSize(texture.width * unitScale, texture.height * unitScale)
+                setOriginCenter()
+            }
+        }
+    }
     override fun show() {
         LOG.debug { "First screen is displayed" }
         try{

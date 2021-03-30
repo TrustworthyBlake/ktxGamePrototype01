@@ -15,5 +15,5 @@ class OrientationComponent : Component, Pool.Poolable{
 }
 
 enum class OrientationDirection {
-    left, right, up, down
+    left, right, up, down, tempOri
 }
