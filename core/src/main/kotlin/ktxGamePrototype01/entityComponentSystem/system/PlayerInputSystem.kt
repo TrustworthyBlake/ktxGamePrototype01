@@ -23,6 +23,7 @@ class PlayerInputSystem(
         require(transform != null) {"Error: 5005. entity=$entity"}
 
         tempPosVec.x = Gdx.input.x.toFloat()
+        tempPosVec.y = 0f
         gameViewport.unproject(tempPosVec)
         val diffDistX = tempPosVec.x - transform.posVec3.x - transform.sizeVec2.x * 0.5f
         orientation.direction = when {

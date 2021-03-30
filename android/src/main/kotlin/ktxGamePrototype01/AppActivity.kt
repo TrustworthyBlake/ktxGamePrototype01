@@ -32,7 +32,7 @@ class AppActivity : AppCompatActivity() {
         binding.navigationView.setupWithNavController(navController)
         binding.bottomNav.setupWithNavController(navController)
 
-
+        showMenu()
 
         /*
 
