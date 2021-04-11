@@ -34,7 +34,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
 
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(2f,2f,0f)
+            posVec3.set(0f,0f,0f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
@@ -70,7 +70,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                 line.forEach { char ->
                     val Thing2 = engine.entity {
                         with<TransformComponent> {
-                            posVec3.set(charNr.toFloat(), lineNr.toFloat(), 0f)
+                            posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
@@ -102,6 +102,12 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
 
     override fun render(delta: Float) {
         viewport.apply()
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            game.addScreen(SecondScreen(game))
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            game.removeScreen(SecondScreen::class.java)
+        }
         batch.use(viewport.camera.combined){
         }
         engine.update(delta)

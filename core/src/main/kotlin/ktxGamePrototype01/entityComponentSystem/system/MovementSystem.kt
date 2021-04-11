@@ -50,7 +50,6 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
             OrientationDirection.up -> max(0f, movement.velocity.y + 15f * deltaTime)
             else -> 0f
         }
-
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)
 
         moveEntity(transform, movement, deltaTime)

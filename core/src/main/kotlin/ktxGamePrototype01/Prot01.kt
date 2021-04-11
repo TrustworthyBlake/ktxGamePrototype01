@@ -34,7 +34,7 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
         Gdx.app.logLevel = LOG_DEBUG
         LOG.debug { "Game instance created" }
         addScreen(FirstScreen(this))
-        addScreen(SecondScreen(this))
+        //addScreen(SecondScreen(this))
         setScreen<FirstScreen>()
         if(x == 2){
             LOG.debug {" is 2" }
