@@ -56,5 +56,6 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
 
     override fun dispose() {
         playerTexture.dispose()
+        player.removeAll()
     }
 }
