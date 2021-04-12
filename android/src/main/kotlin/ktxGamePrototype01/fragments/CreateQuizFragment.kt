@@ -14,6 +14,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentCreateQuizBinding
 import kotlinx.android.synthetic.main.fragment_create_quiz.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.IOException
 
@@ -58,8 +59,13 @@ class CreateQuizFragment : Fragment() {
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
             val quizTextFile = File(pathTextFile, "quizNr.txt")
-            quizTextFile.appendText(question + "-" + isQuestion + "-" + isAnswer
+            /*quizTextFile.appendText(question + "-" + isQuestion + "-" + isAnswer
                     + "-" + statementIsTrue + "-" + statementIsFalse)
+            */
+            FileOutputStream(quizTextFile).use {
+                it.write((question + "-" + isQuestion + "-" + isAnswer
+                        + "-" + statementIsTrue + "-" + statementIsFalse).toByteArray())
+            }
             Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
             }
         }
