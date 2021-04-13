@@ -169,7 +169,17 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
 
     private fun createQuizTextEntities(){
         val quizList = readQuizFromFile()
-        
+        var questAnsw = ""
+        var isQuestion = false
+        var isCorrect = false
+        quizList.forEach{ line ->
+            val tempQuizList: List<String> = line.split("-")
+            questAnsw = tempQuizList[0]
+            isQuestion = tempQuizList[1].toBoolean()
+            isCorrect = tempQuizList[2].toBoolean()
+            // Todo put variables into entities
+        }
+
     }
 }
 
