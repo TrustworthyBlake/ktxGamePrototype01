@@ -142,7 +142,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")
+        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
         val tempQuizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
@@ -168,6 +168,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     }
 
     private fun createQuizTextEntities(){
+        val quizList = readQuizFromFile()
         
     }
 }
