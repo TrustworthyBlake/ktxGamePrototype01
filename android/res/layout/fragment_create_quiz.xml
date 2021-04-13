@@ -21,21 +21,7 @@
                     android:id="@+id/createQuestionTextIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Write question here" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxTrueStatement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Statement is true" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxFalseStatement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Statement is false" />
+                    android:hint="Write question/answer here" />
 
                 <CheckBox
                     android:id="@+id/checkBoxIsQuestion"
@@ -45,26 +31,32 @@
                     android:text="Is question" />
 
                 <CheckBox
-                    android:id="@+id/checkBoxIsAnswer"
+                    android:id="@+id/checkBoxIsCorrect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is answer" />
+                    android:text="Is Correct" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/addStatementButton"
+                android:id="@+id/addButton"
                 android:layout_width="123dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Add statement" />
+                android:text="Add" />
 
-            <Button
-                android:id="@+id/addQuestionButton"
-                android:layout_width="122dp"
-                android:layout_height="wrap_content"
-                android:text="Add question" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/createQuizTextIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Give the quiz a name" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/createQuizButton"

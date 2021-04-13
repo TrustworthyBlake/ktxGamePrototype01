@@ -12,17 +12,13 @@ import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
-import sun.rmi.runtime.Log
 import java.io.File
-import java.io.InputStream
-import java.util.*
-import javax.xml.soap.Text
 
 /** First screen of the application. Displayed after the application is created.  */
 
 private val LOG = logger<FirstScreen>()
 
-class FirstScreen(game:Prot01) : AbstractScreen(game) {
+class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
@@ -34,7 +30,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
 
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(0f,0f,0f)
+            posVec3.set(0f, 0f, 0f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
@@ -88,7 +84,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
             }
 
 
-        }catch(e:Exception){
+        }catch (e: Exception){
             e.printStackTrace()
             LOG.debug { "Reading Failed" }
         }finally{
@@ -114,6 +110,9 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
         }
+        if(Gdx.input.isTouched){
+        readQuizFromFile()
+        }
     }
 
     override fun dispose() {
@@ -131,12 +130,64 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                             tileArray[lineNr] = line.toCharArray()
                             lineNr=lineNr+1
             }
-        }catch(e:Exception){
+        }catch (e: Exception){
             e.printStackTrace()
         }finally{
             println("File read")
         }
 
+    }
+    private fun readQuizFromFile(){
+        val isLocAvailable = Gdx.files.isLocalStorageAvailable
+        LOG.debug { "Local is available $isLocAvailable" }
+        val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
+        LOG.debug { "Dir exists $isDirectory" }
+        val quizTextFile = Gdx.files.local("assets/quizFiles/quizNr.txt")
+        if (quizTextFile.exists()){
+            try{
+                var charNr = 0
+                var lineNr = 0
+                var tempCharStr : String = ""
+                val lines:List<String> = (quizTextFile.readString()).lines()
+                var question = ""
+                var isQuestion = false
+                var isAnswer = false
+                var statementIsTrue = false
+                var statementIsFalse = false
+                lines.forEach { line ->
+                    charNr = 0
+                    val tempQuizList: List<String> = line.split("-")
+                    if (tempQuizList.isNotEmpty()){
+                        question = tempQuizList[0]
+                        isQuestion = tempQuizList[1].toBoolean()
+                        isAnswer = tempQuizList[2].toBoolean()
+                        statementIsTrue = tempQuizList[3].toBoolean()
+                        statementIsFalse = tempQuizList[4].toBoolean()
+                    }
+
+                    /*line.forEach { char ->
+                        if(char!= '-'){
+                        tempCharStr += (char)
+                        }
+                        
+                        charNr=charNr+1
+                    }*/
+                    lineNr=lineNr+1
+                    LOG.debug { line }
+                    LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
+                            "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                LOG.debug { "Reading Failed" }
+            }finally{
+                LOG.debug { "Done Reading" }
+
+            }
+        }else{
+            LOG.debug { "Error: Cannot find quiz file!" }
+        }
+        //LOG.debug { "Quiz file is available $quizTextFile" }
     }
 }
 

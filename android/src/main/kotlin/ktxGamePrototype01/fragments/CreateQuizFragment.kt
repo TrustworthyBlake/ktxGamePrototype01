@@ -21,36 +21,57 @@ import java.io.IOException
 
 class CreateQuizFragment : Fragment() {
     private lateinit var binding: FragmentCreateQuizBinding
-
+    //private lateinit var tempQuizList: MutableList<String>
+    val tempQuizList = mutableListOf<String>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_quiz, container, false)
 
-
-        //val addQuestion = addQuestionButton
-        binding.addQuestionButton.setOnClickListener {
-        //addQuestion.setOnClickListener {
+        binding.addButton.setOnClickListener {
+            addToQuiz()
+        }
+        binding.createQuizButton.setOnClickListener{
             createQuiz()
         }
         return binding.root
     }
-
-    private fun createQuiz(){
-        if (TextUtils.isEmpty(createQuestionTextIn.text.toString())) {
-            Toast.makeText(activity, "You must add a question!", Toast.LENGTH_SHORT).show()
+    private fun addToQuiz(){
+        if (TextUtils.isEmpty(binding.createQuestionTextIn.text.toString())) {
+            Toast.makeText(activity, "Error: You must add a question or answer!", Toast.LENGTH_SHORT).show()
         } else {
-            val question = binding.createQuestionTextIn.text.toString()
+            val questAnsw = binding.createQuestionTextIn.text.toString()
             val isQuestion = binding.checkBoxIsQuestion.isChecked
-            val isAnswer = binding.checkBoxIsAnswer.isChecked
-            val statementIsTrue = binding.checkBoxTrueStatement.isChecked
-            val statementIsFalse = binding.checkBoxFalseStatement.isChecked
-            //Toast.makeText(activity, isQuestion, Toast.LENGTH_SHORT).show()
-            writeQuizToFile(question, isQuestion, isAnswer, statementIsTrue, statementIsFalse)
+            val isCorrect = binding.checkBoxIsCorrect.isChecked
+            var nrToQuestion = 0
+            if(tempQuizList.isNotEmpty()){
+                val lastNumInQuizChar = tempQuizList.last().first()
+                nrToQuestion = Character.getNumericValue(lastNumInQuizChar)
+            }
+            if(isQuestion){
+                nrToQuestion += 1
+                tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
+            }else{
+                tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
+            }
+
         }
     }
 
-    private fun writeQuizToFile(question : String, isQuestion : Boolean, isAnswer : Boolean,
-                                statementIsTrue : Boolean, statementIsFalse : Boolean) {
-        //val pathTextFile = File(Environment.getExternalStorageState()+"/assets/quizFiles")//File(Environment.getExternalStorageState()+"/assets")
+    private fun createQuiz(){
+        when {
+            TextUtils.isEmpty(binding.createQuizTextIn.text.toString()) -> {
+                Toast.makeText(activity, "Error: You must give your quiz a name!", Toast.LENGTH_SHORT).show()
+            }
+            tempQuizList.isNotEmpty() -> {
+                val quizName = binding.createQuizTextIn.text.toString()
+                writeQuizToFile(quizName, tempQuizList)
+            }
+            tempQuizList.isNullOrEmpty() -> {
+                Toast.makeText(activity, "Error: You must add questions and answers to your quiz!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun writeQuizToFile(quizName : String, quizData : MutableList<String>) {
         val pathInternal = activity?.filesDir
         if (pathInternal != null) {
             val pathTextFile = File(pathInternal, "assets/quizFiles")
@@ -58,13 +79,13 @@ class CreateQuizFragment : Fragment() {
                 pathTextFile.mkdirs()
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
-            val quizTextFile = File(pathTextFile, "quizNr.txt")
-            /*quizTextFile.appendText(question + "-" + isQuestion + "-" + isAnswer
-                    + "-" + statementIsTrue + "-" + statementIsFalse)
-            */
+            val quizTextFile = File(pathTextFile, quizName + ".txt")
+            var tempStr = ""
+            tempQuizList.forEach { line ->
+                tempStr += line + '\n'
+            }
             FileOutputStream(quizTextFile).use {
-                it.write((question + "-" + isQuestion + "-" + isAnswer
-                        + "-" + statementIsTrue + "-" + statementIsFalse).toByteArray())
+                it.write((tempStr).toByteArray())
             }
             Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
             }
