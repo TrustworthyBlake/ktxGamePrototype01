@@ -111,7 +111,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
            game.setScreen<SecondScreen>()
         }
         if(Gdx.input.isTouched){
-        readQuizFromFile()
+        //readQuizFromFile()
         }
     }
 
@@ -137,45 +137,21 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
 
     }
-    private fun readQuizFromFile(){
+    private fun readQuizFromFile(): MutableList<String> {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/quizNr.txt")
+        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")
+        val tempQuizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
-                var charNr = 0
-                var lineNr = 0
-                var tempCharStr : String = ""
                 val lines:List<String> = (quizTextFile.readString()).lines()
-                var question = ""
-                var isQuestion = false
-                var isAnswer = false
-                var statementIsTrue = false
-                var statementIsFalse = false
                 lines.forEach { line ->
-                    charNr = 0
-                    val tempQuizList: List<String> = line.split("-")
-                    if (tempQuizList.isNotEmpty()){
-                        question = tempQuizList[0]
-                        isQuestion = tempQuizList[1].toBoolean()
-                        isAnswer = tempQuizList[2].toBoolean()
-                        statementIsTrue = tempQuizList[3].toBoolean()
-                        statementIsFalse = tempQuizList[4].toBoolean()
-                    }
-
-                    /*line.forEach { char ->
-                        if(char!= '-'){
-                        tempCharStr += (char)
-                        }
-                        
-                        charNr=charNr+1
-                    }*/
-                    lineNr=lineNr+1
+                        tempQuizList.add(line)
                     LOG.debug { line }
-                    LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
-                            "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }
+                    /*LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
+                            "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }*/
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -188,6 +164,11 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             LOG.debug { "Error: Cannot find quiz file!" }
         }
         //LOG.debug { "Quiz file is available $quizTextFile" }
+        return tempQuizList
+    }
+
+    private fun createQuizTextEntities(){
+        
     }
 }
 
