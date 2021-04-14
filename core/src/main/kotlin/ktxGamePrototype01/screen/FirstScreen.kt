@@ -11,6 +11,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.entityComponentSystem.system.InteractableSystem
 import ktxGamePrototype01.unitScale
 import sun.rmi.runtime.Log
 import java.io.File
@@ -34,12 +35,12 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
 
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(2f,2f,0f)
+            posVec3.set(0f,0f,-1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
             sprite.run{
-                setRegion(playerTexture)
+                setRegion(treeTexture)
                 setSize(texture.width * unitScale, texture.height * unitScale)
                 setOriginCenter()
             }
@@ -48,7 +49,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         with<OrientationComponent>()
     }
     private val tree = engine.entity {
-        with<TransformComponent> { posVec3.set(8f, 8f, 0f) }
+        with<TransformComponent> { posVec3.set(8f, 8f, -1f) }
 
         with<GraphicComponent> {
             sprite.run {
@@ -58,8 +59,13 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
             }
         }
     }
+
+
     override fun show() {
         LOG.debug { "First screen is displayed" }
+
+       // val test = InteractableSystem()
+
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
@@ -70,7 +76,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                 line.forEach { char ->
                     val Thing2 = engine.entity {
                         with<TransformComponent> {
-                            posVec3.set(charNr.toFloat(), lineNr.toFloat(), 0f)
+                            posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
@@ -80,11 +86,14 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                                 setOriginCenter()
                             }
                         }
+                        if(char == '1'){
+                            with<InteractableComponent>()
+                        }
                     }
                     charNr=charNr+1
                 }
                 lineNr=lineNr+1
-                LOG.debug { line }
+                //LOG.debug { line }
             }
 
 
@@ -94,6 +103,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
         }finally{
             LOG.debug { "Done Reading" }
         }
+
     }
 
     override fun resize(width: Int, height: Int) {

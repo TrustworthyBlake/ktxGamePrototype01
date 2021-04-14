@@ -11,10 +11,7 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
-import ktxGamePrototype01.entityComponentSystem.system.MovementSystem
-import ktxGamePrototype01.entityComponentSystem.system.NukePooledSystem
-import ktxGamePrototype01.entityComponentSystem.system.PlayerInputSystem
-import ktxGamePrototype01.entityComponentSystem.system.RenderSystem2D
+import ktxGamePrototype01.entityComponentSystem.system.*
 import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.SecondScreen
 
@@ -27,6 +24,8 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
         addSystem(MovementSystem())
+
+        addSystem(InteractableSystem())
         addSystem(RenderSystem2D(batch))
         addSystem(NukePooledSystem())}  }
 

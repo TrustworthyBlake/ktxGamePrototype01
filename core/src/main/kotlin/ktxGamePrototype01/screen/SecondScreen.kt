@@ -20,7 +20,7 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(2f,2f,0f)
+            posVec3.set(5f,5f,0f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
