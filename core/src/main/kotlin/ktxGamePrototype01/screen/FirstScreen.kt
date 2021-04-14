@@ -2,7 +2,12 @@ package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -25,9 +30,10 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
+    private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
 
     private val quizMap = Gdx.files.internal("maps/map0.txt");
-
+    private var lock = 0
 
     private val player = engine.entity{
         with<TransformComponent>{
@@ -36,7 +42,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         with<MovementComponent>()
         with<GraphicComponent>{
             sprite.run{
-                setRegion(treeTexture)
+                setRegion(playerTexture)
                 setSize(texture.width * unitScale, texture.height * unitScale)
                 setOriginCenter()
             }
@@ -59,7 +65,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
 
     override fun show() {
         LOG.debug { "First screen is displayed" }
-
+        createQuizTextEntities()
        // val test = InteractableSystem()
 
         try{
@@ -120,8 +126,9 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
         }
-        if(Gdx.input.isTouched){
-        //readQuizFromFile()
+        if(Gdx.input.isTouched && lock != 1){
+            //createQuizTextEntities()
+            lock = 1
         }
     }
 
@@ -153,12 +160,12 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
         val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
-        val tempQuizList = mutableListOf<String>()
+        val quizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
                 val lines:List<String> = (quizTextFile.readString()).lines()
                 lines.forEach { line ->
-                        tempQuizList.add(line)
+                        quizList.add(line)
                     LOG.debug { line }
                     /*LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
                             "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }*/
@@ -174,22 +181,57 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             LOG.debug { "Error: Cannot find quiz file!" }
         }
         //LOG.debug { "Quiz file is available $quizTextFile" }
-        return tempQuizList
+        return quizList
     }
 
-    private fun createQuizTextEntities(){
-        val quizList = readQuizFromFile()
-        var questAnsw = ""
-        var isQuestion = false
-        var isCorrect = false
-        quizList.forEach{ line ->
-            val tempQuizList: List<String> = line.split("-")
-            questAnsw = tempQuizList[0]
-            isQuestion = tempQuizList[1].toBoolean()
-            isCorrect = tempQuizList[2].toBoolean()
-            // Todo put variables into entities
-        }
+    private fun createQuizTextEntities() {
+        if (!readQuizFromFile().isNullOrEmpty()) {
+            val quizList = readQuizFromFile()
+            var questAnsw = ""
+            var isQuestion = false
+            var isCorrect = false
+            //val font = BitmapFont()
+            //val labStyle = Label.LabelStyle(font, Color.WHITE)
+            val charTest: CharSequence = "23"
+            //var temp = BitmapFontCache(font)
+            //var label = Label
+            var count = 1
+            quizList.forEach() { line ->
+                if (line.isNotBlank() && count == 1) {
+                    count = 0
+                    var tempQuizList: List<String> = line.split("-")
+                    questAnsw = tempQuizList[0]
+                    isQuestion = tempQuizList[1].toBoolean()
+                    LOG.debug { "Should only be isQuestion: $isQuestion" }
+                    isCorrect = tempQuizList[2].toBoolean()
+                    // Todo put variables into entities
+                    val text = engine.entity {
+                        with<TransformComponent> {
+                            posVec3.set(4f, 4f, -1f)
+                            textStr = questAnsw
+                            isText = true
+                            posTextVec2.set(4f, 4f)
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                            font.data.setScale(0.07f, 0.07f)
+                            val calc = -10 * unitScale
+                            LOG.debug { "Size of font: $calc" }
+                        }
+                        with<GraphicComponent> {
+                            sprite.run {
 
+                                //temp.addText(questAnsw, 10f, 10f)
+                                setRegion(blankTexture)
+                                setSize(texture.width * unitScale, texture.height * unitScale)
+                                setOriginCenter()
+                                //Label(questAnsw, labStyle).setFontScale(42f)
+
+                            }
+                        }
+                        with<InteractableComponent>()
+                    }
+                }
+            }
+        }
     }
 }
 

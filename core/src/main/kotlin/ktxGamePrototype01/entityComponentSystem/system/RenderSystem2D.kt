@@ -3,6 +3,7 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -35,7 +36,9 @@ class RenderSystem2D(
             graphicComp.sprite.run{
                 rotation = transformComp.rotationDeg
                 setBounds(transformComp.posVec3.x, transformComp.posVec3.y, transformComp.sizeVec2.x, transformComp.sizeVec2.y)
-                draw(batch)
+                if (transformComp.isText){
+                    transformComp.font.draw(batch, transformComp.textStr, transformComp.posTextVec2.x, transformComp.posTextVec2.y)
+                }else{ draw(batch)}
             }
         }
         else {
