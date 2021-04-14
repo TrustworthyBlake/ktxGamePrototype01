@@ -13,17 +13,13 @@ import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.entityComponentSystem.system.InteractableSystem
 import ktxGamePrototype01.unitScale
-import sun.rmi.runtime.Log
 import java.io.File
-import java.io.InputStream
-import java.util.*
-import javax.xml.soap.Text
 
 /** First screen of the application. Displayed after the application is created.  */
 
 private val LOG = logger<FirstScreen>()
 
-class FirstScreen(game:Prot01) : AbstractScreen(game) {
+class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
@@ -97,7 +93,7 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
             }
 
 
-        }catch(e:Exception){
+        }catch (e: Exception){
             e.printStackTrace()
             LOG.debug { "Reading Failed" }
         }finally{
@@ -112,16 +108,26 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
 
     override fun render(delta: Float) {
         viewport.apply()
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            game.addScreen(SecondScreen(game))
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            game.removeScreen(SecondScreen::class.java)
+        }
         batch.use(viewport.camera.combined){
         }
         engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
         }
+        if(Gdx.input.isTouched){
+        //readQuizFromFile()
+        }
     }
 
     override fun dispose() {
         playerTexture.dispose()
+        player.removeAll()
     }
 
     fun getMap(){
@@ -134,10 +140,54 @@ class FirstScreen(game:Prot01) : AbstractScreen(game) {
                             tileArray[lineNr] = line.toCharArray()
                             lineNr=lineNr+1
             }
-        }catch(e:Exception){
+        }catch (e: Exception){
             e.printStackTrace()
         }finally{
             println("File read")
+        }
+
+    }
+    private fun readQuizFromFile(): MutableList<String> {
+        val isLocAvailable = Gdx.files.isLocalStorageAvailable
+        LOG.debug { "Local is available $isLocAvailable" }
+        val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
+        LOG.debug { "Dir exists $isDirectory" }
+        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
+        val tempQuizList = mutableListOf<String>()
+        if (quizTextFile.exists()){
+            try{
+                val lines:List<String> = (quizTextFile.readString()).lines()
+                lines.forEach { line ->
+                        tempQuizList.add(line)
+                    LOG.debug { line }
+                    /*LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
+                            "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }*/
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                LOG.debug { "Reading Failed" }
+            }finally{
+                LOG.debug { "Done Reading" }
+
+            }
+        }else{
+            LOG.debug { "Error: Cannot find quiz file!" }
+        }
+        //LOG.debug { "Quiz file is available $quizTextFile" }
+        return tempQuizList
+    }
+
+    private fun createQuizTextEntities(){
+        val quizList = readQuizFromFile()
+        var questAnsw = ""
+        var isQuestion = false
+        var isCorrect = false
+        quizList.forEach{ line ->
+            val tempQuizList: List<String> = line.split("-")
+            questAnsw = tempQuizList[0]
+            isQuestion = tempQuizList[1].toBoolean()
+            isCorrect = tempQuizList[2].toBoolean()
+            // Todo put variables into entities
         }
 
     }

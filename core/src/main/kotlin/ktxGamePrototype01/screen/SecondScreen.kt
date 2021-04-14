@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxScreen
 import ktx.ashley.entity
 import ktx.ashley.with
+import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
@@ -43,12 +44,18 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
+        viewport.apply()
+        batch.use(viewport.camera.combined){
+        }
+        engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
+            dispose()
             game.setScreen<FirstScreen>()
         }
     }
 
     override fun dispose() {
         playerTexture.dispose()
+        player.removeAll()
     }
 }

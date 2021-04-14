@@ -9,10 +9,14 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.log.debug
+import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.OrientationComponent
 import ktxGamePrototype01.entityComponentSystem.components.OrientationDirection
 import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
+
+private val LOG = logger <PlayerInputSystem>()
 
 class PlayerInputSystem(
         private val gameViewport: Viewport
@@ -24,20 +28,30 @@ class PlayerInputSystem(
         val transform = entity[TransformComponent.mapper]
         require(transform != null) {"Error: 5005. entity=$entity"}
 
-        tempPosVec.y = 0f
-        tempPosVec.y = Gdx.input.y.toFloat()
-        gameViewport.unproject(tempPosVec)
+        if(Gdx.input.isTouched) {
+            gameViewport.unproject(tempPosVec)
+            tempPosVec.y = Gdx.input.deltaY.toFloat()
+            tempPosVec.x = Gdx.input.deltaX.toFloat()
 
-        /*val diffDistX = tempPosVec.x - transform.posVec3.x - transform.sizeVec2.x * 0.5f
-        val diffDistY = tempPosVec.y - transform.posVec3.y - transform.sizeVec2.y * 0.5f
-        orientation.direction = when {
-            diffDistX > 0.2f -> OrientationDirection.right
-            diffDistX < -0.2f -> OrientationDirection.left
-            diffDistY > 0.2f -> OrientationDirection.up
-            diffDistY < -0.2f -> OrientationDirection.down
-            else -> OrientationDirection.tempOri
+            if(tempPosVec.x > 3) {
+                orientation.direction = OrientationDirection.right
+            }
+            if(tempPosVec.x < -3) {
+                orientation.direction = OrientationDirection.left
+            }
+            if(tempPosVec.y > 3){
+                orientation.direction = OrientationDirection.down
+            }
+            if (tempPosVec.y < -3){
+                orientation.direction = OrientationDirection.up
+            }
+            //LOG.debug { "pointer pos x.y = $tempPosVec" }
+            //LOG.debug { "diffDistX = $diffDistX" }
+        }
+        else{
+            orientation.direction = OrientationDirection.tempOri
+        }
 
-        }*/
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
             orientation.direction = OrientationDirection.left
         }

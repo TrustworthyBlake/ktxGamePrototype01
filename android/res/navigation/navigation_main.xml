@@ -116,6 +116,13 @@
         android:label="Create new classroom"
         tools:layout="@layout/fragment_new_classroom" />
 
+    <fragment
+        android:id="@+id/dest_create_quiz"
+        android:name="ktxGamePrototype01.fragments.CreateQuizFragment"
+        android:label="CreateQuizFragment"
+        tools:layout="@layout/fragment_create_quiz" />
+
+
 
 
 </navigation>
