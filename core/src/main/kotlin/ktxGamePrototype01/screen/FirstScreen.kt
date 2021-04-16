@@ -199,9 +199,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                             isText = true
                             posTextVec2.set(0f, 0f)
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-                            font.data.setScale(2.0f, 2.0f)
-                            val calc = -10 * unitScale
-                            LOG.debug { "Size of font: $calc" }
+                            font.data.setScale(4.0f, 4.0f)
                         }
                     }
                 }

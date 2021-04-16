@@ -3,14 +3,13 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
+import ktx.log.debug
 import ktx.log.error
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
@@ -19,18 +18,17 @@ import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 private val LOG = logger<RenderSystem2D>()
 
 class RenderSystem2D(
-        private val batch: Batch,  private var gameViewport: Viewport
+        private val batch: Batch, private var gameViewport: Viewport
 ) : SortedIteratingSystem(
         allOf(TransformComponent::class, GraphicComponent::class).get(),
         compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
-    //private var vp = FitViewport(9f, 16f)
-    private val camera = OrthographicCamera(1920 / 2f, 1080f)
 
     override fun update(deltaTime: Float) {
-        val vp = FitViewport(9f, 16f)
-        //vp.setScreenBounds(0, 0, Gdx.graphics.width / 2, Gdx.graphics.height)
-        gameViewport.update(2160,1920, true)
+        gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, true)
+        val w = Gdx.graphics.width
+        val h = Gdx.graphics.height
+        LOG.debug { "width = $w, height = $h" }
         gameViewport.apply()
         forceSort()
         batch.use(gameViewport.camera.combined){
