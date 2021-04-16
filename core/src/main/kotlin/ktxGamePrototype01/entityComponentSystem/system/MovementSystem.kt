@@ -58,6 +58,6 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
 
     private fun moveEntity(transform: TransformComponent, movement: MovementComponent, deltaTime: Float) {
         transform.posVec3.x = MathUtils.clamp(transform.posVec3.x + movement.velocity.x * deltaTime, 0f, 9f - transform.sizeVec2.x)
-        transform.posVec3.y = MathUtils.clamp(transform.posVec3.y + movement.velocity.y * deltaTime, 1f, 1f+16f - transform.sizeVec2.y)
+        transform.posVec3.y = MathUtils.clamp(transform.posVec3.y + movement.velocity.y * deltaTime, 0f, 16f - transform.sizeVec2.y)
     }
 }
