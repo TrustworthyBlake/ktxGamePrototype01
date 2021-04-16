@@ -29,8 +29,8 @@ class RenderSystemText2D(
     private var vp = FitViewport(cam.viewportWidth,cam.viewportHeight, cam)
 
     override fun update(deltaTime: Float) {
-        vp.update(Gdx.graphics.width,Gdx.graphics.height,false)
-        vp.apply()
+        vp.update(Gdx.graphics.width,Gdx.graphics.height,true)
+        //vp.apply()
         batchText.use(vp.camera.combined){
             super.update(deltaTime)
         }

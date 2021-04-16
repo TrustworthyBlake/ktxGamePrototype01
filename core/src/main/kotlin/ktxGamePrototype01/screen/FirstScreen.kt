@@ -102,7 +102,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
 
     }
-    fun createMapEntities(){
+    private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
@@ -188,7 +188,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                         with<TextComponent> {
                             textStr = questAnsw
                             isText = true
-                            posTextVec2.set(0f, 0f)
+                            posTextVec2.set(540f, 100f)
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
                             font.data.setScale(4.0f, 4.0f)
                         }
