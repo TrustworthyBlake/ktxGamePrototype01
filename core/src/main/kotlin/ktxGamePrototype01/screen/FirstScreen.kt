@@ -60,8 +60,49 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     override fun show() {
         LOG.debug { "First screen is displayed" }
         createQuizTextEntities()
-       // val test = InteractableSystem()
+        createMapEntities()
+    }
 
+    override fun resize(width: Int, height: Int) {
+        viewport.update(width, height, true)
+    }
+
+    override fun render(delta: Float) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            game.addScreen(SecondScreen(game))
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            game.removeScreen(SecondScreen::class.java)
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
+           game.setScreen<SecondScreen>()
+        }
+        engine.update(delta)
+    }
+
+    override fun dispose() {
+        playerTexture.dispose()
+        player.removeAll()
+    }
+
+    fun getMap(){
+        try{
+            val tileArray = arrayOf<CharArray>()
+            var lineNr = 1
+            val fileName = "map0.txt"
+            val lines:List<String> = File(fileName).readLines()
+            lines.forEach { line ->
+                            tileArray[lineNr] = line.toCharArray()
+                            lineNr=lineNr+1
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }finally{
+            println("File read")
+        }
+
+    }
+    fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
@@ -99,53 +140,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }finally{
             LOG.debug { "Done Reading" }
         }
-
-    }
-
-    override fun resize(width: Int, height: Int) {
-        viewport.update(width, height, true)
-    }
-
-    override fun render(delta: Float) {
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
-            game.addScreen(SecondScreen(game))
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            game.removeScreen(SecondScreen::class.java)
-        }
-/*
-        batch.use(vp1.camera.combined){
-        }
-        batchText.use(vp2.camera.combined){
-        }*/
-        engine.update(delta)
-        if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
-           game.setScreen<SecondScreen>()
-        }
-    }
-
-    override fun dispose() {
-        playerTexture.dispose()
-        player.removeAll()
-    }
-
-    fun getMap(){
-        try{
-            val tileArray = arrayOf<CharArray>()
-            var lineNr = 1
-            val fileName = "map0.txt"
-            val lines:List<String> = File(fileName).readLines()
-            lines.forEach { line ->
-                            tileArray[lineNr] = line.toCharArray()
-                            lineNr=lineNr+1
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }finally{
-            println("File read")
-        }
-
     }
     private fun readQuizFromFile(): MutableList<String> {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
@@ -160,8 +154,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 lines.forEach { line ->
                         quizList.add(line)
                     LOG.debug { line }
-                    /*LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
-                            "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }*/
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -173,7 +165,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }else{
             LOG.debug { "Error: Cannot find quiz file!" }
         }
-        //LOG.debug { "Quiz file is available $quizTextFile" }
         return quizList
     }
 

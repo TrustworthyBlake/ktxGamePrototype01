@@ -25,7 +25,6 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
         addSystem(MovementSystem())
-
         addSystem(InteractableSystem())
         addSystem(RenderSystem2D(batch, gameViewport))
         addSystem(RenderSystemText2D(batchText, gameViewport))

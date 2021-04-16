@@ -26,9 +26,6 @@ class RenderSystem2D(
 
     override fun update(deltaTime: Float) {
         gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, true)
-        val w = Gdx.graphics.width
-        val h = Gdx.graphics.height
-        LOG.debug { "width = $w, height = $h" }
         gameViewport.apply()
         forceSort()
         batch.use(gameViewport.camera.combined){
