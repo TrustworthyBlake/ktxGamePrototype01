@@ -28,25 +28,10 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
         super.update(deltaTime)
         if(interactables.isEmpty()) {
             interactables.add(1)
-            spawnInteractabla(8f, 9f)
             LOG.debug { "Spawned" }
         }
     }
 
-    private fun spawnInteractabla(x: Float, y: Float){
-        val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
-        engine.entity{
-            with<TransformComponent> { posVec3.set(4f, 12f, -1f); }
-            with<GraphicComponent> {
-                sprite.run {
-                    setRegion(holeTexture)
-                    setSize(texture.width * unitScale, texture.height * unitScale)
-                    setOriginCenter()
-                }
-            }
-            with<InteractableComponent>()
-        }
-    }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
