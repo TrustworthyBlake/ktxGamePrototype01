@@ -8,5 +8,6 @@ import ktxGamePrototype01.Prot01
 abstract class AbstractScreen(
         val game:Prot01,
         val engine: Engine = game.engine,
-        val batch: Batch = game.batch
+        val batch: Batch = game.batch,
+        val batchText: Batch = game.batchText
 ) : KtxScreen

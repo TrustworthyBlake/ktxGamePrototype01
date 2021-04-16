@@ -2,6 +2,7 @@ package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
@@ -11,7 +12,6 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
-import ktxGamePrototype01.entityComponentSystem.system.InteractableSystem
 import ktxGamePrototype01.unitScale
 import java.io.File
 
@@ -20,23 +20,22 @@ import java.io.File
 private val LOG = logger<FirstScreen>()
 
 class FirstScreen(game: Prot01) : AbstractScreen(game) {
-    private val viewport = FitViewport(9f, 16f)
+    private var viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
-
+    private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
-
 
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(0f,0f,-1f)
+            posVec3.set(0f, 0f, -1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
             sprite.run{
-                setRegion(treeTexture)
+                setRegion(playerTexture)
                 setSize(texture.width * unitScale, texture.height * unitScale)
                 setOriginCenter()
             }
@@ -45,7 +44,8 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         with<OrientationComponent>()
     }
     private val tree = engine.entity {
-        with<TransformComponent> { posVec3.set(8f, 8f, -1f) }
+        with<TransformComponent> { posVec3.set(8f, 8f, -1f)
+            }
 
         with<GraphicComponent> {
             sprite.run {
@@ -59,7 +59,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
 
     override fun show() {
         LOG.debug { "First screen is displayed" }
-
+        createQuizTextEntities()
        // val test = InteractableSystem()
 
         try{
@@ -107,21 +107,21 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
-        viewport.apply()
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
             game.addScreen(SecondScreen(game))
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
             game.removeScreen(SecondScreen::class.java)
         }
-        batch.use(viewport.camera.combined){
+/*
+        batch.use(vp1.camera.combined){
         }
+        batchText.use(vp2.camera.combined){
+        }*/
         engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
-        }
-        if(Gdx.input.isTouched){
-        //readQuizFromFile()
         }
     }
 
@@ -153,12 +153,12 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
         val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
-        val tempQuizList = mutableListOf<String>()
+        val quizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
                 val lines:List<String> = (quizTextFile.readString()).lines()
                 lines.forEach { line ->
-                        tempQuizList.add(line)
+                        quizList.add(line)
                     LOG.debug { line }
                     /*LOG.debug { "question: $question, isQuestion: $isQuestion, isAnswer: $isAnswer, " +
                             "statementIsTrue: $statementIsTrue, statementIsFalse: $statementIsFalse" }*/
@@ -174,22 +174,39 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             LOG.debug { "Error: Cannot find quiz file!" }
         }
         //LOG.debug { "Quiz file is available $quizTextFile" }
-        return tempQuizList
+        return quizList
     }
 
-    private fun createQuizTextEntities(){
-        val quizList = readQuizFromFile()
-        var questAnsw = ""
-        var isQuestion = false
-        var isCorrect = false
-        quizList.forEach{ line ->
-            val tempQuizList: List<String> = line.split("-")
-            questAnsw = tempQuizList[0]
-            isQuestion = tempQuizList[1].toBoolean()
-            isCorrect = tempQuizList[2].toBoolean()
-            // Todo put variables into entities
+    private fun createQuizTextEntities() {
+        if (!readQuizFromFile().isNullOrEmpty()) {
+            val quizList = readQuizFromFile()
+            var questAnsw = ""
+            var isQuestion = false
+            var isCorrect = false
+            var count = 1
+            quizList.forEach() { line ->
+                if (line.isNotBlank() && count == 1) {
+                    count = 0
+                    var tempQuizList: List<String> = line.split("-")
+                    questAnsw = tempQuizList[0]
+                    isQuestion = tempQuizList[1].toBoolean()
+                    LOG.debug { "Should only be isQuestion: $isQuestion" }
+                    isCorrect = tempQuizList[2].toBoolean()
+                    // Todo put variables into entities
+                    val text = engine.entity {
+                        with<TextComponent> {
+                            textStr = questAnsw
+                            isText = true
+                            posTextVec2.set(0f, 0f)
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                            font.data.setScale(2.0f, 2.0f)
+                            val calc = -10 * unitScale
+                            LOG.debug { "Size of font: $calc" }
+                        }
+                    }
+                }
+            }
         }
-
     }
 }
 
