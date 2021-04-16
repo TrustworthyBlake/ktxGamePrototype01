@@ -3,6 +3,7 @@ package ktxGamePrototype01.entityComponentSystem.components
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.utils.Pool
+import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.mapperFor
 
 class GraphicComponent: Component, Pool.Poolable {

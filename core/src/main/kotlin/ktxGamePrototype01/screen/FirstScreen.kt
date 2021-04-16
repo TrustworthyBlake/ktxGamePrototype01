@@ -2,12 +2,8 @@ package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -16,7 +12,6 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
-import ktxGamePrototype01.entityComponentSystem.system.InteractableSystem
 import ktxGamePrototype01.unitScale
 import java.io.File
 
@@ -25,19 +20,17 @@ import java.io.File
 private val LOG = logger<FirstScreen>()
 
 class FirstScreen(game: Prot01) : AbstractScreen(game) {
-    private val viewport = FitViewport(9f, 16f)
+    private var viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
-
     private val quizMap = Gdx.files.internal("maps/map0.txt");
-    private var lock = 0
 
     private val player = engine.entity{
         with<TransformComponent>{
-            posVec3.set(0f,0f,-1f)
+            posVec3.set(0f, 0f, -1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
@@ -51,7 +44,8 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         with<OrientationComponent>()
     }
     private val tree = engine.entity {
-        with<TransformComponent> { posVec3.set(8f, 8f, -1f) }
+        with<TransformComponent> { posVec3.set(8f, 8f, -1f)
+            }
 
         with<GraphicComponent> {
             sprite.run {
@@ -113,22 +107,21 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
-        viewport.apply()
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
             game.addScreen(SecondScreen(game))
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
             game.removeScreen(SecondScreen::class.java)
         }
-        batch.use(viewport.camera.combined){
+/*
+        batch.use(vp1.camera.combined){
         }
+        batchText.use(vp2.camera.combined){
+        }*/
         engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
-        }
-        if(Gdx.input.isTouched && lock != 1){
-            //createQuizTextEntities()
-            lock = 1
         }
     }
 
@@ -190,11 +183,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             var questAnsw = ""
             var isQuestion = false
             var isCorrect = false
-            //val font = BitmapFont()
-            //val labStyle = Label.LabelStyle(font, Color.WHITE)
-            val charTest: CharSequence = "23"
-            //var temp = BitmapFontCache(font)
-            //var label = Label
             var count = 1
             quizList.forEach() { line ->
                 if (line.isNotBlank() && count == 1) {
@@ -206,28 +194,15 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                     isCorrect = tempQuizList[2].toBoolean()
                     // Todo put variables into entities
                     val text = engine.entity {
-                        with<TransformComponent> {
-                            posVec3.set(4f, 4f, -1f)
+                        with<TextComponent> {
                             textStr = questAnsw
                             isText = true
-                            posTextVec2.set(4f, 4f)
+                            posTextVec2.set(0f, 0f)
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-                            font.data.setScale(0.07f, 0.07f)
+                            font.data.setScale(2.0f, 2.0f)
                             val calc = -10 * unitScale
                             LOG.debug { "Size of font: $calc" }
                         }
-                        with<GraphicComponent> {
-                            sprite.run {
-
-                                //temp.addText(questAnsw, 10f, 10f)
-                                setRegion(blankTexture)
-                                setSize(texture.width * unitScale, texture.height * unitScale)
-                                setOriginCenter()
-                                //Label(questAnsw, labStyle).setFontScale(42f)
-
-                            }
-                        }
-                        with<InteractableComponent>()
                     }
                 }
             }

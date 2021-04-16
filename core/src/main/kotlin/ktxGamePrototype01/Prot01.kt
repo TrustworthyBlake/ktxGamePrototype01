@@ -21,12 +21,14 @@ const val unitScale = 1 / 16f
 class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
+    val batchText: Batch by lazy { SpriteBatch() }
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
         addSystem(MovementSystem())
 
         addSystem(InteractableSystem())
-        addSystem(RenderSystem2D(batch))
+        addSystem(RenderSystem2D(batch, gameViewport))
+        addSystem(RenderSystemText2D(batchText))
         addSystem(NukePooledSystem())}  }
 
     override fun create() {
@@ -44,5 +46,6 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
         super.dispose()
         LOG.debug { "Number of sprites in current batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         batch.dispose()
+        batchText.dispose()
     }
 }
