@@ -191,6 +191,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 if (line.isNotBlank() && count <= 3) {
                     var tempQuizList: List<String> = line.split("-")
                     questAnsw = tempQuizList[0].drop(1)
+                    questAnsw = chopString(questAnsw, 34)
                     isQuestion = tempQuizList[1].toBoolean()
                     LOG.debug { "Should only be isQuestion: $isQuestion" }
                     isCorrect = tempQuizList[2].toBoolean()
@@ -222,8 +223,20 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             }
         }
     }
-    private fun displayScore(){
-
+    // Max length should be 34 with text scaling at 4.0f for entire textViewport
+    private fun chopString(str : String, maxLength : Int) : String{
+        val numChars = str.count()
+        var newStr = str
+        var spacer = 0
+        if(numChars > maxLength) {
+            for (i in 0..numChars) {
+                if (i.rem(maxLength) == 0) {
+                    newStr = StringBuilder(newStr).apply { insert(i+spacer, '\n') }.toString()
+                    spacer += 1
+                }
+            }
+        }
+        return newStr
     }
 }
 
