@@ -13,6 +13,7 @@ import ktx.log.debug
 import ktx.log.error
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
+import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
 private val LOG = logger<RenderSystem2D>()

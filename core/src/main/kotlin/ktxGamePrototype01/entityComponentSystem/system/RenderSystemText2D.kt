@@ -25,7 +25,7 @@ class RenderSystemText2D(
         allOf(TextComponent::class).get(),
         compareBy { entity -> entity[TextComponent.mapper] }
 ){
-    private var cam = OrthographicCamera(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+    private var cam = OrthographicCamera(1080f, 1920f)//(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     private var vp = FitViewport(cam.viewportWidth,cam.viewportHeight, cam)
 
     override fun update(deltaTime: Float) {

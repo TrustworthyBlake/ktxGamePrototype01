@@ -41,6 +41,7 @@ class CreateQuizFragment : Fragment() {
             val questAnsw = binding.createQuestionTextIn.text.toString()
             val isQuestion = binding.checkBoxIsQuestion.isChecked
             val isCorrect = binding.checkBoxIsCorrect.isChecked
+            val maxPoints = 100  // Todo change this to let user decide max potential score user can get for right answer
             var nrToQuestion = 0
             if(tempQuizList.isNotEmpty()){
                 val lastNumInQuizChar = tempQuizList.last().first()
@@ -48,7 +49,7 @@ class CreateQuizFragment : Fragment() {
             }
             if(isQuestion){
                 nrToQuestion += 1
-                tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
+                tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect + "-" + maxPoints)
             }else{
                 tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
             }

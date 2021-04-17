@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
+import ktx.ashley.get
 import ktx.ashley.with
 import ktx.graphics.use
 import ktx.log.debug
@@ -29,6 +30,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
 
     private val player = engine.entity{
+        var totScore = 0f
         with<TransformComponent>{
             posVec3.set(0f, 0f, -1f)
         }
@@ -40,8 +42,19 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 setOriginCenter()
             }
         }
-        with<PlayerComponent>()
+        with<PlayerComponent> {
+            totScore = playerScore
+        }
         with<OrientationComponent>()
+        with<TextComponent>{
+            isText = true
+            textStr = "Score: " + totScore.toString()
+            posTextVec2.set(10f, 1900f)
+            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+            font.data.setScale(4.0f, 4.0f)
+            LOG.debug { "score = $totScore" }
+        }
+
     }
     private val tree = engine.entity {
         with<TransformComponent> { posVec3.set(8f, 8f, -1f)
@@ -146,7 +159,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
+        val quizTextFile = Gdx.files.local("assets/quizFiles/test9.txt")        // Change this to quizName parameter later
         val quizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
@@ -174,28 +187,45 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             var questAnsw = ""
             var isQuestion = false
             var isCorrect = false
+            var maxPoints = 0
             var count = 1
             quizList.forEach() { line ->
-                if (line.isNotBlank() && count == 1) {
-                    count = 0
+                if (line.isNotBlank() && count <= 3) {
                     var tempQuizList: List<String> = line.split("-")
-                    questAnsw = tempQuizList[0]
+                    questAnsw = tempQuizList[0].drop(1)
                     isQuestion = tempQuizList[1].toBoolean()
                     LOG.debug { "Should only be isQuestion: $isQuestion" }
                     isCorrect = tempQuizList[2].toBoolean()
+                    maxPoints = 0                                               // Needs to be reset
+                    if (isQuestion && 4 == tempQuizList.size){
+                        maxPoints = tempQuizList[3].toInt()
+                        LOG.debug{"Max points = $maxPoints"}
+                    }
                     // Todo put variables into entities
-                    val text = engine.entity {
+                    val textEnti = engine.entity {
                         with<TextComponent> {
-                            textStr = questAnsw
                             isText = true
-                            posTextVec2.set(540f, 100f)
-                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                            textStr = questAnsw
+                            when{
+                                isQuestion ->{
+                                posTextVec2.set(300f, 1780f)
+                                }
+                                !isQuestion && count >= 2 -> {
+                                    posTextVec2.set(200f*count, 200f*count)
+                                }
+                                else -> {posTextVec2.set(0f, 0f)}
+                            }
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
                         }
                     }
+                    count += 1
                 }
             }
         }
+    }
+    private fun displayScore(){
+
     }
 }
 
