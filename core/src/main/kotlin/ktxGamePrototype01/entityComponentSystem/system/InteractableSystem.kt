@@ -26,7 +26,6 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
         }
     }
 
-
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
         val transform = entity[TransformComponent.mapper]

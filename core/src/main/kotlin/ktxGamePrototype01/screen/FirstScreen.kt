@@ -46,14 +46,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             totScore = playerScore
         }
         with<OrientationComponent>()
-        /*with<TextComponent>{
-            isText = true
-            textStr = "Score: " + totScore.toString()
-            posTextVec2.set(10f, 1900f)
-            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-            font.data.setScale(4.0f, 4.0f)
-            LOG.debug { "score = $totScore" }
-        }*/
         with<TextComponent> {
             isText = true
             drawPlayScoreHUD = true
