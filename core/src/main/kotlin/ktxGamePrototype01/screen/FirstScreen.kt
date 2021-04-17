@@ -152,7 +152,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/test8.txt")        // Change this to quizName parameter later
+        val quizTextFile = Gdx.files.local("assets/quizFiles/zxcvzxc.txt")        // Change this to quizName parameter later
         val quizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
