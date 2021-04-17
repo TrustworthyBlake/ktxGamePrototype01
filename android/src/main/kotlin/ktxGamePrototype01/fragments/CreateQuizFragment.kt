@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentCreateQuizBinding
 import kotlinx.android.synthetic.main.fragment_create_quiz.*
@@ -28,6 +30,7 @@ class CreateQuizFragment : Fragment() {
 
         binding.addButton.setOnClickListener {
             addToQuiz()
+            getTotalPlayerScoreFromPrefs() // For Debugging
         }
         binding.createQuizButton.setOnClickListener{
             createQuiz()
@@ -91,4 +94,12 @@ class CreateQuizFragment : Fragment() {
             Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
             }
         }
+
+    // For debugging
+    private fun getTotalPlayerScoreFromPrefs(){
+        var totalPlayerScore = 0f
+        val prefs: Preferences = Gdx.app.getPreferences("playerData")
+        totalPlayerScore= prefs.getFloat("totalPlayerScore")
+        Toast.makeText(activity, "Total player score = $totalPlayerScore", Toast.LENGTH_SHORT).show()
+    }
 }
