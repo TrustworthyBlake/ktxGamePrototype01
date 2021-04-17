@@ -27,12 +27,10 @@ class RenderSystem2D(
 
     override fun update(deltaTime: Float) {
         gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, true)
-        gameViewport.apply()
         forceSort()
         batch.use(gameViewport.camera.combined){
             super.update(deltaTime)
         }
-
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {

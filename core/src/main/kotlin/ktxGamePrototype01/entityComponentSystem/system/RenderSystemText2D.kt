@@ -14,6 +14,7 @@ import ktx.log.debug
 import ktx.log.error
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
+import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TextComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 import ktxGamePrototype01.screen.FirstScreen
@@ -27,10 +28,10 @@ class RenderSystemText2D(
 ){
     private var cam = OrthographicCamera(1080f, 1920f)//(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     private var vp = FitViewport(cam.viewportWidth,cam.viewportHeight, cam)
-
+    private val playerEntities by lazy{
+        engine.getEntitiesFor(allOf(PlayerComponent::class).get())}
     override fun update(deltaTime: Float) {
         vp.update(Gdx.graphics.width,Gdx.graphics.height,true)
-        //vp.apply()
         batchText.use(vp.camera.combined){
             super.update(deltaTime)
         }
@@ -39,9 +40,20 @@ class RenderSystemText2D(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val textComp = entity[TextComponent.mapper]
         require(textComp!= null){"Error 5000: entity=$entity"}
-        if (textComp.isText){
-            textComp.font.draw(batchText, textComp.textStr, textComp.posTextVec2.x, textComp.posTextVec2.y)
-        }else{LOG.error { "Error: 5010. entity=$entity" }  }
+        when {
+            textComp.isText && !textComp.drawPlayScoreHUD->
+                textComp.font.draw(batchText, textComp.textStr, textComp.posTextVec2.x, textComp.posTextVec2.y)
+
+            textComp.isText && textComp.drawPlayScoreHUD ->
+                playerEntities.forEach { player ->
+                    val p = player[PlayerComponent.mapper]
+                    require(p != null)
+                    textComp.font.draw(batchText, "Score: "+p.playerScore.toInt().toString(), 10f, 1900f)
+                }
+            else ->
+                LOG.error { "Error: 5010. entity=$entity" }
+            }
+
     }
 
 }

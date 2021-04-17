@@ -11,12 +11,14 @@ class TextComponent : Component, Pool.Poolable, Comparable<TextComponent>{
     var textStr = ""
     val posTextVec2 = Vector2()
     var font = BitmapFont()
+    var drawPlayScoreHUD = false
 
     override fun reset() {
         isText = false
         textStr = ""
         posTextVec2.set(Vector2.Zero)
         font = BitmapFont()
+        drawPlayScoreHUD = false
     }
 
     override fun compareTo(other: TextComponent): Int {
