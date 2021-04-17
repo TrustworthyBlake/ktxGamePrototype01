@@ -6,28 +6,33 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
+import ktx.log.debug
+import ktx.log.error
+import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
+import ktxGamePrototype01.entityComponentSystem.components.PlayerComponent
 import ktxGamePrototype01.entityComponentSystem.components.TextComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
+import ktxGamePrototype01.screen.FirstScreen
 
+private val LOG = logger<RenderSystemText2D>()
 class RenderSystemText2D(
-        private val batchText: Batch
+        private val batchText: Batch, private var gameViewport: Viewport
 ) :  SortedIteratingSystem(
         allOf(TextComponent::class).get(),
         compareBy { entity -> entity[TextComponent.mapper] }
 ){
-    //private var vp2 = FitViewport(9f, 16f)
-
-    private val camera = OrthographicCamera(1080f, 1920f)
-
+    private var cam = OrthographicCamera(1080f, 1920f)//(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+    private var vp = FitViewport(cam.viewportWidth,cam.viewportHeight, cam)
+    private val playerEntities by lazy{
+        engine.getEntitiesFor(allOf(PlayerComponent::class).get())}
     override fun update(deltaTime: Float) {
-        val vp2 = FitViewport(1080f, 1920f, camera)
-        vp2.setScreenBounds(0, 0, Gdx.graphics.width, Gdx.graphics.height)
-        vp2.apply()
-        batchText.use(vp2.camera.combined){
+        vp.update(Gdx.graphics.width,Gdx.graphics.height,true)
+        batchText.use(vp.camera.combined){
             super.update(deltaTime)
         }
     }
@@ -35,11 +40,20 @@ class RenderSystemText2D(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val textComp = entity[TextComponent.mapper]
         require(textComp!= null){"Error 5000: entity=$entity"}
-        if (textComp.isText){
-            //gameViewport = FitViewport(1024f, 1024f)
-            //gameViewport.update(Gdx.graphics.width,Gdx.graphics.height,true)
-            textComp.font.draw(batchText, textComp.textStr, textComp.posTextVec2.x, textComp.posTextVec2.y)
-        }
+        when {
+            textComp.isText && !textComp.drawPlayScoreHUD->
+                textComp.font.draw(batchText, textComp.textStr, textComp.posTextVec2.x, textComp.posTextVec2.y)
+
+            textComp.isText && textComp.drawPlayScoreHUD ->
+                playerEntities.forEach { player ->
+                    val p = player[PlayerComponent.mapper]
+                    require(p != null)
+                    textComp.font.draw(batchText, "Score: "+p.playerScore.toInt().toString(), 10f, 1900f)
+                }
+            else ->
+                LOG.error { "Error: 5010. entity=$entity" }
+            }
+
     }
 
 }
