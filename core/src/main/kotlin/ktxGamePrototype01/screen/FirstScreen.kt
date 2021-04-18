@@ -187,6 +187,10 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             var isCorrect = false
             var maxPoints = 0
             var count = 1
+
+
+
+
             quizList.forEach() { line ->
                 if (line.isNotBlank() && count <= 3) {
                     var tempQuizList: List<String> = line.split("-")
