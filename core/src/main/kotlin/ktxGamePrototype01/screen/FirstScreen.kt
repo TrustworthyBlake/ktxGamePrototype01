@@ -2,13 +2,13 @@ package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.viewport.FitViewport
+import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
-import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
@@ -28,6 +28,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
+    private var doOnce = 0 // For debugging of saveScore, used in renderer func
 
     private val player = engine.entity{
         var totScore = 0f
@@ -87,6 +88,12 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            if(doOnce == 0){
+                savePlayerScore()
+                doOnce = 1
+            }
         }
         engine.update(delta)
     }
@@ -214,7 +221,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                                 posTextVec2.set(300f, 1780f)
                                 }
                                 !isQuestion && count >= 2 -> {
-                                    posTextVec2.set(200f*count, 200f*count)
+                                    posTextVec2.set(200f * count, 200f * count)
                                 }
                                 else -> {posTextVec2.set(0f, 0f)}
                             }
@@ -228,19 +235,36 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
     }
     // Max length should be 34 with text scaling at 4.0f for entire textViewport
-    private fun chopString(str : String, maxLength : Int) : String{
+    private fun chopString(str: String, maxLength: Int) : String{
         val numChars = str.count()
         var newStr = str
         var spacer = 0
         if(numChars > maxLength) {
             for (i in 0..numChars) {
                 if (i.rem(maxLength) == 0) {
-                    newStr = StringBuilder(newStr).apply { insert(i+spacer, '\n') }.toString()
+                    newStr = StringBuilder(newStr).apply { insert(i + spacer, '\n') }.toString()
                     spacer += 1
                 }
             }
         }
         return newStr
+    }
+
+    private fun savePlayerScore() {
+        val playerEntities by lazy {
+            engine.getEntitiesFor(allOf(PlayerComponent::class).get())
+        }
+        playerEntities.lastIndexOf(player)
+        val p = player[PlayerComponent.mapper]
+        require(p != null)
+        LOG.debug { "Adding score = ${p.playerScore}" }
+        var score = 0f
+        val prefs: Preferences = Gdx.app.getPreferences("playerData")
+        score = prefs.getFloat("totalPlayerScore")
+        score += p.playerScore
+        prefs.putFloat("totalPlayerScore", score)
+        prefs.flush()
+        LOG.debug { "Saving new total player score = $score" }
     }
 }
 
