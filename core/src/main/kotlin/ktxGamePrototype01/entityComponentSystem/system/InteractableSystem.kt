@@ -6,11 +6,13 @@ import com.badlogic.gdx.math.Rectangle
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.screen.FirstScreen
 
 private val LOG = logger<InteractableSystem>()
 
-class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()){
+class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()){
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
     private val playerEntities by lazy{
