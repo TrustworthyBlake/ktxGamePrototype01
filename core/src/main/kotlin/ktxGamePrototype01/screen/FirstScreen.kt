@@ -247,10 +247,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     }
 
     private fun savePlayerScore() {
-        val playerEntities by lazy {
-            engine.getEntitiesFor(allOf(PlayerComponent::class).get())
-        }
-        playerEntities.lastIndexOf(player)
         val p = player[PlayerComponent.mapper]
         require(p != null)
         LOG.debug { "Adding score = ${p.playerScore}" }
