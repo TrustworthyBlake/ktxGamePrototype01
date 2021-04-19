@@ -66,10 +66,11 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
 
     private fun createQuizTextEntities( quizName: String) {
         var qPosArray = Array<Vector2>()
-        qPosArray.add(Vector2(2f, 2f))
-        qPosArray.add(Vector2(6f, 2f))
-        qPosArray.add(Vector2(2f, 8f))
-        qPosArray.add(Vector2(6f, 8f))
+        qPosArray.add(Vector2(1f, 11f))
+        qPosArray.add(Vector2(7f, 11f))
+        qPosArray.add(Vector2(1f, 4f))
+        qPosArray.add(Vector2(7f, 4f))
+
 
 
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
@@ -78,7 +79,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             var isQuestion = false
             var isCorrect = false
             var maxPoints = 0
-            var count = 1
+            var count = 0
             var charToNum = 1
             //quizList.forEach() { line ->
             for (indexInArr in 0..quizList.size-1) {
@@ -101,6 +102,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                         LOG.debug { "should break" }
                         break
                     }
+
                     val textEnti = engine.entity {
                         with<TextComponent> {
                             isText = true
@@ -109,10 +111,9 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                                 isQuestion ->{
                                     posTextVec2.set(300f, 1780f)
                                 }
-                                !isQuestion && count >= 2 -> {
-                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)
-                                }
-                                else -> {posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)}
+                                !isQuestion -> {
+                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)}
+                                else -> {posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120) }
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
@@ -133,10 +134,10 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             with<InteractableComponent>{ correctAnswer = isCorrect }
                         }
                     }
-
                 }
                 previousQuestionNr = charToNum
-                count += 1
+                if(!isQuestion)  count += 1
+
             }
         }
     }
