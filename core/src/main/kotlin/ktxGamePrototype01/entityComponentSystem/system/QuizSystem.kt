@@ -37,7 +37,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             doOnce = false
         }
         if(quizComp.quizIsCompleted){
-            savePlayerScore()
+            savePlayerScore(entity)
             indexInArr = 0
             i = 0
         }
@@ -76,9 +76,6 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         qPosArray.add(Vector2(7f, 11f))
         qPosArray.add(Vector2(1f, 4f))
         qPosArray.add(Vector2(7f, 4f))
-
-
-
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
             val quizList = readQuizFromFile(quizName)
             var questAnsw = ""
@@ -163,15 +160,14 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
     }
 
     // Saves the player score to xml in shared_prefs folder
-    private fun savePlayerScore() {
-        val player = playerEntities.last()
-        val p = player[PlayerComponent.mapper]
-        require(p != null)
-        LOG.debug { "Adding score = ${p.playerScore}" }
+    private fun savePlayerScore(entity: Entity) {
+        val player = entity[PlayerComponent.mapper]
+        require(player != null)
+        LOG.debug { "Adding score = ${player.playerScore}" }
         var score = 0f
         val prefs: Preferences = Gdx.app.getPreferences("playerData")
         score = prefs.getFloat("totalPlayerScore")
-        score += p.playerScore
+        score += player.playerScore
         prefs.putFloat("totalPlayerScore", score)
         prefs.flush()
         LOG.debug { "Saving new total player score = $score" }

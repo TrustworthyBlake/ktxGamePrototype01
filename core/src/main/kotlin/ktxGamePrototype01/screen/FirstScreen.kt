@@ -32,11 +32,10 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
 
-
     private val player = engine.entity{
         var totScore = 0f
         with<TransformComponent>{
-            posVec3.set(4f, 2f, -1f)
+            posVec3.set(0f, 0f, -1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
@@ -95,7 +94,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         player.removeAll()
     }
 
-
     private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
@@ -126,8 +124,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 lineNr=lineNr+1
                 //LOG.debug { line }
             }
-
-
         }catch (e: Exception){
             e.printStackTrace()
             LOG.debug { "Reading Failed" }
