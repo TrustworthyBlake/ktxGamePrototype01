@@ -3,6 +3,7 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
@@ -15,9 +16,10 @@ import ktxGamePrototype01.unitScale
 private val LOG = logger<QuizSystem>()
 
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
+    private val playerEntities by lazy {
+        engine.getEntitiesFor(allOf(PlayerComponent::class).get())
+    }
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
-
-
     private var doOnce = false
     private var indexInArr = 0
     private var i = 0
@@ -35,7 +37,9 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             doOnce = false
         }
         if(quizComp.quizIsCompleted){
+            savePlayerScore()
             indexInArr = 0
+            i = 0
         }
     }
 
@@ -83,7 +87,6 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             var maxPoints = 0
             var count = 0
             var charToNum = 1
-            //quizList.forEach() { line ->
             for (indexInArr in i..quizList.size-1) {
                 var line = quizList.elementAt(indexInArr)
                 if (line.isNotBlank()) {
@@ -96,15 +99,12 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                     if (isQuestion && 4 == tempQuizList.size){
                         maxPoints = tempQuizList[3].toInt()
                     }
-                    if(!line.isNullOrEmpty()){
-                        charToNum = Character.getNumericValue(line.first())
-                    }
+                    charToNum = Character.getNumericValue(line.first())
                     LOG.debug { "prev = $previousQuestionNr, curr = $charToNum" }
                     if(charToNum != previousQuestionNr){
                         LOG.debug { "should break" }
                         break
                     }
-
                     val textEnti = engine.entity {
                         with<TextComponent> {
                             isText = true
@@ -145,6 +145,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             }
         }
     }
+
     // Max length should be 34 with text scaling at 4.0f for entire textViewport
     private fun chopString(str: String, maxLength: Int) : String{
         val numChars = str.count()
@@ -161,4 +162,18 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         return newStr
     }
 
+    // Saves the player score to xml in shared_prefs folder
+    private fun savePlayerScore() {
+        val player = playerEntities.last()
+        val p = player[PlayerComponent.mapper]
+        require(p != null)
+        LOG.debug { "Adding score = ${p.playerScore}" }
+        var score = 0f
+        val prefs: Preferences = Gdx.app.getPreferences("playerData")
+        score = prefs.getFloat("totalPlayerScore")
+        score += p.playerScore
+        prefs.putFloat("totalPlayerScore", score)
+        prefs.flush()
+        LOG.debug { "Saving new total player score = $score" }
+    }
 }

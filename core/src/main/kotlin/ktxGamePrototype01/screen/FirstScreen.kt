@@ -56,26 +56,14 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             font.data.setScale(4.0f, 4.0f)
         }
+        with<QuizComponent>{
+            quizName = "test9"
+        }
 
     }
-
-    private val tree = engine.entity{
-        with<GraphicComponent> {
-            sprite.run {
-                setRegion(treeTexture)
-                setSize(texture.width * unitScale, texture.height * unitScale)
-                setOriginCenter()
-            }
-        }
-       with<QuizComponent>{
-            quizName = "quiz3"
-        }
-    }
-
 
     override fun show() {
         LOG.debug { "First screen is displayed" }
-        //createQuizTextEntities()
         createMapEntities()
     }
 
@@ -95,7 +83,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             if(doOnce == 0){
-                savePlayerScore()
+                //Put functions to debug here
                 doOnce = 1
             }
         }
@@ -107,23 +95,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         player.removeAll()
     }
 
-    fun getMap(){
-        try{
-            val tileArray = arrayOf<CharArray>()
-            var lineNr = 1
-            val fileName = "map0.txt"
-            val lines:List<String> = File(fileName).readLines()
-            lines.forEach { line ->
-                            tileArray[lineNr] = line.toCharArray()
-                            lineNr=lineNr+1
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }finally{
-            println("File read")
-        }
 
-    }
     private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
@@ -164,20 +136,5 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
     }
 
-
-    private fun savePlayerScore() {
-        val p = player[PlayerComponent.mapper]
-        require(p != null)
-        LOG.debug { "Adding score = ${p.playerScore}" }
-        var score = 0f
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
-        score = prefs.getFloat("totalPlayerScore")
-        score += p.playerScore
-        prefs.putFloat("totalPlayerScore", score)
-        prefs.flush()
-
-
-        LOG.debug { "Saving new total player score = $score" }
-    }
 }
 
