@@ -20,6 +20,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
 
     private var doOnce = false
     private var indexInArr = 0
+    private var i = 0
     private var previousQuestionNr = 1
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val quizComp = entity[QuizComponent.mapper]
@@ -30,6 +31,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             quizComp.playerHasAnswered = false
         }
         if(quizComp.playerHasAnswered){
+            previousQuestionNr=previousQuestionNr+1
             doOnce = false
         }
         if(quizComp.quizIsCompleted){
@@ -82,7 +84,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             var count = 0
             var charToNum = 1
             //quizList.forEach() { line ->
-            for (indexInArr in 0..quizList.size-1) {
+            for (indexInArr in i..quizList.size-1) {
                 var line = quizList.elementAt(indexInArr)
                 if (line.isNotBlank()) {
                     var tempQuizList: List<String> = line.split("-")
@@ -106,6 +108,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                     val textEnti = engine.entity {
                         with<TextComponent> {
                             isText = true
+                            isQuizAnswer = true
                             textStr = questAnsw
                             when{
                                 isQuestion ->{
@@ -137,7 +140,8 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                 }
                 previousQuestionNr = charToNum
                 if(!isQuestion)  count += 1
-
+                if(count >= 4)  count = 0
+                i = indexInArr+1
             }
         }
     }

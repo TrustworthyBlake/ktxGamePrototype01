@@ -3,37 +3,66 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector3
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.screen.FirstScreen
+import javax.xml.soap.Text
 
 private val LOG = logger<InteractableSystem>()
 
-class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()){
+class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
-    private val playerEntities by lazy{
+
+    private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
+    }
+    private val interactableEntities by lazy {
+        engine.getEntitiesFor(allOf(InteractableComponent::class).get())
+    }
+    private val textEntities by lazy {
+        engine.getEntitiesFor(allOf(TextComponent::class).get())
+    }
+    private val quizEntities by lazy {
+        engine.getEntitiesFor(allOf(QuizComponent::class).get())
     }
 
     private val interactables = mutableListOf<Int>()
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
-        if(interactables.isEmpty()) {
+        if (interactables.isEmpty()) {
             interactables.add(1)
             LOG.debug { "Spawned" }
+        }
+    }
+
+    //  Function that edits entities on map
+    fun correctQuizAnswer() {
+        interactableEntities.forEach { interactable ->
+            engine.removeEntity(interactable)
+        }
+        textEntities.forEach { text ->
+            val t = text[TextComponent.mapper]
+            require(t != null)
+            if (t.isQuizAnswer) engine.removeEntity(text)
+        }
+        quizEntities.forEach { quiz ->
+            val q = quiz[QuizComponent.mapper]
+            require(q != null)
+            q.playerHasAnswered = true
         }
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
         val transform = entity[TransformComponent.mapper]
-        require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity"}
+        require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
         val interact = entity[InteractableComponent.mapper]
-        require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity"}
+        require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
 
         interactableHitbox.set(
                 transform.posVec3.x,
@@ -52,17 +81,33 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.sizeVec2.x,
                         playerTransform.sizeVec2.y
                 )
-                if(playerHitbox.overlaps(interactableHitbox)){
-                    if(interact.correctAnswer) {p.playerScore += 1f}
-                    LOG.debug{"player score = ${p.playerScore}"}
-                    if(playerTransform.posVec3.x < interactableHitbox.x)  playerTransform.posVec3.x = playerTransform.posVec3.x - 0.07f
-                    if(playerTransform.posVec3.x > interactableHitbox.x)  playerTransform.posVec3.x = playerTransform.posVec3.x + 0.07f
-                    if(playerTransform.posVec3.y < interactableHitbox.y)  playerTransform.posVec3.y = playerTransform.posVec3.y - 0.07f
-                    if(playerTransform.posVec3.y > interactableHitbox.y)  playerTransform.posVec3.y = playerTransform.posVec3.y + 0.07f
-                    //playerTransform.posVec3.x = playerTransform.posVec3.x - 0.1f
-                    //playerTransform.posVec3.y = playerTransform.posVec3.y - 0.1f
+
+                //  IF PLAYER OVERLAPS WITH HITBOX
+                if (playerHitbox.overlaps(interactableHitbox)) {
+
+                    //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
+                    if (interact.correctAnswer) {
+                        //  COUNT SCORE
+                        p.playerScore += 1f
+                        // RESET START
+                        playerTransform.posVec3.x = 5f
+                        playerTransform.posVec3.y = 2f
+                        //  Run update on entities
+                        correctQuizAnswer()
+                    }
+
+                    //  SET STANDARD COLLISION
+                    if (playerTransform.posVec3.x < interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.07f
+                    if (playerTransform.posVec3.x > interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.07f
+                    if (playerTransform.posVec3.y < interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y - 0.07f
+                    if (playerTransform.posVec3.y > interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.07f
                 }
             }
         }
+
+
     }
 }
+
+
+

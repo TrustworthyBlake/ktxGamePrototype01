@@ -8,6 +8,7 @@ import ktx.ashley.mapperFor
 
 class TextComponent : Component, Pool.Poolable, Comparable<TextComponent>{
     var isText = false
+    var isQuizAnswer = false
     var textStr = ""
     val posTextVec2 = Vector2()
     var font = BitmapFont()
@@ -15,6 +16,7 @@ class TextComponent : Component, Pool.Poolable, Comparable<TextComponent>{
 
     override fun reset() {
         isText = false
+        isQuizAnswer = false
         textStr = ""
         posTextVec2.set(Vector2.Zero)
         font = BitmapFont()
