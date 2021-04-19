@@ -16,9 +16,6 @@ import ktxGamePrototype01.unitScale
 private val LOG = logger<QuizSystem>()
 
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
-    private val playerEntities by lazy {
-        engine.getEntitiesFor(allOf(PlayerComponent::class).get())
-    }
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private var doOnce = false
     private var indexInArr = 0
@@ -109,11 +106,11 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             textStr = questAnsw
                             when{
                                 isQuestion ->{
-                                    posTextVec2.set(300f, 1780f)
+                                    posTextVec2.set(2.5f, 15.5f)
                                 }
                                 !isQuestion -> {
-                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)}
-                                else -> {posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120) }
+                                    posTextVec2.set((qPosArray[count].x-1), (qPosArray[count].y+1))}
+                                else -> {posTextVec2.set((qPosArray[count].x-1), (qPosArray[count].y+1)) }
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
