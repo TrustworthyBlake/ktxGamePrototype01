@@ -9,5 +9,4 @@ abstract class AbstractScreen(
         val game:Prot01,
         val engine: Engine = game.engine,
         val batch: Batch = game.batch,
-        val batchText: Batch = game.batchText
 ) : KtxScreen

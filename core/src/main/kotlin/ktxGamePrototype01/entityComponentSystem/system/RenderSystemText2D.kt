@@ -44,11 +44,11 @@ class RenderSystemText2D(
             textComp.isText && !textComp.drawPlayScoreHUD->
                 textComp.font.draw(batchText, textComp.textStr, textComp.posTextVec2.x, textComp.posTextVec2.y)
 
-            textComp.isText && textComp.drawPlayScoreHUD ->
-                playerEntities.forEach { player ->
-                    val p = player[PlayerComponent.mapper]
-                    require(p != null)
-                    textComp.font.draw(batchText, "Score: "+p.playerScore.toInt().toString(), 10f, 1900f)
+            textComp.isText && textComp.drawPlayScoreHUD ->{
+                val player = playerEntities.last()
+                val p = player[PlayerComponent.mapper]
+                require(p != null)
+                textComp.font.draw(batchText, "Score: "+p.playerScore.toInt().toString(), 10f, 1900f)
                 }
             else ->
                 LOG.error { "Error: 5010. entity=$entity" }

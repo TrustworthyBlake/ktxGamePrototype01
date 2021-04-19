@@ -28,6 +28,7 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
         addSystem(InteractableSystem())
         addSystem(RenderSystem2D(batch, gameViewport))
         addSystem(RenderSystemText2D(batchText, gameViewport))
+        addSystem(QuizSystem())
         addSystem(NukePooledSystem())}  }
 
     override fun create() {

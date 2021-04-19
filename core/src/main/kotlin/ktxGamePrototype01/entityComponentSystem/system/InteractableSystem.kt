@@ -6,11 +6,13 @@ import com.badlogic.gdx.math.Rectangle
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.screen.FirstScreen
 
 private val LOG = logger<InteractableSystem>()
 
-class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()){
+class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()){
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
     private val playerEntities by lazy{
@@ -51,7 +53,6 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
                         playerTransform.sizeVec2.y
                 )
                 if(playerHitbox.overlaps(interactableHitbox)){
-                    LOG.debug { "A" }
                     if(interact.correctAnswer) {p.playerScore += 1f}
                     LOG.debug{"player score = ${p.playerScore}"}
                     if(playerTransform.posVec3.x < interactableHitbox.x)  playerTransform.posVec3.x = playerTransform.posVec3.x - 0.07f

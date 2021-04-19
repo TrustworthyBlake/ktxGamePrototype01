@@ -59,11 +59,23 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
 
     }
 
+    private val tree = engine.entity{
+        with<GraphicComponent> {
+            sprite.run {
+                setRegion(treeTexture)
+                setSize(texture.width * unitScale, texture.height * unitScale)
+                setOriginCenter()
+            }
+        }
+       with<QuizComponent>{
+            quizName = "q"
+        }
+    }
 
 
     override fun show() {
         LOG.debug { "First screen is displayed" }
-        createQuizTextEntities()
+        //createQuizTextEntities()
         createMapEntities()
     }
 
@@ -151,124 +163,9 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             LOG.debug { "Done Reading" }
         }
     }
-    private fun readQuizFromFile(): MutableList<String> {
 
-
-        val isLocAvailable = Gdx.files.isLocalStorageAvailable
-        LOG.debug { "Local is available $isLocAvailable" }
-        val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
-        LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/q.txt")        // Change this to quizName parameter later
-        val quizList = mutableListOf<String>()
-        if (quizTextFile.exists()){
-            try{
-                val lines:List<String> = (quizTextFile.readString()).lines()
-                lines.forEach { line ->
-                        quizList.add(line)
-                    LOG.debug { line }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-                LOG.debug { "Reading Failed" }
-            }finally{
-                LOG.debug { "Done Reading" }
-
-            }
-        }else{
-            LOG.debug { "Error: Cannot find quiz file!" }
-        }
-        return quizList
-    }
-
-    private fun createQuizTextEntities() {
-        if (!readQuizFromFile().isNullOrEmpty()) {
-            val quizList = readQuizFromFile()
-            var questAnsw = ""
-            var isQuestion = false
-            var isCorrect = false
-            var maxPoints = 0
-            var count = 1
-
-            var qPosArray = Array<Vector2>()
-            qPosArray.add(Vector2(2f, 2f))
-            qPosArray.add(Vector2(6f, 2f))
-            qPosArray.add(Vector2(2f, 8f))
-            qPosArray.add(Vector2(6f, 8f))
-
-
-            quizList.forEach() { line ->
-                if (line.isNotBlank() && count <= 3) {
-                    var tempQuizList: List<String> = line.split("-")
-                    questAnsw = tempQuizList[0].drop(1)
-                    questAnsw = chopString(questAnsw, 34)
-                    isQuestion = tempQuizList[1].toBoolean()
-                    LOG.debug { "Should only be isQuestion: $isQuestion" }
-                    isCorrect = tempQuizList[2].toBoolean()
-                    maxPoints = 0                                               // Needs to be reset
-                    if (isQuestion && 4 == tempQuizList.size){
-                        maxPoints = tempQuizList[3].toInt()
-                        LOG.debug{"Max points = $maxPoints"}
-                    }
-                    // Todo put variables into entities
-                    val textEnti = engine.entity {
-                        with<TextComponent> {
-                            isText = true
-                            textStr = questAnsw
-                            when{
-                                isQuestion ->{
-                                posTextVec2.set(300f, 1780f)
-                                }
-                                !isQuestion && count >= 2 -> {
-                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)
-                                }
-                                else -> {posTextVec2.set(0f, 0f)}
-                            }
-                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                            font.data.setScale(4.0f, 4.0f)
-                        }
-                        }
-                    if(!isQuestion) {
-                        val choiceEnti = engine.entity {
-                            with<TransformComponent> {
-                                posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
-                            }
-                            with<GraphicComponent> {
-                                sprite.run {
-                                    setRegion(holeTexture)
-                                    setSize(texture.width * unitScale, texture.height * unitScale)
-                                    setOriginCenter()
-                                }
-                            }
-                            with<InteractableComponent>{ correctAnswer = isCorrect }
-                        }
-                    }
-
-                    count += 1
-                }
-            }
-        }
-    }
-    // Max length should be 34 with text scaling at 4.0f for entire textViewport
-    private fun chopString(str: String, maxLength: Int) : String{
-        val numChars = str.count()
-        var newStr = str
-        var spacer = 0
-        if(numChars > maxLength) {
-            for (i in 0..numChars) {
-                if (i.rem(maxLength) == 0) {
-                    newStr = StringBuilder(newStr).apply { insert(i + spacer, '\n') }.toString()
-                    spacer += 1
-                }
-            }
-        }
-        return newStr
-    }
 
     private fun savePlayerScore() {
-        val playerEntities by lazy {
-            engine.getEntitiesFor(allOf(PlayerComponent::class).get())
-        }
-        playerEntities.lastIndexOf(player)
         val p = player[PlayerComponent.mapper]
         require(p != null)
         LOG.debug { "Adding score = ${p.playerScore}" }
