@@ -38,6 +38,17 @@ class RenderSystem2D(
         require(transformComp != null) { "Error: 5001. entity=$entity" }    // Entity is missing its transformation component
         val graphicComp = entity[GraphicComponent.mapper]
         require(graphicComp != null) { "Error: 5002. entity=$entity" }      // Entity is missing its graphics component
+
+        val player = entity[PlayerComponent.mapper]
+        if (player != null) {
+            entity[TransformComponent.mapper]?.let { trans ->
+                gameViewport.camera.position.x = trans.posVec3.x
+                gameViewport.camera.position.y = trans.posVec3.y
+
+            }
+        }
+
+
         if(graphicComp.sprite.texture != null) {
             graphicComp.sprite.run{
                 rotation = transformComp.rotationDeg
@@ -48,5 +59,7 @@ class RenderSystem2D(
         else {
             LOG.error { "Error: 5003. entity=$entity" }                          // Entity is missing its texture component
         }
+
+
     }
 }

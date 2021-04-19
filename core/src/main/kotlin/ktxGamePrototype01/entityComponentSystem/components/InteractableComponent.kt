@@ -7,9 +7,11 @@ import ktx.ashley.mapperFor
 enum class InteractableType(){}
 
 class InteractableComponent : Component, Pool.Poolable{
+    var correctAnswer = false
+
     //var type = InteractableType.NONE
     override fun reset(){
-
+        correctAnswer = false
     }
 
     companion object{

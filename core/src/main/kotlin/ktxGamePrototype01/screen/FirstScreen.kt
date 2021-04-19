@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -30,6 +32,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
 
+
     private val player = engine.entity{
         var totScore = 0f
         with<TransformComponent>{
@@ -55,18 +58,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
 
     }
-    private val tree = engine.entity {
-        with<TransformComponent> { posVec3.set(8f, 8f, -1f)
-            }
 
-        with<GraphicComponent> {
-            sprite.run {
-                setRegion(treeTexture)
-                setSize(texture.width * unitScale, texture.height * unitScale)
-                setOriginCenter()
-            }
-        }
-    }
 
 
     override fun show() {
@@ -160,11 +152,13 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
     }
     private fun readQuizFromFile(): MutableList<String> {
+
+
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/quizFiles/").isDirectory
         LOG.debug { "Dir exists $isDirectory" }
-        val quizTextFile = Gdx.files.local("assets/quizFiles/test9.txt")        // Change this to quizName parameter later
+        val quizTextFile = Gdx.files.local("assets/quizFiles/q.txt")        // Change this to quizName parameter later
         val quizList = mutableListOf<String>()
         if (quizTextFile.exists()){
             try{
@@ -195,7 +189,11 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             var maxPoints = 0
             var count = 1
 
-
+            var qPosArray = Array<Vector2>()
+            qPosArray.add(Vector2(2f, 2f))
+            qPosArray.add(Vector2(6f, 2f))
+            qPosArray.add(Vector2(2f, 8f))
+            qPosArray.add(Vector2(6f, 8f))
 
 
             quizList.forEach() { line ->
@@ -221,14 +219,30 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                                 posTextVec2.set(300f, 1780f)
                                 }
                                 !isQuestion && count >= 2 -> {
-                                    posTextVec2.set(200f * count, 200f * count)
+                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)
                                 }
                                 else -> {posTextVec2.set(0f, 0f)}
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
                         }
+                        }
+                    if(!isQuestion) {
+                        val choiceEnti = engine.entity {
+                            with<TransformComponent> {
+                                posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
+                            }
+                            with<GraphicComponent> {
+                                sprite.run {
+                                    setRegion(holeTexture)
+                                    setSize(texture.width * unitScale, texture.height * unitScale)
+                                    setOriginCenter()
+                                }
+                            }
+                            with<InteractableComponent>{ correctAnswer = isCorrect }
+                        }
                     }
+
                     count += 1
                 }
             }
@@ -264,6 +278,8 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         score += p.playerScore
         prefs.putFloat("totalPlayerScore", score)
         prefs.flush()
+
+
         LOG.debug { "Saving new total player score = $score" }
     }
 }

@@ -30,6 +30,8 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
 
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity"}
+        val interact = entity[InteractableComponent.mapper]
+        require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity"}
 
         interactableHitbox.set(
                 transform.posVec3.x,
@@ -50,7 +52,7 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
                 )
                 if(playerHitbox.overlaps(interactableHitbox)){
                     LOG.debug { "A" }
-                    p.playerScore += 1f
+                    if(interact.correctAnswer) {p.playerScore += 1f}
                     LOG.debug{"player score = ${p.playerScore}"}
                     if(playerTransform.posVec3.x < interactableHitbox.x)  playerTransform.posVec3.x = playerTransform.posVec3.x - 0.07f
                     if(playerTransform.posVec3.x > interactableHitbox.x)  playerTransform.posVec3.x = playerTransform.posVec3.x + 0.07f
