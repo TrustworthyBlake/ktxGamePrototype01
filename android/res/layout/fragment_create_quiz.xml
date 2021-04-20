@@ -35,9 +35,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is Correct" />
+                    android:text="Is Correct"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/giveQuestionMaxScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Give the question a score"/>
 
             <Button
                 android:id="@+id/addButton"
@@ -55,14 +64,16 @@
                     android:id="@+id/createQuizTextIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Give the quiz a name" />
+                    android:hint="Give the quiz a name"
+                    android:visibility="invisible"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/createQuizButton"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Create Quiz" />
+                android:text="Create Quiz"
+                android:visibility="invisible"/>
 
         </LinearLayout>
     </ScrollView>
