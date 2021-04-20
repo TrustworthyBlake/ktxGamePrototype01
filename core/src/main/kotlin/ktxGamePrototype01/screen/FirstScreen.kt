@@ -35,7 +35,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val player = engine.entity{
         var totScore = 0f
         with<TransformComponent>{
-            posVec3.set(0f, 0f, -1f)
+            posVec3.set(4.5f, 10f, -1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{

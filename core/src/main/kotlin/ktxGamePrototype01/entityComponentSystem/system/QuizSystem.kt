@@ -40,6 +40,8 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         }
     }
 
+    // Reads the quiz file from local Android storage, takes the name of the quiz as a string without
+    // the file type .txt, returns the quiz as a list
     private fun readQuizFromFile(quizName : String): MutableList<String> {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }
@@ -67,6 +69,8 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         return quizList
     }
 
+    // Main function of the quiz game system, it creates the quiz entities dynamically based on which part
+    // the player has completed of the quiz
     private fun createQuizTextEntities( quizName: String) {
         var qPosArray = Array<Vector2>()
         qPosArray.add(Vector2(1f, 11f))
@@ -75,10 +79,10 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         qPosArray.add(Vector2(7f, 4f))
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
             val quizList = readQuizFromFile(quizName)
-            var questAnsw = ""
+            var questAnsw: String
             var isQuestion = false
-            var isCorrect = false
-            var maxPoints = 0
+            var isCorrect: Boolean
+            var maxPoints: Int
             var count = 0
             var charToNum = 1
             for (indexInArr in i..quizList.size-1) {
@@ -86,27 +90,21 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                 if (line.isNotBlank()) {
                     var tempQuizList: List<String> = line.split("-")
                     questAnsw = tempQuizList[0].drop(1)
-                    questAnsw = chopString(questAnsw, 34)
+                    var (questAnswChopped , spacer, centerTextPos) = chopString(questAnsw, 34)  // Has to be this way cause KOTLIN
                     isQuestion = tempQuizList[1].toBoolean()
                     isCorrect = tempQuizList[2].toBoolean()
                     maxPoints = 0                                               // Needs to be reset
-                    if (isQuestion && 4 == tempQuizList.size){
-                        maxPoints = tempQuizList[3].toInt()
-                    }
+                    if (isQuestion && 4 == tempQuizList.size) maxPoints = tempQuizList[3].toInt()
                     charToNum = Character.getNumericValue(line.first())
-                    LOG.debug { "prev = $previousQuestionNr, curr = $charToNum" }
-                    if(charToNum != previousQuestionNr){
-                        LOG.debug { "should break" }
-                        break
-                    }
+                    if(charToNum != previousQuestionNr) break
                     val textEnti = engine.entity {
                         with<TextComponent> {
                             isText = true
                             isQuizAnswer = true
-                            textStr = questAnsw
+                            textStr = questAnswChopped
                             when{
                                 isQuestion ->{
-                                    posTextVec2.set(2.5f, 15.5f)
+                                    posTextVec2.set((4.5f - centerTextPos), 15.5f)
                                 }
                                 !isQuestion -> {
                                     posTextVec2.set((qPosArray[count].x-1), (qPosArray[count].y+1))}
@@ -128,7 +126,10 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                                     setOriginCenter()
                                 }
                             }
-                            with<InteractableComponent>{ correctAnswer = isCorrect }
+                            with<InteractableComponent>{
+                                maxPoints = maxPoints
+                                correctAnswer = isCorrect
+                            }
                         }
                     }
                 }
@@ -141,19 +142,23 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
     }
 
     // Max length should be 34 with text scaling at 4.0f for entire textViewport
-    private fun chopString(str: String, maxLength: Int) : String{
+    // Returns triple = chopped string, how many times the string has been chopped and the offset pos
+    // needed for centering text to the textViewport
+    private fun chopString(str: String, maxLength: Int) : Triple<String, Int, Float> {
         val numChars = str.count()
         var newStr = str
         var spacer = 0
+        var centerPos = 0f
         if(numChars > maxLength) {
             for (i in 0..numChars) {
                 if (i.rem(maxLength) == 0) {
                     newStr = StringBuilder(newStr).apply { insert(i + spacer, '\n') }.toString()
                     spacer += 1
+                    centerPos = ((numChars ) ) * 2f
                 }
             }
-        }
-        return newStr
+        }else {centerPos = (numChars / 2 ) * 0.1f }
+        return Triple(newStr, spacer, centerPos)
     }
 
     // Saves the player score to xml in shared_prefs folder
