@@ -28,21 +28,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is question" />
+                    android:text="Is question"
+                    android:checked="true"/>
 
                 <CheckBox
                     android:id="@+id/checkBoxIsAnswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is answer" />
+                    android:text="Is answer"
+                    />
 
                 <CheckBox
                     android:id="@+id/checkBoxIsCorrect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is Correct"
+                    android:text="Answer is correct"
+                    android:visibility="gone"
+                    android:checked="true"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkBoxIsWrong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Answer is wrong"
+                    android:visibility="gone"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Give the quiz a name"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

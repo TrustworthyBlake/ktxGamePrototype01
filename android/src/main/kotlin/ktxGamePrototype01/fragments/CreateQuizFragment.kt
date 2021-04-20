@@ -41,15 +41,30 @@ class CreateQuizFragment : Fragment() {
         binding.checkBoxIsAnswer.setOnClickListener {
             checkBoxIsQuestion.isChecked = false
         }
+        binding.checkBoxIsAnswer.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.checkBoxIsCorrect.visibility = View.VISIBLE
+                binding.checkBoxIsWrong.visibility = View.VISIBLE
+            }else{
+                binding.checkBoxIsCorrect.visibility = View.GONE
+                binding.checkBoxIsWrong.visibility = View.GONE
+            }
+        }
+        binding.checkBoxIsCorrect.setOnCheckedChangeListener { _, isChecked ->
+            binding.checkBoxIsWrong.isChecked = !isChecked
+        }
+        binding.checkBoxIsWrong.setOnCheckedChangeListener { _, isChecked ->
+            binding.checkBoxIsCorrect.isChecked = !isChecked
+        }
 
         return binding.root
     }
     private val tempQuizList = mutableListOf<String>()
     var hasAddedAnswer = false
     var hasCreatedQuestion = false
+    var amountOfAnswers = 0
 
     private fun addToQuiz() {
-        //hasAddedAnswer = true   // Needed so that a user must add a answer to question before creating a new question
         when {
             (TextUtils.isEmpty(binding.createQuestionTextIn.text.toString())) -> {
                 Toast.makeText(activity, "Error: You must add a question or answer!", Toast.LENGTH_SHORT).show()
@@ -71,11 +86,12 @@ class CreateQuizFragment : Fragment() {
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect + "-" + maxPoints)
                         hasAddedAnswer = false
                         hasCreatedQuestion = true
+                        amountOfAnswers = 0
                         binding.giveQuestionMaxScore.setText("")
                         binding.createQuestionTextIn.setText("")
                         Toast.makeText(activity, "Added question", Toast.LENGTH_SHORT).show()
                     }
-                    !isQuestion && (hasCreatedQuestion || hasAddedAnswer) && questAnsw.count() < 170 -> {
+                    !isQuestion && (hasCreatedQuestion || hasAddedAnswer) && questAnsw.count() < 170 && amountOfAnswers < 4-> {
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
                         hasAddedAnswer = true
                         hasCreatedQuestion = false
@@ -83,9 +99,11 @@ class CreateQuizFragment : Fragment() {
                         binding.createQuizTextIn.visibility = View.VISIBLE
                         binding.createQuestionTextIn.setText("")
                         Toast.makeText(activity, "Added answer", Toast.LENGTH_SHORT).show()
+                        amountOfAnswers += 1
                     }
+                    amountOfAnswers >= 4 -> Toast.makeText(activity, "Error: Max amount of 4 answers exceeded", Toast.LENGTH_SHORT).show()
                     !hasCreatedQuestion && !isQuestion -> Toast.makeText(activity, "Error: You must add a question before creating an answer!", Toast.LENGTH_SHORT).show()
-                    hasCreatedQuestion && isQuestion -> Toast.makeText(activity, "Error: You must add an answer before creating a new answer!", Toast.LENGTH_SHORT).show()
+                    hasCreatedQuestion && isQuestion -> Toast.makeText(activity, "Error: You must add an answer before creating a new question!", Toast.LENGTH_SHORT).show()
                     questAnsw.count() > 170 -> Toast.makeText(activity, "Error: Max length of 170 characters exceeded", Toast.LENGTH_SHORT).show()
                     else -> Toast.makeText(activity, "Error: You must add a score to the question!", Toast.LENGTH_SHORT).show()
                 }
