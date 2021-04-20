@@ -16,6 +16,7 @@ private val LOG = logger<QuizSystem>()
 
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+    var lastTextPositionModifier = 1
 
 
     private var doOnce = false
@@ -23,6 +24,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
     private var i = 0
     private var previousQuestionNr = 1
     override fun processEntity(entity: Entity, deltaTime: Float) {
+
         val quizComp = entity[QuizComponent.mapper]
         require(quizComp != null)
         if (!doOnce && !quizComp.quizIsCompleted){
@@ -89,7 +91,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                 if (line.isNotBlank()) {
                     var tempQuizList: List<String> = line.split("-")
                     questAnsw = tempQuizList[0].drop(1)
-                    questAnsw = chopString(questAnsw, 34)
+                    val (questAnsw, textYSpacing) = chopString(questAnsw, 26)
                     isQuestion = tempQuizList[1].toBoolean()
                     isCorrect = tempQuizList[2].toBoolean()
                     maxPoints = 0                                               // Needs to be reset
@@ -115,8 +117,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                                     posTextVec2.set(300f, 1780f)
                                 }
                                 !isQuestion -> {
-                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120)}
-                                else -> {posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+1)*120) }
+                                    posTextVec2.set((qPosArray[count].x-1)*120, (qPosArray[count].y+textYSpacing)*120)}
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
@@ -137,6 +138,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             with<InteractableComponent>{ correctAnswer = isCorrect }
                         }
                     }
+                    lastTextPositionModifier = 1
                 }
                 previousQuestionNr = charToNum
                 if(!isQuestion)  count += 1
@@ -146,10 +148,11 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         }
     }
     // Max length should be 34 with text scaling at 4.0f for entire textViewport
-    private fun chopString(str: String, maxLength: Int) : String{
+    private fun chopString(str: String, maxLength: Int) : Pair<String, Int>{
         val numChars = str.count()
         var newStr = str
         var spacer = 0
+        var tempSpace = 1
         if(numChars > maxLength) {
             for (i in 0..numChars) {
                 if (i.rem(maxLength) == 0) {
@@ -158,7 +161,8 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                 }
             }
         }
-        return newStr
+        if(spacer > 0) tempSpace = spacer
+        return Pair(newStr, tempSpace)
     }
 
 }

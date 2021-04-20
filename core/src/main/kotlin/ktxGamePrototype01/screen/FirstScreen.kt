@@ -68,7 +68,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             }
         }
        with<QuizComponent>{
-            quizName = "quiz3"
+            quizName = "quiz4"
         }
     }
 
