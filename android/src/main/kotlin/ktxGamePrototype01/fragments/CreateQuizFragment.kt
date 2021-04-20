@@ -34,8 +34,14 @@ class CreateQuizFragment : Fragment() {
         }
         binding.createQuizButton.setOnClickListener{
             createQuiz()
-
         }
+        binding.checkBoxIsQuestion.setOnClickListener {
+            checkBoxIsAnswer.isChecked = false
+        }
+        binding.checkBoxIsAnswer.setOnClickListener {
+            checkBoxIsQuestion.isChecked = false
+        }
+
         return binding.root
     }
     private val tempQuizList = mutableListOf<String>()

@@ -31,6 +31,13 @@
                     android:text="Is question" />
 
                 <CheckBox
+                    android:id="@+id/checkBoxIsAnswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is answer" />
+
+                <CheckBox
                     android:id="@+id/checkBoxIsCorrect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:hint="Give the question a score"/>
+                android:hint="Max score the player can achieve for this question"/>
 
             <Button
                 android:id="@+id/addButton"
