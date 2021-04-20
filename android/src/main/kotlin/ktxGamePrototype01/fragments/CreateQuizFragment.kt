@@ -59,25 +59,28 @@ class CreateQuizFragment : Fragment() {
                     nrToQuestion = Character.getNumericValue(lastNumInQuizChar)
                 }
                 when {
-                    isQuestion && !TextUtils.isEmpty(binding.giveQuestionMaxScore.text.toString()) && !hasCreatedQuestion-> {
+                    isQuestion && !TextUtils.isEmpty(binding.giveQuestionMaxScore.text.toString()) && !hasCreatedQuestion && questAnsw.count() < 170 -> {
                         maxPoints = binding.giveQuestionMaxScore.text.toString().toInt()
                         nrToQuestion += 1
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect + "-" + maxPoints)
                         hasAddedAnswer = false
                         hasCreatedQuestion = true
+                        binding.giveQuestionMaxScore.setText("")
+                        binding.createQuestionTextIn.setText("")
                         Toast.makeText(activity, "Added question", Toast.LENGTH_SHORT).show()
                     }
-                    !isQuestion && (hasCreatedQuestion || hasAddedAnswer)-> {
+                    !isQuestion && (hasCreatedQuestion || hasAddedAnswer) && questAnsw.count() < 170 -> {
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
                         hasAddedAnswer = true
                         hasCreatedQuestion = false
                         binding.createQuizButton.visibility = View.VISIBLE
                         binding.createQuizTextIn.visibility = View.VISIBLE
+                        binding.createQuestionTextIn.setText("")
                         Toast.makeText(activity, "Added answer", Toast.LENGTH_SHORT).show()
                     }
                     !hasCreatedQuestion && !isQuestion -> Toast.makeText(activity, "Error: You must add a question before creating an answer!", Toast.LENGTH_SHORT).show()
                     hasCreatedQuestion && isQuestion -> Toast.makeText(activity, "Error: You must add an answer before creating a new answer!", Toast.LENGTH_SHORT).show()
-
+                    questAnsw.count() > 170 -> Toast.makeText(activity, "Error: Max length of 170 characters exceeded", Toast.LENGTH_SHORT).show()
                     else -> Toast.makeText(activity, "Error: You must add a score to the question!", Toast.LENGTH_SHORT).show()
                 }
             }
