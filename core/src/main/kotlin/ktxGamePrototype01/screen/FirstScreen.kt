@@ -56,7 +56,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             font.data.setScale(4.0f, 4.0f)
         }
        with<QuizComponent>{
-            quizName = "quiz4"
+            quizName = "test9"
         }
     }
 

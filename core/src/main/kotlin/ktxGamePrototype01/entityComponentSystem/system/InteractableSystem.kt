@@ -64,6 +64,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         val interact = entity[InteractableComponent.mapper]
         require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
 
+
         interactableHitbox.set(
                 transform.posVec3.x,
                 transform.posVec3.y,
@@ -88,7 +89,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
                     if (interact.correctAnswer) {
                         //  COUNT SCORE
-                        p.playerScore += 1f
+                        p.playerScore += interact.maxPointsQuestion
                         // RESET START
                         playerTransform.posVec3.x = 5f
                         playerTransform.posVec3.y = 2f
