@@ -26,7 +26,7 @@ class RenderSystem2D(
 ) {
 
     override fun update(deltaTime: Float) {
-        gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, true)
+        gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, false)
         forceSort()
         batch.use(gameViewport.camera.combined){
             super.update(deltaTime)
@@ -44,11 +44,8 @@ class RenderSystem2D(
             entity[TransformComponent.mapper]?.let { trans ->
                 gameViewport.camera.position.x = trans.posVec3.x
                 gameViewport.camera.position.y = trans.posVec3.y
-
             }
         }
-
-
         if(graphicComp.sprite.texture != null) {
             graphicComp.sprite.run{
                 rotation = transformComp.rotationDeg
@@ -59,7 +56,5 @@ class RenderSystem2D(
         else {
             LOG.error { "Error: 5003. entity=$entity" }                          // Entity is missing its texture component
         }
-
-
     }
 }

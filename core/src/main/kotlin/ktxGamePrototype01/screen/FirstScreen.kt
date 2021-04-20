@@ -32,11 +32,10 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
 
-
     private val player = engine.entity{
         var totScore = 0f
         with<TransformComponent>{
-            posVec3.set(4f, 2f, -1f)
+            posVec3.set(4.5f, 10f, -1f)
         }
         with<MovementComponent>()
         with<GraphicComponent>{
@@ -56,26 +55,13 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             font.data.setScale(4.0f, 4.0f)
         }
-
-    }
-
-    private val tree = engine.entity{
-        with<GraphicComponent> {
-            sprite.run {
-                setRegion(treeTexture)
-                setSize(texture.width * unitScale, texture.height * unitScale)
-                setOriginCenter()
-            }
-        }
        with<QuizComponent>{
             quizName = "quiz4"
         }
     }
 
-
     override fun show() {
         LOG.debug { "First screen is displayed" }
-        //createQuizTextEntities()
         createMapEntities()
     }
 
@@ -95,7 +81,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             if(doOnce == 0){
-                savePlayerScore()
+                //Put functions to debug here
                 doOnce = 1
             }
         }
@@ -107,23 +93,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         player.removeAll()
     }
 
-    fun getMap(){
-        try{
-            val tileArray = arrayOf<CharArray>()
-            var lineNr = 1
-            val fileName = "map0.txt"
-            val lines:List<String> = File(fileName).readLines()
-            lines.forEach { line ->
-                            tileArray[lineNr] = line.toCharArray()
-                            lineNr=lineNr+1
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }finally{
-            println("File read")
-        }
-
-    }
     private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
@@ -154,8 +123,6 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 lineNr=lineNr+1
                 //LOG.debug { line }
             }
-
-
         }catch (e: Exception){
             e.printStackTrace()
             LOG.debug { "Reading Failed" }
@@ -164,20 +131,5 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         }
     }
 
-
-    private fun savePlayerScore() {
-        val p = player[PlayerComponent.mapper]
-        require(p != null)
-        LOG.debug { "Adding score = ${p.playerScore}" }
-        var score = 0f
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
-        score = prefs.getFloat("totalPlayerScore")
-        score += p.playerScore
-        prefs.putFloat("totalPlayerScore", score)
-        prefs.flush()
-
-
-        LOG.debug { "Saving new total player score = $score" }
-    }
 }
 
