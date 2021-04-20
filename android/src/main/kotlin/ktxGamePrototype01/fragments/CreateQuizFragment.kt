@@ -61,7 +61,6 @@ class CreateQuizFragment : Fragment() {
                 when {
                     isQuestion && !TextUtils.isEmpty(binding.giveQuestionMaxScore.text.toString()) && !hasCreatedQuestion-> {
                         maxPoints = binding.giveQuestionMaxScore.text.toString().toInt()
-                        maxPoints = Character.getNumericValue(maxPoints)
                         nrToQuestion += 1
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect + "-" + maxPoints)
                         hasAddedAnswer = false
