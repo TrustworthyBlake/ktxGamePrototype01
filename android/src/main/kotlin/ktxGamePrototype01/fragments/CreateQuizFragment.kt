@@ -1,5 +1,8 @@
 package ktxGamePrototype01.fragments
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.system.Os.mkdir
@@ -13,8 +16,10 @@ import androidx.fragment.app.Fragment
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.github.trustworthyblake.ktxGamePrototype01.R
+import com.github.trustworthyblake.ktxGamePrototype01.databinding.DialogDeleteQuizBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentCreateQuizBinding
 import kotlinx.android.synthetic.main.fragment_create_quiz.*
+import ktxGamePrototype01.AppActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -23,7 +28,6 @@ import java.io.IOException
 
 class CreateQuizFragment : Fragment() {
     private lateinit var binding: FragmentCreateQuizBinding
-    //private lateinit var tempQuizList: MutableList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_quiz, container, false)
@@ -55,6 +59,9 @@ class CreateQuizFragment : Fragment() {
         }
         binding.checkBoxIsWrong.setOnCheckedChangeListener { _, isChecked ->
             binding.checkBoxIsCorrect.isChecked = !isChecked
+        }
+        binding.buttonDeleteQuiz.setOnClickListener {
+            deleteExistingQuiz()
         }
 
         return binding.root
@@ -151,6 +158,36 @@ class CreateQuizFragment : Fragment() {
             }
         }
 
+    private fun deleteExistingQuiz(){
+        val pathInternal = activity?.filesDir
+        //var quizName : String
+        if (pathInternal != null) {
+            val pathTextFile = File(pathInternal, "assets/quizFiles")
+            if (!pathTextFile.exists()){
+                Toast.makeText(activity, "Directory for quiz files does not exist", Toast.LENGTH_SHORT).show()
+            }else{
+                val li = LayoutInflater.from(context)
+                val dialogDeleteQuizBinding = DialogDeleteQuizBinding.inflate(li)
+                val builder = AlertDialog.Builder(activity)
+                with(builder){
+                    setTitle("Enter name of quiz you want to delete")
+                    setPositiveButton("OK"){ _, _ ->
+                        val quizName = dialogDeleteQuizBinding.deleteQuizTextInput.text.toString()
+                        val fullPathQuiz = File(pathTextFile,quizName+".txt")
+                        if(fullPathQuiz.exists()){
+                            fullPathQuiz.delete()
+                            Toast.makeText(activity, "Quiz deleted", Toast.LENGTH_SHORT).show()
+                        }else Toast.makeText(activity, "Could not find a quiz with that name to delete", Toast.LENGTH_SHORT).show()
+                    }
+                    setNegativeButton("Cancel"){_,_ ->
+                        dialogDeleteQuizBinding.deleteQuizTextInput.setText("")
+                    }
+                    setView(dialogDeleteQuizBinding.root)
+                    show()
+                }
+            }
+        }
+    }
     // For debugging
     private fun getTotalPlayerScoreFromPrefs(){
         var totalPlayerScore = 0f

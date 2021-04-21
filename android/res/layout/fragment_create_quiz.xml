@@ -70,7 +70,7 @@
 
             <Button
                 android:id="@+id/addButton"
-                android:layout_width="123dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Add" />
@@ -95,6 +95,11 @@
                 android:text="Create Quiz"
                 android:visibility="invisible"/>
 
+            <Button
+                android:id="@+id/buttonDeleteQuiz"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Delete quiz" />
         </LinearLayout>
     </ScrollView>
 
