@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/createQuestionTextIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Write question/answer here" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxIsQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is question"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBoxIsAnswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is answer"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkBoxIsCorrect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Answer is correct"
+                    android:visibility="gone"
+                    android:checked="true"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkBoxIsWrong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Answer is wrong"
+                    android:visibility="gone"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/giveQuestionMaxScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Max score the player can achieve for this question"/>
+
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/createQuizTextIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Give the quiz a name"
+                    android:visibility="gone"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/createQuizButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Create Quiz"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/buttonDeleteQuiz"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Delete quiz" />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

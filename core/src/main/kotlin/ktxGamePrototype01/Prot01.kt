@@ -11,36 +11,41 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
-import ktxGamePrototype01.entityComponentSystem.system.MovementSystem
-import ktxGamePrototype01.entityComponentSystem.system.NukePooledSystem
-import ktxGamePrototype01.entityComponentSystem.system.PlayerInputSystem
-import ktxGamePrototype01.entityComponentSystem.system.RenderSystem2D
+import ktxGamePrototype01.entityComponentSystem.system.*
 import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.SecondScreen
 
 private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
 
-class Prot01 : KtxGame<KtxScreen>() {
+class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
+    val batchText: Batch by lazy { SpriteBatch() }
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
         addSystem(MovementSystem())
-        addSystem(RenderSystem2D(batch))
+        addSystem(InteractableSystem())
+        addSystem(RenderSystem2D(batch, gameViewport))
+        addSystem(RenderSystemText2D(batchText, gameViewport))
+        addSystem(QuizSystem())
         addSystem(NukePooledSystem())}  }
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         LOG.debug { "Game instance created" }
         addScreen(FirstScreen(this))
-        addScreen(SecondScreen(this))
+        //addScreen(SecondScreen(this))
         setScreen<FirstScreen>()
+        if(x == 2){
+            LOG.debug {" is 2" }
+        }
     }
 
     override fun dispose() {
         super.dispose()
         LOG.debug { "Number of sprites in current batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         batch.dispose()
+        batchText.dispose()
     }
 }

@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.github.trustworthyblake.ktxGamePrototype01.R
@@ -46,6 +47,9 @@ class ClassroomIndexFragment : Fragment() {
 
             //initialize(Prot01(), AndroidApplicationConfiguration())
             (activity as AppActivity?)!!.launchGame(1)
+        }
+        binding.btnOpenCreateQuiz.setOnClickListener {
+            findNavController().navigate(R.id.dest_create_quiz)
         }
         return binding.root
     }

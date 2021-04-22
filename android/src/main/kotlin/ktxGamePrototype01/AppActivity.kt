@@ -22,7 +22,6 @@ class AppActivity : AppCompatActivity() {
     var userObject = User
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         savedDarkData = sharedprefs(this)
         if(savedDarkData.loadDarkModeState() == true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -75,7 +74,7 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.INVISIBLE
         val menu = binding.navigationView.menu
         menu.findItem(R.id.dest_classroom_index).isVisible = false
-        menu.findItem(R.id.dest_profile).isVisible = false
+        //menu.findItem(R.id.dest_profile).isVisible = false
         menu.findItem(R.id.dest_settings).isVisible = false
     }
 

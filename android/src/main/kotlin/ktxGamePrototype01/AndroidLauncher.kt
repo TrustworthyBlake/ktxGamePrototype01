@@ -31,11 +31,5 @@ class AndroidLauncher : AndroidApplication() {
         startActivity(intent)
         }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==2){
-            initialize(Prot01(), AndroidApplicationConfiguration())
-        }
-    }
 }
 

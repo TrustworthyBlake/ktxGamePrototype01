@@ -48,7 +48,7 @@ class UserTeacherProfileFragment : Fragment(){
         }
 
         buttonUserInfo.setOnClickListener(){
-            findNavController().navigate(R.id.dest_user)
+            findNavController().navigate(R.id.dest_user_teacher)
         }
 
         buttonLogout.setOnClickListener(){

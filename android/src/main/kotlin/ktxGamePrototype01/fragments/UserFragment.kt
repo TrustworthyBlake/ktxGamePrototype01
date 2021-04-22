@@ -61,6 +61,7 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.dest_start)
         }
 
+
         val headImage = binding.root.findViewById<ImageView>(R.id.imageHead)
         val bodyImage = binding.root.findViewById<ImageView>(R.id.imageBody)
 
@@ -82,14 +83,18 @@ class UserFragment : Fragment() {
 
         /*
 
+        /*
         // button to navigate to createClassRoom fragment
+        /*
         val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
         buttonCreateClassroom.setOnClickListener() {
             if (User.checkForTeacher()) {
                 findNavController().navigate(R.id.dest_create_classroom)
             } else Toast.makeText(activity, "Access denied", Toast.LENGTH_LONG).show()
 
-        }
+        } */
+
+         */
 
          */
 
@@ -112,11 +117,11 @@ class UserFragment : Fragment() {
         // getting the reference to the textViews
         val userName = binding.root.findViewById<TextView>(R.id.user_name)
         val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
-        val userScore = binding.root.findViewById<TextView>(R.id.user_score)
         // displaying the data in the textViews
         userName.text = AppActivity().userObject.getName()
         userEmail.text = AppActivity().userObject.getEmail()
         //userScore.text = AppActivity().userObject.getScore().toString()
+
     }
 
     // OLD NOT IN USE function that retrieves data from user database and displays it
@@ -135,7 +140,7 @@ class UserFragment : Fragment() {
                 // displaying the data in the textViews
                 userName.text = name.toString()
                 userEmail.text = email.toString()
-                //userScore.text = score.toString()
+                userScore.text = score.toString()
             }
         }
     }

@@ -3,6 +3,8 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector
+import com.badlogic.gdx.math.Vector2
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
@@ -30,13 +32,16 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
 
         val player = entity[PlayerComponent.mapper]
         if (player != null){
-            entity[OrientationComponent.mapper]?.let { direction -> movePlayer(transform, movement, player, direction, deltaTime)}
+            entity[OrientationComponent.mapper]?.let { direction -> movePlayer(transform, movement, direction.tempDir, direction, deltaTime)}
         }
         else {
             moveEntity(transform, movement, deltaTime)
         }
     }
-    private fun movePlayer(transform: TransformComponent, movement: MovementComponent, playerComponent: PlayerComponent, direction: OrientationComponent, deltaTime: Float){
+
+
+    private fun movePlayer(transform: TransformComponent, movement: MovementComponent, mvmt: Vector2, direction: OrientationComponent, deltaTime: Float){
+        /*
         movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
             OrientationDirection.left -> min(0f, movement.velocity.x - 15f * deltaTime)
             OrientationDirection.right -> max(0f, movement.velocity.x + 15f * deltaTime)
@@ -44,15 +49,21 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
         }
         movement.velocity.x = MathUtils.clamp(movement.velocity.x, -6f, 6f)
         movement.velocity.y = when(direction.direction){
-            OrientationDirection.down -> min(0f, movement.velocity.x - 15f * deltaTime)
-            OrientationDirection.up -> max(0f, movement.velocity.x + 15f * deltaTime)
+            OrientationDirection.down -> min(0f, movement.velocity.y - 15f * deltaTime)
+            OrientationDirection.up -> max(0f, movement.velocity.y + 15f * deltaTime)
             else -> 0f
         }
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)
+         */
+        movement.velocity.x = mvmt.x*0.01f
+        movement.velocity.y = mvmt.y*0.01f
+
         moveEntity(transform, movement, deltaTime)
     }
+
+
     private fun moveEntity(transform: TransformComponent, movement: MovementComponent, deltaTime: Float) {
-        transform.posVec3.x = MathUtils.clamp(transform.posVec3.x + movement.velocity.x * deltaTime, 0f, 9f - transform.sizeVec2.x)
-        transform.posVec3.y = MathUtils.clamp(transform.posVec3.y + movement.velocity.y * deltaTime, 1f, 1f+16f - transform.sizeVec2.y)
+        transform.posVec3.x = MathUtils.clamp(transform.posVec3.x + movement.velocity.x * deltaTime, -100f, 100f - transform.sizeVec2.x)    // 0f, 9f
+        transform.posVec3.y = MathUtils.clamp(transform.posVec3.y + movement.velocity.y * deltaTime, -100f, 100f - transform.sizeVec2.y)    // 0f, 16f
     }
 }

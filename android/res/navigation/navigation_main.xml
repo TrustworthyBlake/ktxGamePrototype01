@@ -123,10 +123,12 @@
         tools:layout="@layout/fragment_new_classroom" />
 
     <fragment
-        android:id="@+id/dest_add_students"
-        android:name="ktxGamePrototype01.fragments.AddStudentsFragment"
-        android:label="Add students to classroom"
-        tools:layout="@layout/fragment_add_students"/>
+        android:id="@+id/dest_create_quiz"
+        android:name="ktxGamePrototype01.fragments.CreateQuizFragment"
+        android:label="CreateQuizFragment"
+        tools:layout="@layout/fragment_create_quiz" />
+
+
 
     <fragment android:id="@+id/dest_edit_profile"
         android:name="ktxGamePrototype01.fragments.EditProfileFragment"
