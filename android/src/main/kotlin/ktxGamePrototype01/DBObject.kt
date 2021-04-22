@@ -29,7 +29,9 @@ object DBObject {
                     task.result?.get("name").toString(), // name
                     task.result?.get("email").toString(),  // email
                     task.result?.get("score").toString().toInt(),  // score
-                    task.result?.get("teacher") as Boolean  // is teacher or not
+                    task.result?.get("teacher") as Boolean,  // is teacher or not
+                    task.result?.get("courses") as List<String>,
+                    task.result?.get("achievement") as List<String>
                 )
             }
         }
@@ -40,6 +42,7 @@ object DBObject {
         val db = getInstance()
 
         val courseList: List<String> = emptyList()
+        val achievList: List<String> = emptyList()
         // Create a new user entry in the database
         val user = hashMapOf(
             "userid" to userID,
@@ -47,7 +50,8 @@ object DBObject {
             "name" to capitalize(name),
             "score" to 0,
             "teacher" to isTeacher,
-            "courses" to courseList
+            "courses" to courseList,
+            "achievement" to achievList
         )
         // add selected data to database
         db.collection("users").document(userID)
