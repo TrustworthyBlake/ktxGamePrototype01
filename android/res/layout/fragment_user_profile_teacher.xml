@@ -10,18 +10,11 @@
         tools:context=".fragments.UserFragment">
 
 
-        ]]>
 
-        <ScrollView
-            android:id="@+id/scrollView3"
-            android:layout_width="352dp"
-            android:layout_height="234dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.941" />
+
+
+
+        ]]>
 
         <Button
             android:id="@+id/settings_button"
@@ -45,60 +38,54 @@
             app:layout_constraintHorizontal_bias="0.094"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.151" />
+            app:layout_constraintVertical_bias="0.141" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="150dp"
             android:layout_height="35dp"
-            android:layout_marginBottom="20dp"
             android:text="Current Modules"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintHorizontal_bias="0.091"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.622" />
+            app:layout_constraintVertical_bias="0.564" />
 
         <Button
             android:id="@+id/log_out_button"
             android:layout_width="137dp"
             android:layout_height="53dp"
-            android:layout_marginTop="8dp"
             android:text="Log out"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.094"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.322" />
+            app:layout_constraintVertical_bias="0.343" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="176dp"
             android:layout_height="54dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
             android:text="Welcome"
             android:textSize="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.123"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.035" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="176dp"
             android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
             android:text="TextView"
             android:textSize="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.931"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.035" />
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button6"
@@ -107,10 +94,33 @@
             android:text="Modules"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.808"
+            app:layout_constraintHorizontal_bias="0.786"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.16" />
+            app:layout_constraintVertical_bias="0.151" />
+
+        <Button
+            android:id="@+id/btn_edit_profT"
+            android:layout_width="137dp"
+            android:layout_height="53dp"
+            android:text="Edit Profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.766"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.331" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_user_profileT"
+            android:layout_width="376dp"
+            android:layout_height="225dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.911"
+            tools:listitem="@layout/list_item" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

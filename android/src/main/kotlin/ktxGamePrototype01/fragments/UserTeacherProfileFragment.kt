@@ -10,12 +10,18 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserProfileTeacherBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.fragment_user_profile_teacher.*
+import ktxGamePrototype01.User
+import ktxGamePrototype01.adapters.ListItem
 
 class UserTeacherProfileFragment : Fragment(){
     private lateinit var binding: FragmentUserProfileTeacherBinding
@@ -35,6 +41,7 @@ class UserTeacherProfileFragment : Fragment(){
         val buttonSettings = binding.root.findViewById<Button>(R.id.settings_button)
         val buttonUserInfo = binding.root.findViewById<Button>(R.id.user_info_buttonT)
         val buttonLogout = binding.root.findViewById<Button>(R.id.log_out_button)
+        val buttonEdit = binding.root.findViewById<Button>(R.id.btn_edit_profT)
 
         buttonSettings.setOnClickListener(){
             findNavController().navigate(R.id.dest_settings)
@@ -50,7 +57,22 @@ class UserTeacherProfileFragment : Fragment(){
             findNavController().navigate(R.id.dest_login)
         }
 
+        buttonEdit.setOnClickListener(){
+            findNavController().navigate(R.id.dest_edit_profile)
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val userList : List<String> = User.getAchievement()
+
+        val daList = makeDaList(userList.size)
+        recycler_view_user_profileT.adapter = ListAdapter(daList)
+        recycler_view_user_profileT.layoutManager = LinearLayoutManager(requireContext())
+        recycler_view_user_profileT.setHasFixedSize(true)
     }
 
     private fun readData(userID: String) {
@@ -67,6 +89,17 @@ class UserTeacherProfileFragment : Fragment(){
                 //userScore.text = score.toString()
             }
         }
+    }
+
+    private fun makeDaList(size: Int): List<ListItem> {
+        val list = ArrayList<ListItem>()
+        val userList : List<String> = User.getAchievement()
+        for (i in 0 until size) {
+            val drawable = R.drawable.ic_attach_money_black_24dp
+            val item = ListItem(drawable, userList[i])
+            list += item
+        }
+        return list
     }
 
 }
