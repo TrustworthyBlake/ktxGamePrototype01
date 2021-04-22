@@ -86,8 +86,9 @@
             android:id="@+id/action_dest_user_profile_to_dest_user"
             app:destination="@id/dest_user" />
         <action
-            android:id="@+id/action_dest_user_profile_to_placeholder"
-            app:destination="@id/dest_add_students" />
+            android:id="@+id/action_dest_user_profile_to_dest_edit_profile"
+            app:destination="@id/dest_edit_profile" />
+
     </fragment>
 
     <fragment
