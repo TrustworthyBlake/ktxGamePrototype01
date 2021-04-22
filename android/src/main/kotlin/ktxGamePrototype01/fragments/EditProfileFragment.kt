@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.badlogic.gdx.Preferences
+import ktxGamePrototype01.User
 
 class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListener*/{
 
@@ -95,10 +96,10 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
 
                 type1 = parent.getItemAtPosition(position).toString()
                 when (type1){
-                    "default1" ->  {headImage.setImageResource(R.drawable.default1); saveDatahead(type1) }
-                    "default2" ->  {headImage.setImageResource(R.drawable.default2); saveDatahead(type1) }
-                    "ebin" ->  {headImage.setImageResource(R.drawable.ebin); saveDatahead(type1) }
-                    "gond" ->  {headImage.setImageResource(R.drawable.gond); saveDatahead(type1) }
+                    "default1" ->  {headImage.setImageResource(R.drawable.default1); saveDatahead(type1, User.getName()) }
+                    "default2" ->  {headImage.setImageResource(R.drawable.default2); saveDatahead(type1, User.getName()) }
+                    "ebin" ->  {headImage.setImageResource(R.drawable.ebin); saveDatahead(type1, User.getName()) }
+                    "gond" ->  {headImage.setImageResource(R.drawable.gond); saveDatahead(type1, User.getName()) }
                 }
             }
 
@@ -120,10 +121,10 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 // setting the previewed characters clothing according to the user's selection of magic type
                 type2 = parent.getItemAtPosition(position).toString()
                 when (type2) {
-                    "default1" -> {bodyImage.setImageResource(R.drawable.default1); saveDatabody(type2) }
-                    "default2" -> {bodyImage.setImageResource(R.drawable.default2); saveDatabody(type2) }
-                    "ebin" -> {bodyImage.setImageResource(R.drawable.ebin); saveDatabody(type2) }
-                    "gond" -> {bodyImage.setImageResource(R.drawable.gond); saveDatabody(type2) }
+                    "default1" -> {bodyImage.setImageResource(R.drawable.default1); saveDatabody(type2, User.getName()) }
+                    "default2" -> {bodyImage.setImageResource(R.drawable.default2); saveDatabody(type2, User.getName()) }
+                    "ebin" -> {bodyImage.setImageResource(R.drawable.ebin); saveDatabody(type2, User.getName()) }
+                    "gond" -> {bodyImage.setImageResource(R.drawable.gond); saveDatabody(type2, User.getName()) }
                 }
             }
 
@@ -138,17 +139,15 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         return binding.root
     }
 
-    private fun saveDatahead(head : String){
-        var avatarHead = ""
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
-        prefs.putString(head, avatarHead)
+    private fun saveDatahead(head : String, userName : String){
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        prefs.putString("avatarHead", head)
         prefs.flush()
     }
 
-    private fun saveDatabody(body : String){
-        var avatarBody = ""
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
-        prefs.putString(body, avatarBody)
+    private fun saveDatabody(body : String, userName : String){
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        prefs.putString("avatarBody", body)
         prefs.flush()
     }
 

@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserBinding
@@ -59,6 +61,25 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.dest_start)
         }
 
+        val headImage = binding.root.findViewById<ImageView>(R.id.imageHead)
+        val bodyImage = binding.root.findViewById<ImageView>(R.id.imageBody)
+
+        val daImage1 : String = getHead(User.getName())
+        when (daImage1){
+            "default1" ->  {headImage.setImageResource(R.drawable.default1); }
+            "default2" ->  {headImage.setImageResource(R.drawable.default2);  }
+            "ebin" ->  {headImage.setImageResource(R.drawable.ebin);  }
+            "gond" ->  {headImage.setImageResource(R.drawable.gond);  }
+        }
+
+        val daImage2 : String = getBody(User.getName())
+        when (daImage2){
+            "default1" ->  {bodyImage.setImageResource(R.drawable.default1); }
+            "default2" ->  {bodyImage.setImageResource(R.drawable.default2);  }
+            "ebin" ->  {bodyImage.setImageResource(R.drawable.ebin);  }
+            "gond" ->  {bodyImage.setImageResource(R.drawable.gond);  }
+        }
+
         /*
 
         // button to navigate to createClassRoom fragment
@@ -78,7 +99,7 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userList : List<String> = User.getAchievement()
+        val userList : List<String> = User.getCourses()
 
         val daList = makeDaList(userList.size)
         recycler_view_user.adapter = ListAdapter(daList)
@@ -119,8 +140,16 @@ class UserFragment : Fragment() {
         }
     }
 
-    fun getName(name: String): String {
-        return name
+    private fun getHead(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val headPog : String = prefs.getString("avatarHead")
+        return headPog
+    }
+
+    private fun getBody(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val bodyPog : String = prefs.getString("avatarBody")
+        return bodyPog
     }
 
     private fun makeDaList(size: Int): List<ListItem> {
@@ -133,6 +162,8 @@ class UserFragment : Fragment() {
         }
         return list
     }
+
+
 
 
 

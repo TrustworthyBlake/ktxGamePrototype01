@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserProfileBinding
@@ -62,6 +65,25 @@ class UserProfileFragment : Fragment() {
             findNavController().navigate(R.id.dest_edit_profile)
         }
 
+        val headImage = binding.root.findViewById<ImageView>(R.id.imageHead)
+        val bodyImage = binding.root.findViewById<ImageView>(R.id.imageBody)
+
+        val daImage1 : String = getHead(User.getName())
+        when (daImage1){
+            "default1" ->  {headImage.setImageResource(R.drawable.default1); }
+            "default2" ->  {headImage.setImageResource(R.drawable.default2);  }
+            "ebin" ->  {headImage.setImageResource(R.drawable.ebin);  }
+            "gond" ->  {headImage.setImageResource(R.drawable.gond);  }
+        }
+
+        val daImage2 : String = getBody(User.getName())
+        when (daImage2){
+            "default1" ->  {bodyImage.setImageResource(R.drawable.default1); }
+            "default2" ->  {bodyImage.setImageResource(R.drawable.default2);  }
+            "ebin" ->  {bodyImage.setImageResource(R.drawable.ebin);  }
+            "gond" ->  {bodyImage.setImageResource(R.drawable.gond);  }
+        }
+
         return binding.root
     }
 
@@ -104,6 +126,18 @@ class UserProfileFragment : Fragment() {
             list += item
         }
         return list
+    }
+
+    private fun getHead(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val headPog : String = prefs.getString("avatarHead")
+        return headPog
+    }
+
+    private fun getBody(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val bodyPog : String = prefs.getString("avatarBody")
+        return bodyPog
     }
 
 
