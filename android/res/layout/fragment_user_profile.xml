@@ -7,37 +7,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="ExtraText"><![CDATA[
-        tools:context=".fragments.UserFragment">]]>
+        tools:context=".fragments.UserFragment">
 
-        <ScrollView
-            android:id="@+id/scrollView3"
-            android:layout_width="352dp"
-            android:layout_height="234dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
+
+
+        ]]>
 
         <Button
             android:id="@+id/settings_button"
             android:layout_width="107dp"
             android:layout_height="53dp"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="156dp"
             android:text="Settings"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.476"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.306" />
 
         <Button
             android:id="@+id/user_info_button"
             android:layout_width="107dp"
             android:layout_height="53dp"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="20dp"
             android:text="User info"
-            app:layout_constraintEnd_toStartOf="@+id/settings_button"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.078"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.306" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -53,36 +52,42 @@
             android:id="@+id/textView12"
             android:layout_width="121dp"
             android:layout_height="35dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="140dp"
             android:text="Score"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.082"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.418" />
 
         <TextView
             android:id="@+id/user_score"
             android:layout_width="191dp"
             android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="84dp"
             android:background="@drawable/textview_border"
             android:gravity="center"
             android:text="Numbers"
             android:textSize="30sp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.109"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="130dp"
             android:layout_height="35dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="20dp"
             android:text="Achievements"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.085"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.586" />
 
         <TextView
             android:id="@+id/textView15"
@@ -102,11 +107,37 @@
             android:id="@+id/log_out_button"
             android:layout_width="107dp"
             android:layout_height="53dp"
-            android:layout_marginTop="192dp"
-            android:layout_marginEnd="32dp"
             android:text="Log out"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            app:layout_constraintHorizontal_bias="0.894"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.306" />
+
+        <Button
+            android:id="@+id/btn_edit_prof"
+            android:layout_width="107dp"
+            android:layout_height="53dp"
+            android:text="Edit Profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.894"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.402" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_user_profile"
+            android:layout_width="376dp"
+            android:layout_height="225dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.542"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.911"
+            tools:listitem="@layout/list_item" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

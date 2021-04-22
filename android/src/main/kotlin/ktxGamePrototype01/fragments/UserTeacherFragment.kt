@@ -9,13 +9,19 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserTeacherBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.fragment_user_teacher.*
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.User
+import ktxGamePrototype01.adapters.ListItem
 
 class UserTeacherFragment : Fragment() {
 
@@ -52,6 +58,17 @@ class UserTeacherFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val userList : List<String> = User.getAchievement()
+
+        val daList = makeDaList(userList.size)
+        recycler_view_userT.adapter = ListAdapter(daList)
+        recycler_view_userT.layoutManager = LinearLayoutManager(requireContext())
+        recycler_view_userT.setHasFixedSize(true)
+    }
+
     // function that retrieves data from user database and displays it
     private fun readData(userID: String) {
         // making the query
@@ -71,6 +88,17 @@ class UserTeacherFragment : Fragment() {
                 //userScore.text = score.toString()
             }
         }
+    }
+
+    private fun makeDaList(size: Int): List<ListItem> {
+        val list = ArrayList<ListItem>()
+        val userList : List<String> = User.getAchievement()
+        for (i in 0 until size) {
+            val drawable = R.drawable.ic_attach_money_black_24dp
+            val item = ListItem(drawable, userList[i])
+            list += item
+        }
+        return list
     }
 
 }

@@ -5,20 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 import ktxGamePrototype01.*
+import ktxGamePrototype01.adapters.ListItem
 
 class UserFragment : Fragment() {
 
@@ -58,6 +59,8 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.dest_start)
         }
 
+        /*
+
         // button to navigate to createClassRoom fragment
         val buttonCreateClassroom = binding.root.findViewById<Button>(R.id.btn_classroom)
         buttonCreateClassroom.setOnClickListener() {
@@ -67,7 +70,20 @@ class UserFragment : Fragment() {
 
         }
 
+         */
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val userList : List<String> = User.getAchievement()
+
+        val daList = makeDaList(userList.size)
+        recycler_view_user.adapter = ListAdapter(daList)
+        recycler_view_user.layoutManager = LinearLayoutManager(requireContext())
+        recycler_view_user.setHasFixedSize(true)
     }
 
     // function to cast user data from the user object to the on-screen elements
@@ -79,7 +95,7 @@ class UserFragment : Fragment() {
         // displaying the data in the textViews
         userName.text = AppActivity().userObject.getName()
         userEmail.text = AppActivity().userObject.getEmail()
-        userScore.text = AppActivity().userObject.getScore().toString()
+        //userScore.text = AppActivity().userObject.getScore().toString()
     }
 
     // OLD NOT IN USE function that retrieves data from user database and displays it
@@ -105,6 +121,17 @@ class UserFragment : Fragment() {
 
     fun getName(name: String): String {
         return name
+    }
+
+    private fun makeDaList(size: Int): List<ListItem> {
+        val list = ArrayList<ListItem>()
+        val userList : List<String> = User.getAchievement()
+        for (i in 0 until size) {
+            val drawable = R.drawable.ic_attach_money_black_24dp
+            val item = ListItem(drawable, userList[i])
+            list += item
+        }
+        return list
     }
 
 

@@ -8,8 +8,10 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
+    private var courseList : List<String> = emptyList()
+    private var achievements : List<String> = emptyList()
 
-    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean) {
+    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses : List<String>, achievList : List<String>) {
         userID = id
         userName = name
         userEmail = email
@@ -18,6 +20,8 @@ object User {
         if (userID != "") {
             userLoaded = true
         }
+        courseList = courses
+        achievements = achievList
     }
 
     fun logoutUser() {
@@ -59,6 +63,14 @@ object User {
 
     fun isUSerLoaded(): Boolean {
         return userLoaded
+    }
+
+    fun getCourses(): List<String> {
+        return courseList
+    }
+
+    fun getAchievement(): List<String>{
+        return achievements
     }
 
 }
