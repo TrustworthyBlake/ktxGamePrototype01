@@ -55,7 +55,8 @@ class RenderSystemText2D(
         }
         when {
             textComp.isText && !textComp.drawPlayScoreHUD-> {
-                textComp.font.draw(batchText, textComp.textStr, (textComp.posTextVec2.x * 120f) - (x * 120f), (textComp.posTextVec2.y * 120f) - (y * 120f))
+                textComp.font.draw(batchText, textComp.textStr, (textComp.posTextVec2.x * 120f)
+                        - (x * 120f), (textComp.posTextVec2.y * 120f) - (y * 120f))
                 LOG.debug { "pos text: x = $x, y = $y" }
             }
             textComp.isText && textComp.drawPlayScoreHUD && player != null ->{
