@@ -11,6 +11,7 @@ import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
+import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
@@ -64,12 +65,6 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                 }
                 with<PlayerComponent> {}
                 with<OrientationComponent>()
-                with<TextComponent> {
-                    isText = true
-                    drawPlayScoreHUD = true
-                    font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                    font.data.setScale(4.0f, 4.0f)
-                }
             }
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
@@ -89,6 +84,12 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                 }
                 with<PlayerComponent> {}
                 with<OrientationComponent>()
+                with<TextComponent> {
+                    isText = true
+                    drawPlayScoreHUD = true
+                    font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    font.data.setScale(4.0f, 4.0f)
+                }
             }
         }
 }
@@ -102,12 +103,14 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
         teacherPosArray.add(Vector2(7f, 11f))
         teacherPosArray.add(Vector2(1f, 4f))
         teacherPosArray.add(Vector2(7f, 4f))
-        var count = 0
+        var count = 1
         var pos = 0
         var teacherName = ""
         var head = ""
         var body = ""
+        val maxLength = 26
         if (!teacherList.isNullOrEmpty()) {
+            val helpFun = HelperFunctions()
             for (i in 0 until teacherList.size) {
                 var line = teacherList.elementAt(i)
                 when (pos) {
@@ -121,12 +124,14 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                         teacherName = line; LOG.debug { "Teachers name: $line" }
                     }
                 }
+                var (teacherNameChopped , spacer, centerTextPos) = helpFun.chopString(teacherName, maxLength)
                 pos += 1
                 if (pos % 3 == 0) {
+                    count += 1
                     pos = 0
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
-                            posVec3.set(10.0f, 6f, -1f)
+                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y + 1f, -1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
@@ -140,17 +145,10 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                             }
                         }
                         with<InteractableComponent> {}
-                        with<TextComponent> {
-                            isText = true
-                            textStr = teacherName
-                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                            font.data.setScale(4.0f, 4.0f)
-                            posTextVec2.set(4.5f, 11.5f)
-                        }
                     }
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
-                            posVec3.set(10.0f, 5f, -1f)
+                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y, -1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
@@ -164,6 +162,13 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                             }
                         }
                         with<InteractableComponent> {}
+                        with<TextComponent> {
+                            isText = true
+                            textStr = teacherNameChopped
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                            font.data.setScale(4.0f, 4.0f)
+                            posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 2.6f)
+                        }// +2.6f because the text is bound to body and not head, todo consider moving this to head
                     }
                 }
             }
@@ -208,4 +213,5 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
             LOG.debug { "Done Reading" }
         }
     }
+
 }
