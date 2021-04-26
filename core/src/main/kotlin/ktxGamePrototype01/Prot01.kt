@@ -13,6 +13,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.system.*
 import ktxGamePrototype01.screen.FirstScreen
+import ktxGamePrototype01.screen.OpenWorldScreen
 import ktxGamePrototype01.screen.SecondScreen
 
 private val LOG = logger<Prot01>()
@@ -34,9 +35,11 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         LOG.debug { "Game instance created" }
-        addScreen(FirstScreen(this))
+        //addScreen(FirstScreen(this))
         //addScreen(SecondScreen(this))
-        setScreen<FirstScreen>()
+        //setScreen<FirstScreen>()
+        addScreen((OpenWorldScreen(this)))
+        setScreen<OpenWorldScreen>()
         if(x == 2){
             LOG.debug {" is 2" }
         }
