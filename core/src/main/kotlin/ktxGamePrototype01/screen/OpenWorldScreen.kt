@@ -3,6 +3,8 @@ package ktxGamePrototype01.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -22,7 +24,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     override fun show() {
         createMapEntities()
         createUserEntityFromPlayerData()
-        //createTeacherEntities(teachers)
+        createTeacherEntities(teachers)
     }
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, false)
@@ -40,8 +42,6 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     // Open up window which lets the user decide which quiz to do or place the different quizes as entities on the map
     // When quiz is chosen, close the open world and open up the quiz screen
     private fun createUserEntityFromPlayerData(){
-        //val playerData =
-
         val prefs: Preferences = Gdx.app.getPreferences("playerDataStudent Testing") // + playerName string from app
         val playerHead = prefs.getString("avatarHead")
         val playerBody = prefs.getString("avatarBody")
@@ -97,45 +97,74 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
             "Mrs.TeacherWoman", "head2", "body2"
     )
     private fun createTeacherEntities(teacherList : MutableList<String>){     //userName : String
+        var teacherPosArray = Array<Vector2>()
+        teacherPosArray.add(Vector2(1f, 11f))
+        teacherPosArray.add(Vector2(7f, 11f))
+        teacherPosArray.add(Vector2(1f, 4f))
+        teacherPosArray.add(Vector2(7f, 4f))
         var count = 0
         var pos = 0
         var teacherName = ""
         var head = ""
         var body = ""
-        if (!teacherList.isNullOrEmpty()){
-            for (i in pos until teacherList.size){
+        if (!teacherList.isNullOrEmpty()) {
+            for (i in 0 until teacherList.size) {
                 var line = teacherList.elementAt(i)
                 when (pos) {
-                    1 -> { head = line; LOG.debug { "Teachers head: $line" }}
-                    2 -> {body = line; LOG.debug { "Teachers body: $line" }}
-                    else -> { teacherName = line; LOG.debug { "Teachers name: $line" }}
-                }
-                pos += 1
-                if(pos % 3 == 0){
-                LOG.debug { "break" }
-                    //pos = 0
-                    break
-                }
-
-            }
-            val teacherHead = engine.entity {
-                with<TransformComponent>{
-                    posVec3.set(4.5f, 10f, -1f)
-                }
-                with<GraphicComponent>{
-                    sprite.run{
-                        setRegion(blankTexture)
-                        setSize(texture.width * unitScale, texture.height * unitScale)
-                        setOriginCenter()
+                    1 -> {
+                        head = line; LOG.debug { "Teachers head: $line" }
+                    }
+                    2 -> {
+                        body = line; LOG.debug { "Teachers body: $line" }
+                    }
+                    else -> {
+                        teacherName = line; LOG.debug { "Teachers name: $line" }
                     }
                 }
-                with<InteractableComponent>{}
-                with<TextComponent> {
-                    isText = true
-                    textStr = teacherName
-                    font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                    font.data.setScale(4.0f, 4.0f)
-                    posTextVec2.set(4.5f, 11.5f)
+                pos += 1
+                if (pos % 3 == 0) {
+                    pos = 0
+                    val teacherEntityHead = engine.entity {
+                        with<TransformComponent> {
+                            posVec3.set(10.0f, 6f, -1f)
+                        }
+                        with<GraphicComponent> {
+                            sprite.run {
+                                when (head) {
+                                    "todo1" -> setRegion(playerTextureHead)
+                                    "todo2" -> setRegion(playerTextureHead)
+                                    else -> setRegion(playerTextureHead)
+                                }
+                                setSize(texture.width * unitScale, texture.height * unitScale)
+                                setOriginCenter()
+                            }
+                        }
+                        with<InteractableComponent> {}
+                        with<TextComponent> {
+                            isText = true
+                            textStr = teacherName
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                            font.data.setScale(4.0f, 4.0f)
+                            posTextVec2.set(4.5f, 11.5f)
+                        }
+                    }
+                    val teacherEntityBody = engine.entity {
+                        with<TransformComponent> {
+                            posVec3.set(10.0f, 5f, -1f)
+                        }
+                        with<GraphicComponent> {
+                            sprite.run {
+                                when (body) {
+                                    "todo1" -> setRegion(playerTextureBody)
+                                    "todo2" -> setRegion(playerTextureBody)
+                                    else -> setRegion(playerTextureBody)
+                                }
+                                setSize(texture.width * unitScale, texture.height * unitScale)
+                                setOriginCenter()
+                            }
+                        }
+                        with<InteractableComponent> {}
+                    }
                 }
             }
         }

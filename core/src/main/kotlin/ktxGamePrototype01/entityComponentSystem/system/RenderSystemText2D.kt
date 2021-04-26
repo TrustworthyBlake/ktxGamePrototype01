@@ -57,12 +57,12 @@ class RenderSystemText2D(
             textComp.isText && !textComp.drawPlayScoreHUD-> {
                 textComp.font.draw(batchText, textComp.textStr, (textComp.posTextVec2.x * 120f)
                         - (x * 120f), (textComp.posTextVec2.y * 120f) - (y * 120f))
-                LOG.debug { "pos text: x = $x, y = $y" }
+                //LOG.debug { "pos text: x = $x, y = $y" }
             }
             textComp.isText && textComp.drawPlayScoreHUD && player != null ->{
                     textComp.font.draw(batchText, "Score: "+player.playerScore.toInt().toString(),
                             -540f + x, 960f + y)
-                LOG.debug { "pos text score: x = $x, y = $y" }
+                //LOG.debug { "pos text score: x = $x, y = $y" }
                 }
             else ->
                 LOG.error { "Error: 5010. entity=$entity" }
