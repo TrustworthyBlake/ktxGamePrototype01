@@ -21,6 +21,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
+    private val quizQuestTexture = Texture(Gdx.files.internal("graphics/skill_icons1.png"))
 
     override fun show() {
         createMapEntities()
@@ -213,5 +214,10 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
             LOG.debug { "Done Reading" }
         }
     }
-
+    private fun createQuizQuestEntities(){
+        // Teacher name: who own the quiz
+        // Place entity with name of quiz on map when interacting with teacher
+        // Remove current placed quests when starting a new interaction with another teacher
+        // Start quiz game when activating quest
+    }
 }
