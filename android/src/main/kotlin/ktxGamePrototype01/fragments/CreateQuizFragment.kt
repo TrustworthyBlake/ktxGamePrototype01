@@ -1,11 +1,7 @@
 package ktxGamePrototype01.fragments
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
-import android.os.Environment
-import android.system.Os.mkdir
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,14 +15,11 @@ import com.badlogic.gdx.Preferences
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.DialogDeleteQuizBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentCreateQuizBinding
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_create_quiz.*
-import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.User
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.IOException
 
 
 class CreateQuizFragment : Fragment() {
@@ -70,16 +63,15 @@ class CreateQuizFragment : Fragment() {
         return binding.root
     }
     private val tempQuizList = mutableListOf<String>()
+    private val tempQuizList2 = mutableListOf<String>()
     var hasAddedAnswer = false
     var hasCreatedQuestion = false
     var amountOfAnswers = 0
     // values for firestore under
-    var nameOfQuiz = ""
-    var question = ""
-    var rightAnswerList: List<String> = emptyList()
-    var wrongAnswerList: List<String> = emptyList()
     var classroom = "2nd grade English 2021"
-    var score = -1
+    var qzName= ""
+    var noOfQuestions = 0
+
 
     private fun addToQuiz() {
         when {
@@ -96,18 +88,21 @@ class CreateQuizFragment : Fragment() {
                     val lastNumInQuizChar = tempQuizList.last().first()
                     nrToQuestion = Character.getNumericValue(lastNumInQuizChar)
                 }
-                when {  // when question box is ticked and no question is given and is not empty and question not too long
+                when {  // question box is ticked and no question is given and is not empty and question not too long
                     isQuestion && !TextUtils.isEmpty(binding.giveQuestionMaxScore.text.toString()) && !hasCreatedQuestion && questAnsw.count() < 170 -> {
                         maxPoints = binding.giveQuestionMaxScore.text.toString().toInt()
+
                         nrToQuestion += 1
+                        noOfQuestions += 1
+
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect + "-" + maxPoints)
+
                         hasAddedAnswer = false
                         hasCreatedQuestion = true
                         amountOfAnswers = 0
                         binding.giveQuestionMaxScore.setText("")
                         binding.createQuestionTextIn.setText("")
-                        question = questAnsw
-                        score = maxPoints
+
                         Toast.makeText(activity, "Added question", Toast.LENGTH_SHORT).show()
                     }
                     !isQuestion && (hasCreatedQuestion || hasAddedAnswer) && questAnsw.count() < 170 && amountOfAnswers < 4-> {
@@ -117,13 +112,12 @@ class CreateQuizFragment : Fragment() {
                         binding.createQuizButton.visibility = View.VISIBLE
                         binding.createQuizTextIn.visibility = View.VISIBLE
                         binding.createQuestionTextIn.setText("")
-                        if(isCorrect) {
-                            rightAnswerList += questAnsw
-                        } else {
-                            wrongAnswerList += questAnsw
-                        }
+
+
                         Toast.makeText(activity, "Added answer", Toast.LENGTH_SHORT).show()
                         amountOfAnswers += 1
+
+
 
                     }
                     amountOfAnswers >= 4 -> Toast.makeText(activity, "Error: Max amount of 4 answers exceeded", Toast.LENGTH_SHORT).show()
@@ -148,8 +142,12 @@ class CreateQuizFragment : Fragment() {
                 hasCreatedQuestion = false
                 binding.createQuizButton.visibility = View.INVISIBLE
                 binding.createQuizTextIn.visibility = View.INVISIBLE
+
+
+                qzName = "$quizName-" + User.getName()
+
+                addQuizToDatabase()
                 tempQuizList.clear()
-                addQuizToDatabase(quizName, question, wrongAnswerList, rightAnswerList, classroom, score)
             }
             tempQuizList.isNullOrEmpty() -> {
                 Toast.makeText(activity, "Error: You must add questions and answers to your quiz!", Toast.LENGTH_SHORT).show()
@@ -157,7 +155,7 @@ class CreateQuizFragment : Fragment() {
         }
     }
 
-    private fun writeQuizToFile(quizName : String, quizData : MutableList<String>) {
+    private fun writeQuizToFile(quizName: String, quizData: MutableList<String>) {
         val pathInternal = activity?.filesDir
         if (pathInternal != null) {
             val pathTextFile = File(pathInternal, "assets/quizFiles")
@@ -192,13 +190,13 @@ class CreateQuizFragment : Fragment() {
                     setTitle("Enter name of quiz you want to delete")
                     setPositiveButton("OK"){ _, _ ->
                         val quizName = dialogDeleteQuizBinding.deleteQuizTextInput.text.toString()
-                        val fullPathQuiz = File(pathTextFile,quizName+".txt")
+                        val fullPathQuiz = File(pathTextFile, quizName + ".txt")
                         if(fullPathQuiz.exists()){
                             fullPathQuiz.delete()
                             Toast.makeText(activity, "Quiz deleted", Toast.LENGTH_SHORT).show()
                         }else Toast.makeText(activity, "Could not find a quiz with that name to delete", Toast.LENGTH_SHORT).show()
                     }
-                    setNegativeButton("Cancel"){_,_ ->
+                    setNegativeButton("Cancel"){ _, _ ->
                         dialogDeleteQuizBinding.deleteQuizTextInput.setText("")
                     }
                     setView(dialogDeleteQuizBinding.root)
@@ -215,24 +213,22 @@ class CreateQuizFragment : Fragment() {
         Toast.makeText(activity, "Total player score = $totalPlayerScore", Toast.LENGTH_SHORT).show()
     }
 
-    private fun addQuizToDatabase(quizName: String, question: String, wrongAnswerList: List<String>, rightAnswerList: List<String>, classroom: String, maxScore: Int) {
+    private fun addQuizToDatabase() {
         val db = FirebaseFirestore.getInstance()
 
         val quiz = hashMapOf(
-                "quizname" to quizName,
+                "name" to qzName,
                 "course" to classroom,
-                "question" to question,
-                "rightAnswers" to rightAnswerList,
-                "wrongAnswers" to wrongAnswerList,
-                "maxScore" to maxScore
+                "question" to tempQuizList
         )
+
         // add the data into the database
-        db.collection("quiz").add(quiz).addOnSuccessListener {
+        db.collection("quiz").document(qzName).set(quiz).addOnSuccessListener {
             Log.d("FAIL", "Successfully added quiz to DB")
             Toast.makeText(activity, "Quiz successfully created", Toast.LENGTH_LONG).show()
             db.collection("classrooms")
                     .document(classroom)
-                    .update("quizes", FieldValue.arrayUnion(quizName)).addOnSuccessListener {
+                    .update("quizes", FieldValue.arrayUnion(qzName)).addOnSuccessListener {
                         Log.d("SUCCESS", "Successfully added quiz to classroom")
                     }
                     .addOnFailureListener { e ->
@@ -243,3 +239,5 @@ class CreateQuizFragment : Fragment() {
     }
 
 }
+
+

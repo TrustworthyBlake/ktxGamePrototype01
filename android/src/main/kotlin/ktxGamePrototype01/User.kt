@@ -8,8 +8,11 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
+    private var courseList: List<String> = emptyList()
+    private var teacherList: List<String> = emptyList()
+    private var quizList: List<String> = emptyList()
 
-    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean) {
+    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses: List<String>) {
         userID = id
         userName = name
         userEmail = email
@@ -18,6 +21,7 @@ object User {
         if (userID != "") {
             userLoaded = true
         }
+        courseList = courses
     }
 
     fun logoutUser() {
@@ -41,6 +45,22 @@ object User {
         userScore = score
     }
 
+    fun setTeachers(list: List<String>){
+        teacherList = list
+    }
+
+    fun setQuizes(list: List<String>){
+        quizList = list
+    }
+
+    fun getQuizes(): List<String> {
+        return quizList
+    }
+
+    fun getTeachers(): List<String> {
+        return teacherList
+    }
+
     fun getName(): String {
         return userName
     }
@@ -59,6 +79,10 @@ object User {
 
     fun isUSerLoaded(): Boolean {
         return userLoaded
+    }
+
+    fun getCourses(): List<String> {
+        return courseList
     }
 
 }
