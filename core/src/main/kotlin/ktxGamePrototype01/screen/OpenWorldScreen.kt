@@ -48,25 +48,6 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
         val playerHead = prefs.getString("avatarHead")
         val playerBody = prefs.getString("avatarBody")
         if(playerBody != null && playerHead != null) {
-            val playerEntityHead = engine.entity {
-                with<TransformComponent>{
-                    posVec3.set(4.5f, 10f, -1f)
-                }
-                with<MovementComponent>()
-                with<GraphicComponent>{
-                    sprite.run{
-                        when(playerHead){
-                            "todo1" -> setRegion(playerTextureHead)
-                            "todo2" -> setRegion(playerTextureHead)
-                            else -> setRegion(playerTextureHead)
-                        }
-                        setSize(texture.width * unitScale, texture.height * unitScale)
-                        setOriginCenter()
-                    }
-                }
-                with<PlayerComponent> {}
-                with<OrientationComponent>()
-            }
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     posVec3.set(4.5f, 11f, -1f)
@@ -92,7 +73,30 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                     font.data.setScale(4.0f, 4.0f)
                 }
             }
-        }
+            val playerEntityHead = engine.entity {
+                with<TransformComponent>{
+                    posVec3.set(4.5f, 10f, -1f)
+                }
+                with<MovementComponent>()
+                with<GraphicComponent>{
+                    sprite.run{
+                        when(playerHead){
+                            "todo1" -> setRegion(playerTextureHead)
+                            "todo2" -> setRegion(playerTextureHead)
+                            else -> setRegion(playerTextureHead)
+                        }
+                        setSize(texture.width * unitScale, texture.height * unitScale)
+                        setOriginCenter()
+                    }
+                }
+                with<BindEntitiesComponent> {
+                    masterEntity = playerEntityBody
+                    posOffset.set(0f, 1f)
+                }
+                with<OrientationComponent>()
+            }
+
+        }else{LOG.debug { "Error: Can not find player data" }}
 }
     private val teachers = mutableListOf<String>(
             "Mr.TeacherMan", "head1", "body1",
@@ -173,7 +177,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                     }
                 }
             }
-        }
+        }else{LOG.debug { "Error: Can not find teacher list" }}
     }
     private fun createMapEntities(){
         val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
