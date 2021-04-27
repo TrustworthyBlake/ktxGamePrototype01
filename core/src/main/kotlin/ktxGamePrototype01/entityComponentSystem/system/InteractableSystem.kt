@@ -14,6 +14,9 @@ import javax.xml.soap.Text
 
 private val LOG = logger<InteractableSystem>()
 
+const val WrongAnswerPoints = 0
+
+
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
@@ -41,7 +44,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     }
 
     //  Function that edits entities on map
-    fun correctQuizAnswer() {
+    fun hasAnsweredQuiz() {
         interactableEntities.forEach { interactable ->
             engine.removeEntity(interactable)
         }
@@ -90,11 +93,25 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     if (interact.correctAnswer) {
                         //  COUNT SCORE
                         p.playerScore += interact.maxPointsQuestion
+                        player[QuizComponent.mapper]?.let { quiz ->
+                            quiz.quizResultList.add(interact.maxPointsQuestion.toString())
+                        }
+
                         // RESET START
                         playerTransform.posVec3.x = 5f
                         playerTransform.posVec3.y = 2f
                         //  Run update on entities
-                        correctQuizAnswer()
+                        hasAnsweredQuiz()
+                    }else{
+                        p.playerScore += WrongAnswerPoints
+                        player[QuizComponent.mapper]?.let { quiz ->
+                            quiz.quizResultList.add("0")
+                        }
+                        // RESET START
+                        playerTransform.posVec3.x = 5f
+                        playerTransform.posVec3.y = 2f
+                        //  Run update on entities
+                        hasAnsweredQuiz()
                     }
 
                     //  SET STANDARD COLLISION

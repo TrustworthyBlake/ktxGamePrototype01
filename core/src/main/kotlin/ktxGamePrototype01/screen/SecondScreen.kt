@@ -40,13 +40,20 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport.update(width, height, true)
+        viewport.update(50, 50, true)
+
+
     }
 
     override fun render(delta: Float) {
         viewport.apply()
         batch.use(viewport.camera.combined){
         }
+
+
+
+
+
         engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
             dispose()

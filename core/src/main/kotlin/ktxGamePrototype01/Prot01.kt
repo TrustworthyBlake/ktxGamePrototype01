@@ -13,6 +13,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.system.*
 import ktxGamePrototype01.screen.FirstScreen
+import ktxGamePrototype01.screen.QuizInfo
 import ktxGamePrototype01.screen.SecondScreen
 
 private val LOG = logger<Prot01>()
@@ -22,6 +23,9 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
     val batchText: Batch by lazy { SpriteBatch() }
+
+
+
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
         addSystem(MovementSystem())
@@ -48,4 +52,9 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
         batch.dispose()
         batchText.dispose()
     }
+
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+    }
+
 }
