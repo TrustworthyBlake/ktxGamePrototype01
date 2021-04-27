@@ -16,15 +16,16 @@ import kotlin.with
 
 private val LOG = logger<QuizQuestSystem>()
 class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude(NukePooledComponent::class).get()){
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
         require(qQuestComp != null){"Error: Missing quiz quest component"}
-
         if (qQuestComp.showAvailableQuizes){
             createQuestsSignPosts(entity)
             qQuestComp.showAvailableQuizes = false
         }
     }
+
     private fun createQuestsSignPosts(entity: Entity) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
         require(qQuestComp != null){"Error: Missing quiz quest component"}

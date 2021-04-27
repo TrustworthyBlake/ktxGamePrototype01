@@ -34,7 +34,9 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     override fun render(delta: Float) {
         engine.update(delta)
     }
-    override fun dispose() {}
+    override fun dispose() {
+        engine.removeAllEntities()
+    }
 
     // Get player data of sprite
     // Get all teacher player data sprite
@@ -64,7 +66,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                         setOriginCenter()
                     }
                 }
-                with<PlayerComponent> {}
+                with<PlayerComponent> {gameInst = game}
                 with<OrientationComponent>()
                 with<TextComponent> {
                     isText = true
@@ -149,7 +151,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                                 setOriginCenter()
                             }
                         }
-                        with<InteractableComponent> {}
+                        with<InteractableComponent>()
                     }
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
@@ -166,7 +168,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                                 setOriginCenter()
                             }
                         }
-                        with<InteractableComponent> {isTeacher = true}
+                        with<InteractableComponent> { isTeacher = true }
                         with<TextComponent> {
                             isText = true
                             textStr = teacherNameChopped

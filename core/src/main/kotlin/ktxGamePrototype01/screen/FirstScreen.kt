@@ -32,36 +32,9 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
 
-    private val player = engine.entity{
-        var totScore = 0f
-        with<TransformComponent>{
-            posVec3.set(4.5f, 10f, -1f)
-        }
-        with<MovementComponent>()
-        with<GraphicComponent>{
-            sprite.run{
-                setRegion(playerTexture)
-                setSize(texture.width * unitScale, texture.height * unitScale)
-                setOriginCenter()
-            }
-        }
-        with<PlayerComponent> {
-            totScore = playerScore
-        }
-        with<OrientationComponent>()
-        with<TextComponent> {
-            isText = true
-            drawPlayScoreHUD = true
-            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-            font.data.setScale(4.0f, 4.0f)
-        }
-       with<QuizComponent>{
-            quizName = "test9"
-        }
-    }
-
     override fun show() {
         LOG.debug { "First screen is displayed" }
+        createPlayerEntity()
         createMapEntities()
     }
 
@@ -89,8 +62,37 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     }
 
     override fun dispose() {
-        playerTexture.dispose()
-        player.removeAll()
+        engine.removeAllEntities()
+    }
+
+    private fun createPlayerEntity(){
+            val player = engine.entity{
+            var totScore = 0f
+            with<TransformComponent>{
+                posVec3.set(4.5f, 10f, -1f)
+            }
+            with<MovementComponent>()
+            with<GraphicComponent>{
+                sprite.run{
+                    setRegion(playerTexture)
+                    setSize(texture.width * unitScale, texture.height * unitScale)
+                    setOriginCenter()
+                }
+            }
+            with<PlayerComponent> {
+                totScore = playerScore
+            }
+            with<OrientationComponent>()
+            with<TextComponent> {
+                isText = true
+                drawPlayScoreHUD = true
+                font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                font.data.setScale(4.0f, 4.0f)
+            }
+            with<QuizComponent>{
+                quizName = "test9"
+            }
+        }
     }
 
     private fun createMapEntities(){
