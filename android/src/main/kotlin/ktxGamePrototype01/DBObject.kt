@@ -1,21 +1,17 @@
 package ktxGamePrototype01
 
 import android.util.Log
-import android.widget.Toast
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestore.getInstance
-import java.util.concurrent.Future
 
 object DBObject {
 
     private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
     private const val failTAG = "DATABASE ENTRY FAILED"
     private const val successTAG = "DATABASE ENTRY SUCCESS"
 
@@ -29,8 +25,12 @@ object DBObject {
                     task.result?.get("name").toString(), // name
                     task.result?.get("email").toString(),  // email
                     task.result?.get("score").toString().toInt(),  // score
-                    task.result?.get("teacher") as Boolean  // is teacher or not
+                    task.result?.get("teacher") as Boolean,  // is teacher or not
+                    task.result?.get("courses") as List<String>,
+                    task.result?.get("achievement") as List<String>
                 )
+                getTeachersFromCourses(task.result?.get("courses") as List<String>)
+                getQuizesFromCourses(task.result?.get("courses") as List<String>)
             }
         }
     }
@@ -40,6 +40,7 @@ object DBObject {
         val db = getInstance()
 
         val courseList: List<String> = emptyList()
+        val achievList: List<String> = emptyList()
         // Create a new user entry in the database
         val user = hashMapOf(
             "userid" to userID,
@@ -47,7 +48,8 @@ object DBObject {
             "name" to capitalize(name),
             "score" to 0,
             "teacher" to isTeacher,
-            "courses" to courseList
+            "courses" to courseList,
+            "achievement" to achievList
         )
         // add selected data to database
         db.collection("users").document(userID)
@@ -68,6 +70,18 @@ object DBObject {
             db.collection("users")
                 .document(item)
                 .update("courses", FieldValue.arrayUnion(className))
+        }
+    }
+
+    // find a user by the users name
+    private fun findUserByName(name: String) {
+        val db = FirebaseFirestore.getInstance()
+        val doc = db.collection("users").whereEqualTo("name", name).get()
+        doc.addOnSuccessListener { documents ->
+            for (document in documents) {
+                val uid = document["userid"].toString()
+                // do something with given user
+            }
         }
     }
 
@@ -124,6 +138,53 @@ object DBObject {
     // capitalize a string
     fun capitalize(s: String): String {
         return s.split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
+    }
+
+    // getting all teachers from courses user is in
+    private fun getTeachersFromCourses(list: List<String>) {
+
+        var teacherList: List<String> = emptyList()
+
+        for(course in list) {
+
+            db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val teacher = task.result?.get("teacher name").toString()
+                    teacherList = teacherList+teacher
+                }
+                setTeachers(teacherList)
+            }
+        }
+    }
+
+    private fun setTeachers(list: List<String>){
+        User.setTeachers(list)
+    }
+
+    // getting all quizes from all the courses user is in
+    private fun getQuizesFromCourses(list: List<String>) {
+
+        var quizList: List<String> = emptyList()
+
+        for(course in list) {
+
+            db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val quizes = task.result?.get("quizes") as List<String>
+
+                    for (quiz in quizes) {
+                        quizList=quizList+quiz
+                    }
+
+                }
+                setQuizes(quizList)
+
+            }
+        }
+    }
+
+    private fun setQuizes(list: List<String>){
+        User.setQuizes(list)
     }
 
 }

@@ -8,57 +8,88 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
+    private var courseList: List<String> = emptyList()
+    private var teacherList: List<String> = emptyList()
+    private var quizList: List<String> = emptyList()
+    private var achievements: List<String> = emptyList()
 
-    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean) {
-        userID = id
-        userName = name
-        userEmail = email
-        userScore = score
-        isTeacher = teacher
-        if (userID != "") {
-            userLoaded = true
+        fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses: List<String>, achievList: List<String>) {
+            userID = id
+            userName = name
+            userEmail = email
+            userScore = score
+            isTeacher = teacher
+            if (userID != "") {
+                userLoaded = true
+            }
+            courseList = courses
+            achievements = achievList
         }
-    }
 
-    fun logoutUser() {
-        userID = ""
-        userName = ""
-        userEmail = ""
-        userScore = -1
-        isTeacher = false
-        userLoaded = false
-    }
+        fun logoutUser() {
+            userID = ""
+            userName = ""
+            userEmail = ""
+            userScore = -1
+            isTeacher = false
+            userLoaded = false
+        }
 
-    fun setName(name: String) {
-        userName = name
-    }
+        fun setName(name: String) {
+            userName = name
+        }
 
-    fun setEmail(email: String) {
-        userName = email
-    }
+        fun setEmail(email: String) {
+            userName = email
+        }
 
-    fun setScore(score: Int) {
-        userScore = score
-    }
+        fun setScore(score: Int) {
+            userScore = score
+        }
 
-    fun getName(): String {
-        return userName
-    }
+        fun setTeachers(list: List<String>) {
+            teacherList = list
+        }
 
-    fun getEmail(): String {
-        return userEmail
-    }
+        fun setQuizes(list: List<String>) {
+            quizList = list
+        }
 
-    fun getScore(): Int {
-        return userScore
-    }
+        fun getQuizes(): List<String> {
+            return quizList
+        }
 
-    fun checkForTeacher(): Boolean {
-        return isTeacher
-    }
+        fun getTeachers(): List<String> {
+            return teacherList
+        }
 
-    fun isUSerLoaded(): Boolean {
-        return userLoaded
-    }
+        fun getName(): String {
+            return userName
+        }
+
+        fun getEmail(): String {
+            return userEmail
+        }
+
+        fun getScore(): Int {
+            return userScore
+        }
+
+        fun checkForTeacher(): Boolean {
+            return isTeacher
+        }
+
+        fun isUSerLoaded(): Boolean {
+            return userLoaded
+        }
+
+        fun getCourses(): List<String> {
+            return courseList
+        }
+
+        fun getAchievement(): List<String> {
+            return achievements
+        }
+
 
 }
