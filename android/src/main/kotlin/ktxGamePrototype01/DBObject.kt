@@ -1,17 +1,12 @@
 package ktxGamePrototype01
 
 import android.util.Log
-import android.widget.Toast
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestore.getInstance
-import java.util.concurrent.Future
 
 object DBObject {
 
@@ -31,13 +26,8 @@ object DBObject {
                     task.result?.get("email").toString(),  // email
                     task.result?.get("score").toString().toInt(),  // score
                     task.result?.get("teacher") as Boolean,  // is teacher or not
-<<<<<<< HEAD
-                        task.result?.get("courses") as List<String>
-
-=======
                     task.result?.get("courses") as List<String>,
                     task.result?.get("achievement") as List<String>
->>>>>>> fb3d0f9406b6a0d4539b639ee5ff1e6ab89547d3
                 )
                 getTeachersFromCourses(task.result?.get("courses") as List<String>)
                 getQuizesFromCourses(task.result?.get("courses") as List<String>)
