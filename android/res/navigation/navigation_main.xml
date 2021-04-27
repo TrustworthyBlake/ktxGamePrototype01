@@ -85,6 +85,10 @@
         <action
             android:id="@+id/action_dest_user_profile_to_dest_user"
             app:destination="@id/dest_user" />
+        <action
+            android:id="@+id/action_dest_user_profile_to_dest_edit_profile"
+            app:destination="@id/dest_edit_profile" />
+
     </fragment>
 
     <fragment
@@ -108,6 +112,9 @@
         <action
             android:id="@+id/action_dest_teacher_profile_to_dest_settings"
             app:destination="@id/dest_settings" />
+        <action
+            android:id="@+id/action_dest_teacher_profile_to_placeholder"
+            app:destination="@id/dest_edit_profile" />
     </fragment>
   
   <fragment
@@ -123,6 +130,10 @@
         tools:layout="@layout/fragment_create_quiz" />
 
 
+
+    <fragment android:id="@+id/dest_edit_profile"
+        android:name="ktxGamePrototype01.fragments.EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile"/>
 
 
 </navigation>

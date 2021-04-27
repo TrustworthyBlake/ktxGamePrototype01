@@ -8,11 +8,18 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
+<<<<<<< HEAD
     private var courseList: List<String> = emptyList()
     private var teacherList: List<String> = emptyList()
     private var quizList: List<String> = emptyList()
 
     fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses: List<String>) {
+=======
+    private var courseList : List<String> = emptyList()
+    private var achievements : List<String> = emptyList()
+
+    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses : List<String>, achievList : List<String>) {
+>>>>>>> fb3d0f9406b6a0d4539b639ee5ff1e6ab89547d3
         userID = id
         userName = name
         userEmail = email
@@ -22,6 +29,10 @@ object User {
             userLoaded = true
         }
         courseList = courses
+<<<<<<< HEAD
+=======
+        achievements = achievList
+>>>>>>> fb3d0f9406b6a0d4539b639ee5ff1e6ab89547d3
     }
 
     fun logoutUser() {
@@ -85,4 +96,11 @@ object User {
         return courseList
     }
 
+<<<<<<< HEAD
+=======
+    fun getAchievement(): List<String>{
+        return achievements
+    }
+
+>>>>>>> fb3d0f9406b6a0d4539b639ee5ff1e6ab89547d3
 }
