@@ -30,6 +30,9 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private val quizEntities by lazy {
         engine.getEntitiesFor(allOf(QuizComponent::class).get())
     }
+    private val quizQuestEntities by lazy {
+        engine.getEntitiesFor(allOf(QuizQuestComponent::class).get())
+    }
 
     private val interactables = mutableListOf<Int>()
     override fun update(deltaTime: Float) {
@@ -54,6 +57,13 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             val q = quiz[QuizComponent.mapper]
             require(q != null)
             q.playerHasAnswered = true
+        }
+    }
+    private fun removeQuestEntities(){
+        interactableEntities.forEach { interactable ->
+            val interact = interactable[InteractableComponent.mapper]
+            require(interact != null)
+            if(interact.isQuest)engine.removeEntity(interactable)
         }
     }
 
@@ -95,6 +105,14 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.posVec3.y = 2f
                         //  Run update on entities
                         correctQuizAnswer()
+                    }
+                    if (interact.isTeacher){
+                        val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
+                        require(qQuestComp != null){"Error: Missing quiz quest component"}
+                        removeQuestEntities()
+                        qQuestComp.showAvailableQuizes = true
+                        //qQuestComp.doOnce = true
+
                     }
 
                     //  SET STANDARD COLLISION

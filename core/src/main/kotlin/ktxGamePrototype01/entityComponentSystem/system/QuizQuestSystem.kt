@@ -16,11 +16,13 @@ import kotlin.with
 
 private val LOG = logger<QuizQuestSystem>()
 class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude(NukePooledComponent::class).get()){
-    private var doOnce = 0
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        if (doOnce == 0){
-        createQuestsSignPosts(entity)
-        doOnce = 1
+        val qQuestComp = entity[QuizQuestComponent.mapper]
+        require(qQuestComp != null){"Error: Missing quiz quest component"}
+
+        if (qQuestComp.showAvailableQuizes){
+            createQuestsSignPosts(entity)
+            qQuestComp.showAvailableQuizes = false
         }
     }
     private fun createQuestsSignPosts(entity: Entity) {
@@ -52,7 +54,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
                             setOriginCenter()
                         }
                     }
-                    with<InteractableComponent> {  }
+                    with<InteractableComponent> { isQuest = true }
                     with<TextComponent> {
                         isText = true
                         textStr = quizNameChopped

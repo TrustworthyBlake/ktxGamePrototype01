@@ -166,7 +166,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                                 setOriginCenter()
                             }
                         }
-                        with<InteractableComponent> {}
+                        with<InteractableComponent> {isTeacher = true}
                         with<TextComponent> {
                             isText = true
                             textStr = teacherNameChopped
