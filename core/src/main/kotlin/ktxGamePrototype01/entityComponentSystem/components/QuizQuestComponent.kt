@@ -5,11 +5,11 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class QuizQuestComponent : Component, Pool.Poolable {
-    var teacherName = ""
+    var teacherStr = ""
     var showAvailableQuizes = false
 
     override fun reset() {
-        teacherName = ""
+        teacherStr = ""
         showAvailableQuizes = false
     }
     companion object{
