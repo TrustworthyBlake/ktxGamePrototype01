@@ -91,9 +91,7 @@ object DBObject {
             for (document in documents) {
                 val head = document["head"].toString()
                 val body = document["body"].toString()
-                User.setTeacherAvatars(name)
-                User.setTeacherAvatars(head)
-                User.setTeacherAvatars(body)
+                User.setTeacherAvatars(name, head, body)
             }
         }
     }

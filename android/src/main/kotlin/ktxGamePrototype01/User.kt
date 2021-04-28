@@ -89,8 +89,12 @@ object User {
             return quizList
         }
 
-        fun setTeacherAvatars(item: String) {
-            teacherAvatarList.add(item)
+        fun setTeacherAvatars(name: String, head: String, body: String) {
+            if(!teacherAvatarList.contains(name)){
+                teacherAvatarList.add(name)
+                teacherAvatarList.add(head)
+                teacherAvatarList.add(body)
+            }
         }
 
         fun getTeacherAvatars(): List<String> {
