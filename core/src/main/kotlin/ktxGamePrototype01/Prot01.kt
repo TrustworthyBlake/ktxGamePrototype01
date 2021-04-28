@@ -12,17 +12,17 @@ import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.system.*
+import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.OpenWorldScreen
 
 private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
 
-class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
+class Prot01(private val showScreen: String, private val playerName : String,
+             private val quizToUse : String, private val teacherDataList : List<String>?) : KtxGame<KtxScreen>() {
     val gameViewport = FitViewport(9f, 16f)
     val batch : Batch by lazy { SpriteBatch()}
     val batchText: Batch by lazy { SpriteBatch() }
-
-
 
     val engine : Engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(gameViewport))
@@ -38,14 +38,17 @@ class Prot01(private val x: Int) : KtxGame<KtxScreen>() {
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         LOG.debug { "Game instance created" }
-        //addScreen(FirstScreen(this, ""))
-        //addScreen(SecondScreen(this))
-        //setScreen<FirstScreen>()
-        addScreen(OpenWorldScreen(this))
-        setScreen<OpenWorldScreen>()
-        if(x == 2){
-            LOG.debug {" is 2" }
+        when (showScreen) {
+            "FirstScreen" -> {
+                addScreen(FirstScreen(this, quizToUse, playerName))
+                setScreen<FirstScreen>()
+            }
+            else -> {
+                addScreen(OpenWorldScreen(this, teacherDataList, playerName))
+                setScreen<OpenWorldScreen>()
+            }
         }
+
     }
 
     override fun dispose() {

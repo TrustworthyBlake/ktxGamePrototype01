@@ -23,7 +23,7 @@ import java.io.File
 
 private val LOG = logger<FirstScreen>()
 
-class FirstScreen(game: Prot01, qzName : String) : AbstractScreen(game) {
+class FirstScreen(game: Prot01, qzName : String, private val playerUserName : String) : AbstractScreen(game) {
     private var viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))

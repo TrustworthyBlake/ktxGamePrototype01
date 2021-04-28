@@ -168,7 +168,7 @@ class CreateQuizFragment : Fragment() {
                 pathTextFile.mkdirs()
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
-            val quizTextFile = File(pathTextFile, quizName + ".txt")
+            val quizTextFile = File(pathTextFile, quizName + "-" + User.getName() + ".txt")
             var tempStr = ""
             quizData.forEach { line ->
                 tempStr += line + '\n'

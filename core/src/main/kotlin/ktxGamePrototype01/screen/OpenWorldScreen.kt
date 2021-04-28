@@ -16,7 +16,7 @@ import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<OpenWorldScreen>()
-class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add list of teachers and name of user
+class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?, private val playerUserName : String) : AbstractScreen(game) {       // Todo add list of teachers and name of user
     private var viewport = FitViewport(9f, 16f)
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
@@ -26,7 +26,7 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     override fun show() {
         createMapEntities()
         createUserEntityFromPlayerData()
-        createTeacherEntities(teachers)
+        createTeacherEntities(teacherDataList)
     }
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, false)
@@ -70,7 +70,10 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                         setOriginCenter()
                     }
                 }
-                with<PlayerComponent> {gameInst = game}
+                with<PlayerComponent> {
+                    playerName = playerUserName
+                    gameInst = game
+                }
                 with<OrientationComponent>()
                 with<TextComponent> {
                     isText = true
@@ -104,11 +107,11 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
 
         }else{LOG.debug { "Error: Can not find player data" }}
 }
-    private val teachers = mutableListOf<String>(
+    /*private val teachers = mutableListOf<String>(
             "Mr.TeacherMan", "head1", "body1",
             "Mrs.TeacherWoman", "head2", "body2"
-    )
-    private fun createTeacherEntities(teacherList : MutableList<String>){     //userName : String
+    )*/
+    private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
         teacherPosArray.add(Vector2(1f, 11f))
         teacherPosArray.add(Vector2(7f, 11f))

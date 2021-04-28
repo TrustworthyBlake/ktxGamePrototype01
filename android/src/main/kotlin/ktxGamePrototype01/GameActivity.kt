@@ -13,12 +13,14 @@ class GameActivity : AndroidApplication() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var gameID = intent.getIntExtra("Game", 1)
-        when (gameID) {
-            1 -> {
-                initialize(Prot01(1), AndroidApplicationConfiguration())
-            }
+        val showScreen = intent.getStringExtra("showScreen")
+        val playerName = intent.getStringExtra("playerName")
+        val quizToUse = intent.getStringExtra("quizToUse")
+        val teacherDataList = intent.getStringArrayListExtra("teacherDataList")?.toList()
+
+        initialize(Prot01(showScreen, playerName, quizToUse, teacherDataList), AndroidApplicationConfiguration())
+
         }
-    }
+
 
 }

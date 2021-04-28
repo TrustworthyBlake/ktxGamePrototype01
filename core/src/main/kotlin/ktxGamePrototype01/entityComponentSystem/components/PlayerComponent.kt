@@ -11,12 +11,14 @@ class PlayerComponent : Component, Pool.Poolable{
     var currentPlayerHp = maxHp
     var playerMaxHp = maxHp
     var playerScore = 0f
+    var playerName = ""
     lateinit var gameInst : Prot01
 
     override fun reset() {
         currentPlayerHp = maxHp
         playerMaxHp = maxHp
         playerScore = 0f
+        playerName = ""
     }
     companion object{
         val mapper = mapperFor<PlayerComponent>()

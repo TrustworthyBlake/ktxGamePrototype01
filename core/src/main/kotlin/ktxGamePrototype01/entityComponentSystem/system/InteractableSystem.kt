@@ -124,7 +124,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         qQuestComp.showAvailableQuizes = true
                     }
                     if (interact.isQuest) {
-                        p.gameInst.addScreen(FirstScreen(p.gameInst, interact.nameOfQuiz))
+                        p.gameInst.addScreen(FirstScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
                         if(p.gameInst.containsScreen<FirstScreen>()) {LOG.debug { "Switching to FirstScreen" }
                             p.gameInst.setScreen<FirstScreen>()
                         }

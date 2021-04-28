@@ -78,9 +78,14 @@ class AppActivity : AppCompatActivity() {
         menu.findItem(R.id.dest_settings).isVisible = false
     }
 
-    fun launchGame(gameID: Int){
+    fun launchGame(showScreen: String, playerName : String,
+                   quizToUse : String, teacherDataList : List<String>){
         val intent = Intent(this, GameActivity::class.java)
-        intent.putExtra("Game", 1)
+        //intent.putExtra("Game", 1)
+        intent.putExtra("showScreen", showScreen)
+        intent.putExtra("playerName", playerName)
+        intent.putExtra("quizToUse", quizToUse)
+        intent.putExtra("teacherDataList", teacherDataList.toTypedArray())
         startActivityForResult(intent, FIRST_GAME_REQUEST_CODE)
     }
 }
