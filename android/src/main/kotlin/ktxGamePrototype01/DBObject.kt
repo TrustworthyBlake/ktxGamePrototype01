@@ -2,20 +2,19 @@ package ktxGamePrototype01
 
 import android.util.Log
 import android.widget.Toast
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestore.getInstance
-import java.util.concurrent.Future
+import java.io.File
+import java.io.FileOutputStream
 
 object DBObject {
 
     private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
     private const val failTAG = "DATABASE ENTRY FAILED"
     private const val successTAG = "DATABASE ENTRY SUCCESS"
 
@@ -30,9 +29,13 @@ object DBObject {
                     task.result?.get("email").toString(),  // email
                     task.result?.get("score").toString().toInt(),  // score
                     task.result?.get("teacher") as Boolean,  // is teacher or not
+                    task.result?.get("head").toString(),
+                    task.result?.get("body").toString(),
                     task.result?.get("courses") as List<String>,
                     task.result?.get("achievement") as List<String>
                 )
+                getTeachersFromCourses(task.result?.get("courses") as List<String>)
+                getQuizesFromCourses(task.result?.get("courses") as List<String>)
             }
         }
     }
@@ -43,6 +46,8 @@ object DBObject {
 
         val courseList: List<String> = emptyList()
         val achievList: List<String> = emptyList()
+        val head = "head1"
+        val body = "body1"
         // Create a new user entry in the database
         val user = hashMapOf(
             "userid" to userID,
@@ -51,7 +56,9 @@ object DBObject {
             "score" to 0,
             "teacher" to isTeacher,
             "courses" to courseList,
-            "achievement" to achievList
+            "achievement" to achievList,
+            "head" to head,
+            "body" to body
         )
         // add selected data to database
         db.collection("users").document(userID)
@@ -72,6 +79,32 @@ object DBObject {
             db.collection("users")
                 .document(item)
                 .update("courses", FieldValue.arrayUnion(className))
+        }
+    }
+
+
+    // find a user by the users name
+    private fun findTeacherByName(name: String) {
+        val db = FirebaseFirestore.getInstance()
+        val doc = db.collection("users").whereEqualTo("name", name).get()
+        doc.addOnSuccessListener { documents ->
+            for (document in documents) {
+                val head = document["head"].toString()
+                val body = document["body"].toString()
+                User.setTeacherAvatars(name, head, body)
+            }
+        }
+    }
+
+    // find a user by the users name
+    private fun findStudentByName(name: String) {
+        val db = FirebaseFirestore.getInstance()
+        val doc = db.collection("users").whereEqualTo("name", name).get()
+        doc.addOnSuccessListener { documents ->
+            for (document in documents) {
+                val uid = document["userid"].toString()
+                // do something with given user
+            }
         }
     }
 
@@ -129,5 +162,67 @@ object DBObject {
     fun capitalize(s: String): String {
         return s.split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
     }
+
+    // getting all teachers from courses user is in
+    private fun getTeachersFromCourses(list: List<String>) {
+
+        var teacherList: List<String> = emptyList()
+
+        for(course in list) {
+
+            db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val teacher = task.result?.get("teacher name").toString()
+                    teacherList = teacherList+teacher
+                    findTeacherByName(teacher)
+                }
+                setTeachers(teacherList)
+            }
+        }
+    }
+
+    private fun setTeachers(list: List<String>){
+        User.setTeachers(list)
+    }
+
+    // getting all quizes from all the courses user is in
+    private fun getQuizesFromCourses(list: List<String>) {
+
+        var quizList: List<String> = emptyList()
+
+        for(course in list) {
+
+            db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val quizes = task.result?.get("quizes") as List<String>
+
+                    for (quiz in quizes) {
+                        quizList=quizList+quiz
+                    }
+
+                }
+                setQuizes(quizList)
+
+            }
+        }
+    }
+
+    private fun setQuizes(list: List<String>){
+        User.setQuizes(list)
+    }
+
+    fun updateUser(userId: String, userName: String, userEmail: String, userScore: Int, playerHead: String, playerBody: String) {
+        val db = getInstance()
+
+        val docRef = db.collection("users").document(userId)
+
+        docRef.update("name", userName).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
+        docRef.update("email", userEmail).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
+        docRef.update("score", userScore).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
+        docRef.update("head", playerHead).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
+        docRef.update("body", playerBody).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
+
+    }
+
 
 }

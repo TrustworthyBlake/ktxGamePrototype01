@@ -155,7 +155,15 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                                 setOriginCenter()
                             }
                         }
-                        with<InteractableComponent>()
+                        with<TextComponent> {
+                            isText = true
+                            textStr = teacherNameChopped
+                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                            font.data.setScale(4.0f, 4.0f)
+                            posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 1.7f)
+                        }
+                        with<InteractableComponent> { isTeacher = true }
+                        with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
@@ -173,13 +181,6 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
                             }
                         }
                         with<InteractableComponent> { isTeacher = true }
-                        with<TextComponent> {
-                            isText = true
-                            textStr = teacherNameChopped
-                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                            font.data.setScale(4.0f, 4.0f)
-                            posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 1.5f)
-                        }// +1.5f because the text is bound to body and not head, todo consider moving this to head
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                 }

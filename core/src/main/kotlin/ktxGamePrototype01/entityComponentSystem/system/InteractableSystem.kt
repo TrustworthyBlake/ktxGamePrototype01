@@ -11,8 +11,10 @@ import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.OpenWorldScreen
 
 private val LOG = logger<InteractableSystem>()
+const val WrongAnswerPoints = 0
 
-class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
+class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
+
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
 
@@ -42,9 +44,11 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
     }
 
     //  Function that edits entities on map
-    fun correctQuizAnswer() {
+    private fun hasAnsweredQuiz(interact : InteractableComponent) {
         interactableEntities.forEach { interactable ->
+            if (!interact.isQuest && !interact.isTeacher){
             engine.removeEntity(interactable)
+            }
         }
         textEntities.forEach { text ->
             val t = text[TextComponent.mapper]
@@ -93,11 +97,25 @@ class InteractableSystem : IteratingSystem(allOf(InteractableComponent::class, T
                     if (interact.correctAnswer) {
                         //  COUNT SCORE
                         p.playerScore += interact.maxPointsQuestion
+                        player[QuizComponent.mapper]?.let { quiz ->
+                            quiz.quizResultList.add(interact.maxPointsQuestion.toString())
+                        }
+
                         // RESET START
                         playerTransform.posVec3.x = 5f
                         playerTransform.posVec3.y = 2f
                         //  Run update on entities
-                        correctQuizAnswer()
+                        hasAnsweredQuiz(interact)
+                    }else if(!interact.isQuest && !interact.isTeacher){
+                        p.playerScore += WrongAnswerPoints
+                        player[QuizComponent.mapper]?.let { quiz ->
+                            quiz.quizResultList.add("0")
+                        }
+                        // RESET START
+                        playerTransform.posVec3.x = 5f
+                        playerTransform.posVec3.y = 2f
+                        //  Run update on entities
+                        hasAnsweredQuiz(interact)
                     }
                     if (interact.isTeacher){
                         val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]

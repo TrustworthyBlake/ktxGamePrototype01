@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -32,16 +33,21 @@ class FirstScreen(game: Prot01, qzName : String) : AbstractScreen(game) {
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
     private val tempQuizName = qzName
+    val errorList = mutableListOf<String>("Error: No results found")
+    var quizInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
+    var gameEndFlag = false
+    private val playerEntities by lazy {
+        engine.getEntitiesFor(allOf(PlayerComponent::class).get())
+    }
+
     override fun show() {
         LOG.debug { "First screen is displayed" }
         createPlayerEntity()
         createMapEntities()
     }
-
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
     }
-
     override fun render(delta: Float) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
             game.addScreen(SecondScreen(game))
@@ -52,13 +58,29 @@ class FirstScreen(game: Prot01, qzName : String) : AbstractScreen(game) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            if(doOnce == 0){
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (doOnce == 0) {
+
                 //Put functions to debug here
                 doOnce = 1
             }
         }
-        engine.update(delta)
+
+
+        // TODO: Currently constantly checking if the variable has changed
+        playerEntities.forEach { player ->
+            player[QuizComponent.mapper]?.let { quiz ->
+                if (quiz.quizIsCompleted) {
+                    quizInfo = QuizInfo(batch as SpriteBatch, quiz.quizResultList)
+                    gameEndFlag = true
+                }
+            }
+        }
+        var tempDelta = delta
+        //if(gameEndFlag == true ) tempDelta = 0f
+        engine.update(tempDelta)
+        if(gameEndFlag == true ) quizInfo.draw()
+        //engine.update(delta)
     }
 
     override fun dispose() {

@@ -19,9 +19,11 @@ private val LOG = logger<QuizSystem>()
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     var lastTextPositionModifier = 1
+    var quizCompletedCheck = false
 
 
     private var doOnce = false
+    private var updateScoreOnce = true
     private var indexInArr = 0
     private var i = 0
     private var previousQuestionNr = 1
@@ -29,17 +31,27 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
 
         val quizComp = entity[QuizComponent.mapper]
         require(quizComp != null)
-        if (!doOnce && !quizComp.quizIsCompleted){
+        if (!doOnce && quizCompletedCheck == false){
             createQuizTextEntities(quizComp.quizName)
             doOnce = true
             quizComp.playerHasAnswered = false
+
         }
-        if(quizComp.playerHasAnswered){
+        else if(quizComp.playerHasAnswered && quizCompletedCheck == false){
             previousQuestionNr=previousQuestionNr+1
             doOnce = false
+
         }
-        if(quizComp.quizIsCompleted){
-            savePlayerScore(entity)
+        else if(quizCompletedCheck){
+            quizComp.quizIsCompleted = true
+
+            while(updateScoreOnce) {
+                savePlayerScore(entity)
+                updateScoreOnce = false
+            }
+
+
+
             indexInArr = 0
             i = 0
         }
@@ -83,6 +95,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         qPosArray.add(Vector2(1f, 4f))
         qPosArray.add(Vector2(7f, 4f))
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
+
             val quizList = readQuizFromFile(quizName)
             val helpFun = HelperFunctions()
             var questAnsw: String
@@ -92,7 +105,11 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
             var count = 0
             var charToNum = 1
             var maxLength: Int
-            for (indexInArr in i until quizList.size-1) {
+            var isNoneLeft = true
+
+
+            for (indexInArr in i until quizList.size) {
+
                 var line = quizList.elementAt(indexInArr)
                 if (line.isNotBlank()) {
                     var tempQuizList: List<String> = line.split("-")
@@ -106,7 +123,9 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                     var (questAnswChopped , spacer, centerTextPos) = helpFun.chopString(questAnsw, maxLength)
                     if (isQuestion && 4 == tempQuizList.size) maxPoints = tempQuizList[3].toInt()
                     charToNum = Character.getNumericValue(line.first())
-                    if(charToNum != previousQuestionNr) break
+                    if(charToNum != previousQuestionNr){
+                        break
+                    }
                     val textEnti = engine.entity {
                         with<TextComponent> {
                             isText = true
@@ -143,13 +162,22 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                         }
                     }
                     lastTextPositionModifier = 1
+
+                    isNoneLeft = false
                 }
+
+
+
                 previousQuestionNr = charToNum
                 if(!isQuestion)  count += 1
                 if(count >= 4)  count = 0
                 i = indexInArr+1
             }
+
+            if(isNoneLeft == true)  quizCompletedCheck = true
+            //if(quizList[indexInArr] == quizList[quizList.size-1])
         }
+
     }
 
     // Saves the player score to xml in shared_prefs folder

@@ -8,69 +8,118 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
-    private var courseList : List<String> = emptyList()
-    private var achievements : List<String> = emptyList()
+    private var playerHead = "head1"
+    private var playerBody = "body1"
+    private var courseList: List<String> = emptyList()
+    private var teacherList: List<String> = emptyList()
+    private var teacherAvatarList = mutableListOf<String>()
+    private var quizList: List<String> = emptyList()
+    private var achievements: List<String> = emptyList()
 
-    fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses : List<String>, achievList : List<String>) {
-        userID = id
-        userName = name
-        userEmail = email
-        userScore = score
-        isTeacher = teacher
-        if (userID != "") {
-            userLoaded = true
+        fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, head: String, body: String, courses: List<String>, achievList: List<String>) {
+            userID = id
+            userName = name
+            userEmail = email
+            userScore = score
+            isTeacher = teacher
+            if (userID != "") {
+                userLoaded = true
+            }
+            playerHead = head
+            playerBody = body
+            courseList = courses
+            achievements = achievList
         }
-        courseList = courses
-        achievements = achievList
-    }
 
-    fun logoutUser() {
-        userID = ""
-        userName = ""
-        userEmail = ""
-        userScore = -1
-        isTeacher = false
-        userLoaded = false
-    }
+        fun logoutUser() {
+            userID = ""
+            userName = ""
+            userEmail = ""
+            userScore = -1
+            isTeacher = false
+            userLoaded = false
+        }
 
-    fun setName(name: String) {
-        userName = name
-    }
+        fun setHeadAndBody(head: String, body: String) {
+            playerHead = head
+            playerBody = body
+        }
 
-    fun setEmail(email: String) {
-        userName = email
-    }
+        fun getHeadAndBody(): List<String> {
+             return listOf(userName, playerHead, playerBody)
+        }
 
-    fun setScore(score: Int) {
-        userScore = score
-    }
+        fun setName(name: String) {
+            userName = name
+        }
 
-    fun getName(): String {
-        return userName
-    }
+        fun getName(): String {
+            return userName
+        }
 
-    fun getEmail(): String {
-        return userEmail
-    }
+        fun setEmail(email: String) {
+            userName = email
+        }
 
-    fun getScore(): Int {
-        return userScore
-    }
+        fun getEmail(): String {
+            return userEmail
+        }
 
-    fun checkForTeacher(): Boolean {
-        return isTeacher
-    }
+        fun setScore(score: Int) {
+            userScore = score
+        }
 
-    fun isUSerLoaded(): Boolean {
-        return userLoaded
-    }
+        fun getScore(): Int {
+            return userScore
+        }
 
-    fun getCourses(): List<String> {
-        return courseList
-    }
+        fun setTeachers(list: List<String>) {
+            teacherList = list
+        }
 
-    fun getAchievement(): List<String>{
-        return achievements
-    }
+        fun getTeachers(): List<String> {
+            return teacherList
+        }
+
+        fun setQuizes(list: List<String>) {
+            quizList = list
+        }
+
+        fun getQuizes(): List<String> {
+            return quizList
+        }
+
+        fun setTeacherAvatars(name: String, head: String, body: String) {
+            if(!teacherAvatarList.contains(name)){
+                teacherAvatarList.add(name)
+                teacherAvatarList.add(head)
+                teacherAvatarList.add(body)
+            }
+        }
+
+        fun getTeacherAvatars(): List<String> {
+            return teacherAvatarList
+        }
+
+        fun checkForTeacher(): Boolean {
+            return isTeacher
+        }
+
+        fun isUSerLoaded(): Boolean {
+            return userLoaded
+        }
+
+        fun getCourses(): List<String> {
+            return courseList
+        }
+
+        fun getAchievement(): List<String> {
+            return achievements
+        }
+
+        fun updateFirestoreUser() {
+            DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
+        }
+
 
 }

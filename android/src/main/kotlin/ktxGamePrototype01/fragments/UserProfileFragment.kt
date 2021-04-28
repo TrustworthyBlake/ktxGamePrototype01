@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.fragment_user_profile.*
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
+import java.io.File
+import java.io.FileOutputStream
 
 class UserProfileFragment : Fragment() {
     private lateinit var binding: FragmentUserProfileBinding
@@ -84,6 +86,14 @@ class UserProfileFragment : Fragment() {
             "gond" ->  {bodyImage.setImageResource(R.drawable.gond);  }
         }
 
+        // reading in quizes from db
+        // TODO Need to refresh fragment for this to work
+        var list = User.getQuizes()
+
+        for (item in list) {
+            getQuizFromDatabase(item)
+        }
+
         return binding.root
     }
 
@@ -138,6 +148,39 @@ class UserProfileFragment : Fragment() {
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
         val bodyPog : String = prefs.getString("avatarBody")
         return bodyPog
+    }
+
+
+    private fun getQuizFromDatabase(name: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("quiz").document(name).get().addOnCompleteListener() { task ->
+            if(task.isSuccessful){
+                val quizList = task.result?.get("question") as MutableList<String>
+
+                writeQuizToFile(name, quizList)
+            }
+        }
+    }
+
+    private fun writeQuizToFile(quizName: String, quizData: MutableList<String>) {
+        val pathInternal = activity?.filesDir
+        if (pathInternal != null) {
+            val pathTextFile = File(pathInternal, "assets/quizFiles")
+            if (!pathTextFile.exists()){
+                pathTextFile.mkdirs()
+                Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
+            }
+            val quizTextFile = File(pathTextFile, quizName + ".txt")
+            var tempStr = ""
+            quizData.forEach { line ->
+                tempStr += line + '\n'
+            }
+            FileOutputStream(quizTextFile).use {
+                it.write((tempStr).toByteArray())
+            }
+            Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
