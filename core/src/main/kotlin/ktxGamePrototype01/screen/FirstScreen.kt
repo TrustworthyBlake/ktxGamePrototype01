@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -31,6 +32,11 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
+    val errorList = mutableListOf<String>("Error: No results found")
+
+    var quizInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
+
+    var gameEndFlag = false
 
     private val player = engine.entity{
         var totScore = 0f
@@ -67,6 +73,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
+
     }
 
     override fun render(delta: Float) {
@@ -79,13 +86,27 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
            game.setScreen<SecondScreen>()
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            if(doOnce == 0){
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (doOnce == 0) {
+
                 //Put functions to debug here
                 doOnce = 1
             }
         }
-        engine.update(delta)
+
+        // TODO: Currently constantly checking if the variable has changed
+        player[QuizComponent.mapper]?.let { quiz ->
+            if(quiz.quizIsCompleted) {
+                quizInfo = QuizInfo(batch as SpriteBatch, quiz.quizResultList)
+                gameEndFlag = true
+            }
+        }
+
+
+        var tempDelta = delta
+        //if(gameEndFlag == true ) tempDelta = 0f
+        engine.update(tempDelta)
+        if(gameEndFlag == true ) quizInfo.draw()
     }
 
     override fun dispose() {
