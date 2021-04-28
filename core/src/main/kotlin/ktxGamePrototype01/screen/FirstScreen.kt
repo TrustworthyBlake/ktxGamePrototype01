@@ -30,6 +30,8 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
+    private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
+    private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
     private val tempQuizName = qzName
@@ -92,31 +94,63 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
     }
 
     private fun createPlayerEntity(){
-            val player = engine.entity{
-            var totScore = 0f
-            with<TransformComponent>{
-                posVec3.set(4.5f, 10f, -1f)
-            }
-            with<MovementComponent>()
-            with<GraphicComponent>{
-                sprite.run{
-                    setRegion(playerTexture)
-                    setSize(texture.width * unitScale, texture.height * unitScale)
-                    setOriginCenter()
+        val prefs: Preferences = Gdx.app.getPreferences(playerUserName) // playerName string from app
+        val playerHead = prefs.getString("avatarHead")
+        val playerBody = prefs.getString("avatarBody")
+        if(playerBody != null && playerHead != null) {
+            val playerEntityBody = engine.entity {
+                var totScore = 0f
+                with<TransformComponent> {
+                    posVec3.set(4.5f, 10f, -1f)
+                }
+                with<MovementComponent>()
+                with<GraphicComponent> {
+                    sprite.run {
+                        when(playerHead){
+                            "todo1" -> setRegion(playerTextureBody)
+                            "todo2" -> setRegion(playerTextureBody)
+                            else -> setRegion(playerTextureBody)
+                        }
+                        setSize(texture.width * unitScale, texture.height * unitScale)
+                        setOriginCenter()
+                    }
+                }
+                with<PlayerComponent> {
+                    totScore = playerScore
+                    playerName = playerUserName
+                }
+                with<OrientationComponent>()
+                with<TextComponent> {
+                    isText = true
+                    drawPlayScoreHUD = true
+                    font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    font.data.setScale(4.0f, 4.0f)
+                }
+                with<QuizComponent> {
+                    quizName = tempQuizName
                 }
             }
-            with<PlayerComponent> {
-                totScore = playerScore
-            }
-            with<OrientationComponent>()
-            with<TextComponent> {
-                isText = true
-                drawPlayScoreHUD = true
-                font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                font.data.setScale(4.0f, 4.0f)
-            }
-            with<QuizComponent>{
-                quizName = tempQuizName
+            val playerEntityHead = engine.entity {
+                with<TransformComponent>{
+                    posVec3.set(4.5f, 10f, -1f)
+                }
+                with<MovementComponent>()
+                with<GraphicComponent>{
+                    sprite.run{
+                        when(playerHead){
+                            "todo1" -> setRegion(playerTextureHead)
+                            "todo2" -> setRegion(playerTextureHead)
+                            else -> setRegion(playerTextureHead)
+                        }
+                        setSize(texture.width * unitScale, texture.height * unitScale)
+                        setOriginCenter()
+                    }
+                }
+                with<BindEntitiesComponent> {
+                    masterEntity = playerEntityBody
+                    posOffset.set(0f, 1f)
+                }
+                with<OrientationComponent>()
             }
         }
     }

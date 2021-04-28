@@ -186,7 +186,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         require(player != null)
         LOG.debug { "Adding score = ${player.playerScore}" }
         var score = 0f
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
+        val prefs: Preferences = Gdx.app.getPreferences("playerData"+player.playerName)
         score = prefs.getFloat("totalPlayerScore")
         score += player.playerScore
         prefs.putFloat("totalPlayerScore", score)

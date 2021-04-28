@@ -1,6 +1,5 @@
 package ktxGamePrototype01
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,8 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.badlogic.gdx.Game
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.ActivityAppBinding
 
@@ -78,14 +75,18 @@ class AppActivity : AppCompatActivity() {
         menu.findItem(R.id.dest_settings).isVisible = false
     }
 
-    fun launchGame(showScreen: String, playerName : String,
-                   quizToUse : String, teacherDataList : List<String>){
+    fun launchGame(showScreen: String, playerName: String,
+                   quizToUse: String, teacherDataList: List<String>){
         val intent = Intent(this, GameActivity::class.java)
         //intent.putExtra("Game", 1)
+        val newArrList = ArrayList<String>()
+        for(item in teacherDataList){
+            newArrList.add(item)
+        }
         intent.putExtra("showScreen", showScreen)
         intent.putExtra("playerName", playerName)
         intent.putExtra("quizToUse", quizToUse)
-        intent.putExtra("teacherDataList", teacherDataList.toTypedArray())
+        intent.putExtra("teacherDataList", newArrList)
         startActivityForResult(intent, FIRST_GAME_REQUEST_CODE)
     }
 }

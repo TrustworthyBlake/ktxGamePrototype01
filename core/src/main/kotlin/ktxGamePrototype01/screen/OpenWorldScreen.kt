@@ -50,7 +50,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     // Open up window which lets the user decide which quiz to do or place the different quizes as entities on the map
     // When quiz is chosen, close the open world and open up the quiz screen
     private fun createUserEntityFromPlayerData(){
-        val prefs: Preferences = Gdx.app.getPreferences("playerDataStudent Testing") // + playerName string from app
+        val prefs: Preferences = Gdx.app.getPreferences(playerUserName) // playerName string from app
         val playerHead = prefs.getString("avatarHead")
         val playerBody = prefs.getString("avatarBody")
         if(playerBody != null && playerHead != null) {
@@ -123,6 +123,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         var head = ""
         var body = ""
         val maxLength = 26
+        LOG.debug { "Teacher list data: $teacherList" }
         if (!teacherList.isNullOrEmpty()) {
             val helpFun = HelperFunctions()
             for (i in 0 until teacherList.size) {
