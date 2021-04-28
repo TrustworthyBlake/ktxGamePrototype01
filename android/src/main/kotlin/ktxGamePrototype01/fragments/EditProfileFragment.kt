@@ -85,6 +85,24 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         spinner2.adapter = adapter
 
 
+        val setswitch1 = getHead(User.getName())
+        val setswitch2 = getBody(User.getName())
+
+        when (setswitch1){
+            "default1" ->  {spinner1.setSelection(0)}
+            "default2" ->  {spinner1.setSelection(1)}
+            "ebin" ->  {spinner1.setSelection(2)}
+            "gond" ->  {spinner1.setSelection(3)}
+        }
+
+        when (setswitch2) {
+            "default1" -> {spinner2.setSelection(0)}
+            "default2" -> {spinner2.setSelection(1)}
+            "ebin" -> {spinner2.setSelection(2)}
+            "gond" -> {spinner2.setSelection(3)}
+        }
+
+
         // spinner1 on item selected listener
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -150,6 +168,20 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         prefs.putString("avatarBody", body)
         prefs.flush()
     }
+
+
+    private fun getHead(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val headPog : String = prefs.getString("avatarHead")
+        return headPog
+    }
+
+    private fun getBody(userName : String): String {
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+        val bodyPog : String = prefs.getString("avatarBody")
+        return bodyPog
+    }
+
 
 
 
