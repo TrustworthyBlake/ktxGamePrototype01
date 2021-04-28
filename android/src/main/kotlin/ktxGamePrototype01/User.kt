@@ -12,6 +12,7 @@ object User {
     private var playerBody = "body1"
     private var courseList: List<String> = emptyList()
     private var teacherList: List<String> = emptyList()
+    private var teacherAvatarList = mutableListOf<String>()
     private var quizList: List<String> = emptyList()
     private var achievements: List<String> = emptyList()
 
@@ -86,6 +87,14 @@ object User {
 
         fun getQuizes(): List<String> {
             return quizList
+        }
+
+        fun setTeacherAvatars(item: String) {
+            teacherAvatarList.add(item)
+        }
+
+        fun getTeacherAvatars(): List<String> {
+            return teacherAvatarList
         }
 
         fun checkForTeacher(): Boolean {

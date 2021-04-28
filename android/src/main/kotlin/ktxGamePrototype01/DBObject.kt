@@ -84,7 +84,22 @@ object DBObject {
 
 
     // find a user by the users name
-    private fun findUserByName(name: String) {
+    private fun findTeacherByName(name: String) {
+        val db = FirebaseFirestore.getInstance()
+        val doc = db.collection("users").whereEqualTo("name", name).get()
+        doc.addOnSuccessListener { documents ->
+            for (document in documents) {
+                val head = document["head"].toString()
+                val body = document["body"].toString()
+                User.setTeacherAvatars(name)
+                User.setTeacherAvatars(head)
+                User.setTeacherAvatars(body)
+            }
+        }
+    }
+
+    // find a user by the users name
+    private fun findStudentByName(name: String) {
         val db = FirebaseFirestore.getInstance()
         val doc = db.collection("users").whereEqualTo("name", name).get()
         doc.addOnSuccessListener { documents ->
@@ -161,6 +176,7 @@ object DBObject {
                 if (task.isSuccessful) {
                     val teacher = task.result?.get("teacher name").toString()
                     teacherList = teacherList+teacher
+                    findTeacherByName(teacher)
                 }
                 setTeachers(teacherList)
             }
