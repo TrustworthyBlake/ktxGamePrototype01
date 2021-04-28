@@ -9,12 +9,14 @@ class InteractableComponent : Component, Pool.Poolable{
     var maxPointsQuestion = 0
     var isTeacher = false
     var isQuest = false
+    var nameOfQuiz = ""
 
     override fun reset(){
         correctAnswer = false
         maxPointsQuestion = 0
         isTeacher = false
         isQuest = false
+        nameOfQuiz = ""
     }
 
     companion object{

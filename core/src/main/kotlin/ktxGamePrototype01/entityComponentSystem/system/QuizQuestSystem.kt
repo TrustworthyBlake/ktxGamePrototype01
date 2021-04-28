@@ -55,7 +55,10 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
                             setOriginCenter()
                         }
                     }
-                    with<InteractableComponent> { isQuest = true }
+                    with<InteractableComponent> {
+                        isQuest = true
+                        nameOfQuiz = qName
+                    }
                     with<TextComponent> {
                         isText = true
                         textStr = quizNameChopped

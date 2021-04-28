@@ -22,7 +22,7 @@ import java.io.File
 
 private val LOG = logger<FirstScreen>()
 
-class FirstScreen(game: Prot01) : AbstractScreen(game) {
+class FirstScreen(game: Prot01, qzName : String) : AbstractScreen(game) {
     private var viewport = FitViewport(9f, 16f)
     private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
@@ -31,7 +31,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
-
+    private val tempQuizName = qzName
     override fun show() {
         LOG.debug { "First screen is displayed" }
         createPlayerEntity()
@@ -64,6 +64,10 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
     override fun dispose() {
         engine.removeAllEntities()
     }
+    override fun hide() {
+        dispose()
+        super.hide()
+    }
 
     private fun createPlayerEntity(){
             val player = engine.entity{
@@ -90,7 +94,7 @@ class FirstScreen(game: Prot01) : AbstractScreen(game) {
                 font.data.setScale(4.0f, 4.0f)
             }
             with<QuizComponent>{
-                quizName = "test9"
+                quizName = tempQuizName
             }
         }
     }

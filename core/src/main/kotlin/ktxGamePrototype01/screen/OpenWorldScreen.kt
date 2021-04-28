@@ -37,6 +37,10 @@ class OpenWorldScreen(game : Prot01) : AbstractScreen(game) {       // Todo add 
     override fun dispose() {
         engine.removeAllEntities()
     }
+    override fun hide() {
+        dispose()
+        super.hide()
+    }
 
     // Get player data of sprite
     // Get all teacher player data sprite
