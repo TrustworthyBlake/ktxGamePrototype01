@@ -11,28 +11,24 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.github.trustworthyblake.ktxGamePrototype01.R
-import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomIndexBinding
-import ktxGamePrototype01.AppActivity
-import ktxGamePrototype01.Prot01
-import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
+import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomBinding
+import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
 import java.util.*
 
 
-class ClassroomIndexFragment : Fragment() {
-    private lateinit var binding: FragmentClassroomIndexBinding
+class ClassroomFragment : Fragment() {
+    private lateinit var binding: FragmentClassroomBinding
     private var textList: ArrayList<String> = ArrayList()
-    private lateinit var adapter: ClassroomIndexRecyclerAdapter
+    private lateinit var adapter: ModuleRecyclerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classroom_index, container, false)
-        adapter = ClassroomIndexRecyclerAdapter(textList)
-        binding.recyclerViewClasses.adapter = adapter
-        binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classroom, container, false)
+        adapter = ModuleRecyclerAdapter(textList)
+        //binding.recyclerViewClasses.adapter = adapter
+        //binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
 
-        binding.btnJoinClassroom.setOnClickListener() {
+        binding.btnCreateModule.setOnClickListener() {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
@@ -46,9 +42,7 @@ class ClassroomIndexFragment : Fragment() {
             //initialize(Prot01(), AndroidApplicationConfiguration())
             //(activity as AppActivity?)!!.launchGame(1)
         }
-        binding.btnOpenCreateQuiz.setOnClickListener {
-            findNavController().navigate(R.id.dest_create_quiz)
-        }
+
         return binding.root
     }
 }

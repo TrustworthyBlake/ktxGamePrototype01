@@ -87,11 +87,6 @@ class QuizInfo {
 
 
 
-
-
-
-
-
         table.add()
         table.row()
         for (result in list){

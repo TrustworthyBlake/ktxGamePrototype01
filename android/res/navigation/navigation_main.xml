@@ -51,10 +51,25 @@
     </fragment>
 
     <fragment
-        android:id="@+id/dest_classroom_index"
+    android:id="@+id/dest_classroom_index"
         android:name="ktxGamePrototype01.fragments.ClassroomIndexFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_classroom_index" />
+        tools:layout="@layout/fragment_classroom_index">
+        <action android:id="@+id/startMyFragment"
+            app:destination="@+id/dest_classroom">
+            <argument
+                android:name="classroom"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/dest_classroom"
+        android:name="ktxGamePrototype01.fragments.ClassroomFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_classroom" />
 
     <fragment
         android:id="@+id/dest_register"
