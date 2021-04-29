@@ -91,5 +91,8 @@ object User {
             return achievements
         }
 
+        fun getId(): String {
+        return userID
+        }
 
 }

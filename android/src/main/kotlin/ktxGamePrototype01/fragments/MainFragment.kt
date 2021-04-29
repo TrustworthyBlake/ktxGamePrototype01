@@ -24,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_main.*
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.DBObject
+import ktxGamePrototype01.User
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -65,6 +66,17 @@ class MainFragment : Fragment() {
             //        .addToBackStack(null)
             //        .commit()
             findNavController().navigate(R.id.dest_register)
+        }
+
+        //check of achievements:
+        val scoreuser = User.getScore()
+        when{
+            scoreuser >= 1 -> DBObject.addAchievement(User.getId(), "One of many");
+            scoreuser >= 100 -> DBObject.addAchievement(User.getId(), "Value of C");
+            scoreuser >= 250 -> DBObject.addAchievement(User.getId(), "Quarter of a thousand");
+            scoreuser >= 500 -> DBObject.addAchievement(User.getId(), "Value of D");
+            scoreuser >= 1000 -> DBObject.addAchievement(User.getId(), "Value of M");
+            else -> print("No achievements)")
         }
 
         return binding.root

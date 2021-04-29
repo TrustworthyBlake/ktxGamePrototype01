@@ -187,4 +187,13 @@ object DBObject {
         User.setQuizes(list)
     }
 
+
+    fun addAchievement(userID: String, achievement: String) {
+        val db = getInstance()
+        db.collection("users")
+            .document(userID)
+            .update("achievement", FieldValue.arrayUnion(achievement))
+            .addOnFailureListener { e -> Log.w(failTAG, "Error adding user to DB", e) }
+    }
+
 }
