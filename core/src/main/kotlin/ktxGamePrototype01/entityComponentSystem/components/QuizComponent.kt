@@ -8,11 +8,13 @@ class QuizComponent : Component, Pool.Poolable {
     var quizName = ""
     var playerHasAnswered = false
     var quizIsCompleted = false
+    var quizResultList = mutableListOf<String>()
 
     override fun reset() {
         quizName = ""
         playerHasAnswered = false
         quizIsCompleted = false
+        quizResultList = mutableListOf<String>()
     }
     companion object{
         val mapper = mapperFor<QuizComponent>()

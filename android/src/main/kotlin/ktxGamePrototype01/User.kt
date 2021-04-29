@@ -8,12 +8,15 @@ object User {
     private var userScore = -1
     private var isTeacher = false
     private var userLoaded = false
+    private var playerHead = "head1"
+    private var playerBody = "body1"
     private var courseList: List<String> = emptyList()
     private var teacherList: List<String> = emptyList()
+    private var teacherAvatarList = mutableListOf<String>()
     private var quizList: List<String> = emptyList()
     private var achievements: List<String> = emptyList()
 
-        fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, courses: List<String>, achievList: List<String>) {
+        fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, head: String, body: String, courses: List<String>, achievList: List<String>) {
             userID = id
             userName = name
             userEmail = email
@@ -22,6 +25,8 @@ object User {
             if (userID != "") {
                 userLoaded = true
             }
+            playerHead = head
+            playerBody = body
             courseList = courses
             achievements = achievList
         }
@@ -35,20 +40,45 @@ object User {
             userLoaded = false
         }
 
+        fun setHeadAndBody(head: String, body: String) {
+            playerHead = head
+            playerBody = body
+        }
+
+        fun getHeadAndBody(): List<String> {
+             return listOf(userName, playerHead, playerBody)
+        }
+
         fun setName(name: String) {
             userName = name
+        }
+
+        fun getName(): String {
+            return userName
         }
 
         fun setEmail(email: String) {
             userName = email
         }
 
+        fun getEmail(): String {
+            return userEmail
+        }
+
         fun setScore(score: Int) {
             userScore = score
         }
 
+        fun getScore(): Int {
+            return userScore
+        }
+
         fun setTeachers(list: List<String>) {
             teacherList = list
+        }
+
+        fun getTeachers(): List<String> {
+            return teacherList
         }
 
         fun setQuizes(list: List<String>) {
@@ -59,20 +89,16 @@ object User {
             return quizList
         }
 
-        fun getTeachers(): List<String> {
-            return teacherList
+        fun setTeacherAvatars(name: String, head: String, body: String) {
+            if(!teacherAvatarList.contains(name)){
+                teacherAvatarList.add(name)
+                teacherAvatarList.add(head)
+                teacherAvatarList.add(body)
+            }
         }
 
-        fun getName(): String {
-            return userName
-        }
-
-        fun getEmail(): String {
-            return userEmail
-        }
-
-        fun getScore(): Int {
-            return userScore
+        fun getTeacherAvatars(): List<String> {
+            return teacherAvatarList
         }
 
         fun checkForTeacher(): Boolean {
@@ -91,8 +117,15 @@ object User {
             return achievements
         }
 
+
         fun getId(): String {
         return userID
         }
+
+        fun updateFirestoreUser() {
+            DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
+        }
+
+
 
 }
