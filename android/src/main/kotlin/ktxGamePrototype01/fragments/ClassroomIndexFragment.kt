@@ -17,6 +17,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomIndexBinding
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.Prot01
+import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
 import java.util.*
 
@@ -43,16 +44,16 @@ class ClassroomIndexFragment : Fragment() {
             }
             builder.show()
 
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            //(activity as AppActivity?)!!.launchGame(1)
+
         }
         binding.btnOpenCreateQuiz.setOnClickListener {
             findNavController().navigate(R.id.dest_create_quiz)
         }
 
         binding.btnLaunchGame.setOnClickListener {
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            //(activity as AppActivity?)!!.launchGame(1)
+            val x = User.getTeacherAvatars()
+            val y = User.getName()
+            (activity as AppActivity?)!!.launchGame("OpenWorldScreen", y, "test9", x )
         }
 
         return binding.root

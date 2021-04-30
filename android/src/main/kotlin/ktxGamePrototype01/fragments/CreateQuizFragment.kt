@@ -28,6 +28,12 @@ class CreateQuizFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_quiz, container, false)
 
+
+        // TODO remove: just for testing
+
+
+
+
         binding.addButton.setOnClickListener {
             addToQuiz()
             //getTotalPlayerScoreFromPrefs() // For Debugging
@@ -63,7 +69,6 @@ class CreateQuizFragment : Fragment() {
         return binding.root
     }
     private val tempQuizList = mutableListOf<String>()
-    private val tempQuizList2 = mutableListOf<String>()
     var hasAddedAnswer = false
     var hasCreatedQuestion = false
     var amountOfAnswers = 0
@@ -163,9 +168,9 @@ class CreateQuizFragment : Fragment() {
                 pathTextFile.mkdirs()
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
-            val quizTextFile = File(pathTextFile, quizName + ".txt")
+            val quizTextFile = File(pathTextFile, quizName + "-" + User.getName() + ".txt")
             var tempStr = ""
-            tempQuizList.forEach { line ->
+            quizData.forEach { line ->
                 tempStr += line + '\n'
             }
             FileOutputStream(quizTextFile).use {
@@ -235,6 +240,18 @@ class CreateQuizFragment : Fragment() {
                         Log.w("FAIL", "Error adding classroom to DB", e)
                         Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
                     }
+        }
+    }
+
+    private fun getQuizFromDatabase(name: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("quiz").document(name).get().addOnCompleteListener() { task ->
+            if(task.isSuccessful){
+                val quizList = task.result?.get("question") as MutableList<String>
+
+                writeQuizToFile(name, quizList)
+            }
         }
     }
 

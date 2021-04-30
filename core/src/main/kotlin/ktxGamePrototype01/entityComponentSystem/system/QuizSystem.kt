@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
+import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
@@ -96,6 +97,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
 
             val quizList = readQuizFromFile(quizName)
+            val helpFun = HelperFunctions()
             var questAnsw: String
             var isQuestion = false
             var isCorrect: Boolean
@@ -118,7 +120,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                         isQuestion -> 34
                         else -> 26
                     }
-                    var (questAnswChopped , spacer, centerTextPos) = chopString(questAnsw, maxLength)
+                    var (questAnswChopped , spacer, centerTextPos) = helpFun.chopString(questAnsw, maxLength)
                     if (isQuestion && 4 == tempQuizList.size) maxPoints = tempQuizList[3].toInt()
                     charToNum = Character.getNumericValue(line.first())
                     if(charToNum != previousQuestionNr){
@@ -178,34 +180,13 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
 
     }
 
-    // Max length should be 34 with text scaling at 4.0f for entire textViewport
-    // Returns triple = chopped string, how many times the string has been chopped and the offset pos
-    // needed for centering text to the textViewport
-    private fun chopString(str: String, maxLength: Int) : Triple<String, Int, Float> {
-        val numChars = str.count()
-        var newStr = str
-        var spacer = 0
-        var centerPos = 0f
-        if(numChars > maxLength) {
-            for (i in 0..numChars) {
-                if (i.rem(maxLength) == 0) {
-                    newStr = StringBuilder(newStr).apply { insert(i + spacer, '\n') }.toString()
-                    spacer += 1
-                    centerPos = (maxLength / 2f ) * 0.2f
-                }
-            }
-        }else {centerPos = (numChars / 2f ) * 0.2f }    // higher = right
-        if(spacer < 1) spacer = 1
-        return Triple(newStr, spacer, centerPos)
-    }
-
     // Saves the player score to xml in shared_prefs folder
     private fun savePlayerScore(entity: Entity) {
         val player = entity[PlayerComponent.mapper]
         require(player != null)
         LOG.debug { "Adding score = ${player.playerScore}" }
         var score = 0f
-        val prefs: Preferences = Gdx.app.getPreferences("playerData")
+        val prefs: Preferences = Gdx.app.getPreferences("playerData"+player.playerName)
         score = prefs.getFloat("totalPlayerScore")
         score += player.playerScore
         prefs.putFloat("totalPlayerScore", score)
