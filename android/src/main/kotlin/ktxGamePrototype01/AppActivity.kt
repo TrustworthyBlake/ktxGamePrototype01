@@ -44,8 +44,6 @@ class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //binding.toolbar.setupWithNavController(navController, appBarConfig)
         val navController = findNavController(R.id.nav_fragment)
         val appBarConfig = AppBarConfiguration(navController.graph, binding.mainDrawerLayout)
 

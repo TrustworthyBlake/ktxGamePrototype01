@@ -8,9 +8,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/classroom_nav"
             android:layout_width="match_parent"
@@ -18,14 +15,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_classroom"/>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="55dp"
-            android:text="AAAAAAAAAAAAAAAAAAAA" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:text="BBBBBBBBBBBBB" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </layout>

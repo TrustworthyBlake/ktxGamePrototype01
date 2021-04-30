@@ -7,12 +7,12 @@
         android:icon="@drawable/baseline_chat_black_24" />
 
     <item
-        android:id="@+id/dest_classroom_modules"
+        android:id="@+id/dest_classroom_module"
         android:title="Modules"
         android:icon="@drawable/baseline_sports_esports_black_24" />
 
     <item
-        android:id="@+id/dest_classroom_leaderboards"
+        android:id="@+id/dest_classroom_leaderboard"
         android:title="Leaderboards"
         android:icon="@drawable/baseline_leaderboard_black_24"/>
 

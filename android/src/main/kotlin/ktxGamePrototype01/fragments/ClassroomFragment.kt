@@ -3,16 +3,23 @@ package ktxGamePrototype01.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomBinding
+import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
 import java.util.*
 
@@ -28,21 +35,14 @@ class ClassroomFragment : Fragment() {
         //binding.recyclerViewClasses.adapter = adapter
         //binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
 
-        binding.btnCreateModule.setOnClickListener() {
-            val builder = AlertDialog.Builder(context)
-            val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
-            val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
-            builder.setView(dialogLayout)
-            builder.setPositiveButton("OK") { dialogInterface, i ->
-                textList.add(editText.text.toString())
-                adapter.notifyItemInserted(textList.size - 1)
-            }
-            builder.show()
 
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            //(activity as AppActivity?)!!.launchGame(1)
-        }
+
+
+        val navController = requireActivity().findNavController(R.id.nav_fragment)
+        binding.classroomNav.setupWithNavController(navController)
 
         return binding.root
     }
+
+
 }

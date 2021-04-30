@@ -151,4 +151,29 @@
         tools:layout="@layout/fragment_edit_profile"/>
 
 
+    <fragment
+        android:id="@+id/dest_classroom_chat"
+        android:name="ktxGamePrototype01.fragments.ClassroomFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_classroom">
+        <action
+            android:id="@+id/action_chat_to_game"
+            app:destination="@id/dest_classroom_module" />
+        <action
+            android:id="@+id/action_chat_to_leaderboards"
+            app:destination="@id/dest_classroom_leaderboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_classroom_module"
+        android:name="ktxGamePrototype01.fragments.ClassroomModuleFragment"
+        android:label="Module"
+        tools:layout="@layout/fragment_classroom_module"/>
+
+    <fragment
+        android:id="@+id/dest_classroom_leaderboard"
+        android:name="ktxGamePrototype01.fragments.ClassroomLeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_classroom_leaderboard"/>
+
 </navigation>
