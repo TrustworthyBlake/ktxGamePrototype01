@@ -40,6 +40,8 @@ class UserFragment : Fragment() {
         // TODO REMOVE BEFORE LAUNCH
         // To test db functionality (Adding classrooms and adding students to classrooms)
         val test = DBTest()
+        val className = "2nd grade English 2021"
+        getClassroomData(className)
 
 
         // display bottom navigation menu bar
@@ -162,7 +164,7 @@ class UserFragment : Fragment() {
     private fun makeDaList(size: Int): List<ListItem> {
         val list = ArrayList<ListItem>()
         val userList : List<String> = User.getAchievement()
-        for (i in 0 until size+1) {
+        for (i in 0 until size-1) {
             val drawable = R.drawable.ic_attach_money_black_24dp
             val item = ListItem(drawable, userList[i])
             list += item
@@ -170,6 +172,22 @@ class UserFragment : Fragment() {
         return list
     }
 
+    // getting all data from a user and storing it in a user object
+    fun getClassroomData(className: String) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("classrooms").document(className).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val quizList = task.result?.get("quizes") as List<String>
+                val studentList = task.result?.get("students") as List<String>
+                val teacherName = task.result?.get("teacher name").toString()
+                val announcementsList = task.result?.get("announcements") as List<String>
+
+                // TODO do something with data here
+
+            }
+        }
+    }
 
 
 

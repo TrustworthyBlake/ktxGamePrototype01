@@ -12,7 +12,8 @@ class DBTest() {
         val studentList = listOf("2IeVdJbHnoRUbtqs7nnAHCh0Fis1", "FY7Kq5vspicFcMbw33rht0CtDUb2")
         //DBObject.addStudents(className, studentList)
 
-
+        val message = "30/4/21 - This is an announcement"
+        //DBObject.newAnnouncement(className, message)
 
 
     }

@@ -120,6 +120,5 @@ object User {
         fun updateFirestoreUser() {
             DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
         }
-
-
+    
 }

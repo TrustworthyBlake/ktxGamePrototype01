@@ -40,6 +40,7 @@ object DBObject {
         }
     }
 
+
     // creating a database entry for a new user
     fun createDatabaseEntry(email: String, name: String, isTeacher: Boolean, userID: String) {
         val db = getInstance()
@@ -82,6 +83,14 @@ object DBObject {
         }
     }
 
+    fun newAnnouncement(className: String, message: String) {
+        val db = getInstance()
+
+        db.collection("classrooms")
+                .document(className)
+                .update("announcements", FieldValue.arrayUnion(message))
+                .addOnFailureListener { e -> Log.w(failTAG, "Error adding message to Firestore", e) }
+    }
 
     // find a user by the users name
     private fun findTeacherByName(name: String) {
