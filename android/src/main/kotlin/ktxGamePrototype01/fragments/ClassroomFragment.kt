@@ -29,7 +29,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomBinding
 import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.DBObject
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomChatRecyclerAdapter
 import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
@@ -56,7 +59,7 @@ class ClassroomFragment : Fragment() {
     private var chatList: ArrayList<Chat> = ArrayList()
     private lateinit var adapter: ClassroomChatRecyclerAdapter
     private val classroomVM: ClassroomViewModel by activityViewModels()
-
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classroom, container, false)
@@ -64,6 +67,7 @@ class ClassroomFragment : Fragment() {
         binding.recyclerViewClassesChat.adapter = adapter
         binding.recyclerViewClassesChat.layoutManager = LinearLayoutManager(context)
         val navController = requireActivity().findNavController(R.id.nav_fragment)
+
 
         val className = arguments?.getString("classroom")
         Toast.makeText(context,className.toString(),Toast.LENGTH_SHORT)
@@ -75,22 +79,33 @@ class ClassroomFragment : Fragment() {
 
         binding.classroomChatBtn.setOnClickListener {
             val tempMessage = binding.classroomChatInput.text.toString()
-            val tempTimestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC).format(Instant.now())
-
+            val tempTimestamp = DateTimeFormatter.ofPattern("yyyy/MM/dd").withZone(ZoneOffset.UTC).format(Instant.now())
             val tempChat = Chat(classroomVM.selected, tempMessage, tempTimestamp)
+            DBObject.newAnnouncement(classroomVM.selected, tempTimestamp + " - " +  tempMessage)
             chatList.add(tempChat)
             adapter.notifyItemInserted(chatList.size - 1)
         }
 
-
+        //  Populate the announcements recycler view
+        populateAnnouncements(classroomVM.selected)
 
 
         binding.classroomNav.setupWithNavController(navController)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    private fun populateAnnouncements(id: String){
+        db.collection("classrooms").document(id).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val classroomList = task.result?.get("announcements") as List<String>
+                for(announcement in classroomList) {
+                    var tempQuizList: List<String> = announcement.split("-")
+                    val tempChat = Chat(id, tempQuizList[1], tempQuizList[0])
+                     chatList.add(tempChat)
+                     adapter.notifyItemInserted(chatList.size - 1)
+                }
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ClassroomIndexFragment : Fragment() {
@@ -45,7 +46,6 @@ class ClassroomIndexFragment : Fragment() {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
-            classList.clear()
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
                 classList.add(editText.text.toString())
@@ -73,13 +73,18 @@ class ClassroomIndexFragment : Fragment() {
             if (task.isSuccessful) {
                 // if query is successful, reads the data and stores in variables
                 val classroomList = task.result?.get("courses") as List<String>
-                // getting the reference to the textViews
-                // displaying the data in the textViews
                 for(classroom in classroomList) {
-                    classList.add(classroom)
-                    adapter.notifyItemInserted(classList.size - 1)
+                    if(!classList.contains(classroom)){
+                        classList.add(classroom)
+                        adapter.notifyItemInserted(classList.size - 1)
+                    }
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 }
