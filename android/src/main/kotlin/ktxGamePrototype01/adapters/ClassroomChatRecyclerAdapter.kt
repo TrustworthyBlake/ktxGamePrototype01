@@ -15,7 +15,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-class ClassroomChatRecyclerAdapter(private val classChatText: ArrayList<String>) : RecyclerView.Adapter<ClassroomChatRecyclerAdapter.ClassroomChatHolder>() {
+class ClassroomChatRecyclerAdapter(private val classChatText: ArrayList<Chat>) : RecyclerView.Adapter<ClassroomChatRecyclerAdapter.ClassroomChatHolder>() {
 
 
 
@@ -45,12 +45,13 @@ class ClassroomChatRecyclerAdapter(private val classChatText: ArrayList<String>)
             view.setOnClickListener(this)
         }
 
-        fun bindText(tempText: String) {
-            this.text = tempText
-            this.text2 = tempText
+        fun bindText(tempText: Chat) {
+            this.text = tempText.classname
+            this.text2 = tempText.message
+            this.timestamp = tempText.timestamp
             view.classroom_chat_name.text = this.text
             view.classroom_chat_message.text = this.text2
-            view.classroom_chat_timestamp.text = timestamp
+            view.classroom_chat_timestamp.text = this.timestamp
 
         }
 

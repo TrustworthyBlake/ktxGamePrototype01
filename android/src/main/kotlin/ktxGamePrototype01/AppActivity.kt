@@ -35,9 +35,9 @@ class AppActivity : AppCompatActivity() {
             setTheme(R.style.GreenTheme)
         }else if(savedDarkData.loadOrangeModeState() == true){
             setTheme(R.style.OrangeTheme)
-        } else if(savedDarkData.loadPurpleModeState() == true){
+        }else if(savedDarkData.loadPurpleModeState() == true){
             setTheme(R.style.PurpleTheme)
-        } else{
+        }else{
             setTheme((R.style.AppTheme))
         }
 

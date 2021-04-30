@@ -30,8 +30,12 @@ import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomBinding
 import com.google.android.material.bottomnavigation.BottomNavigationMenu
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomChatRecyclerAdapter
 import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -45,16 +49,18 @@ class ClassroomViewModel : ViewModel() {
 
 
 
+
+
 class ClassroomFragment : Fragment() {
     private lateinit var binding: FragmentClassroomBinding
-    private var textList: ArrayList<String> = ArrayList()
+    private var chatList: ArrayList<Chat> = ArrayList()
     private lateinit var adapter: ClassroomChatRecyclerAdapter
     private val classroomVM: ClassroomViewModel by activityViewModels()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classroom, container, false)
-        adapter = ClassroomChatRecyclerAdapter(textList)
+        adapter = ClassroomChatRecyclerAdapter(chatList)
         binding.recyclerViewClassesChat.adapter = adapter
         binding.recyclerViewClassesChat.layoutManager = LinearLayoutManager(context)
         val navController = requireActivity().findNavController(R.id.nav_fragment)
@@ -68,9 +74,12 @@ class ClassroomFragment : Fragment() {
         Toast.makeText(context,classroomVM.selected,Toast.LENGTH_SHORT)
 
         binding.classroomChatBtn.setOnClickListener {
-            val tempText = binding.classroomChatInput.text.toString()
-            textList.add(tempText)
-            adapter.notifyItemInserted(textList.size - 1)
+            val tempMessage = binding.classroomChatInput.text.toString()
+            val tempTimestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC).format(Instant.now())
+
+            val tempChat = Chat(classroomVM.selected, tempMessage, tempTimestamp)
+            chatList.add(tempChat)
+            adapter.notifyItemInserted(chatList.size - 1)
         }
 
 
