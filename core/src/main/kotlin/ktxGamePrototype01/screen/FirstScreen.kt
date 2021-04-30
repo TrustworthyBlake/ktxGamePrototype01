@@ -37,6 +37,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
     private val tempQuizName = qzName
     val errorList = mutableListOf<String>("Error: No results found")
     var quizInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
+    var playeContr: playerControl = playerControl(batch as SpriteBatch)
     var gameEndFlag = false
     private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
@@ -68,6 +69,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
             }
         }
 
+        playeContr = playerControl(batch as SpriteBatch)
 
         // TODO: Currently constantly checking if the variable has changed
         playerEntities.forEach { player ->
@@ -78,6 +80,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                 }
             }
         }
+
         var tempDelta = delta
         //if(gameEndFlag == true ) tempDelta = 0f
         engine.update(tempDelta)

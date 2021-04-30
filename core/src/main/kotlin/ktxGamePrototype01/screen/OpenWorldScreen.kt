@@ -3,6 +3,7 @@ package ktxGamePrototype01.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -22,6 +23,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val quizQuestTexture = Texture(Gdx.files.internal("graphics/skill_icons1.png"))
+    var playeContr: playerControl = playerControl(batch as SpriteBatch)
 
     override fun show() {
         createMapEntities()
@@ -33,6 +35,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     }
     override fun render(delta: Float) {
         engine.update(delta)
+        playeContr.draw()
     }
     override fun dispose() {
         engine.removeAllEntities()

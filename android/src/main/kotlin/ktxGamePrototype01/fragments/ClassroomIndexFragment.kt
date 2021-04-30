@@ -33,6 +33,9 @@ class ClassroomIndexFragment : Fragment() {
         binding.recyclerViewClasses.adapter = adapter
         binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
 
+        User.addToUserScore()
+
+
         binding.btnCreateModule.setOnClickListener() {
             /*
             val builder = AlertDialog.Builder(context)

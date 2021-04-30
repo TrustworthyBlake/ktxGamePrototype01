@@ -11,7 +11,6 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
-import ktxGamePrototype01.entityComponentSystem.components.playerControl
 import ktxGamePrototype01.entityComponentSystem.system.*
 import ktxGamePrototype01.screen.FirstScreen
 import ktxGamePrototype01.screen.OpenWorldScreen

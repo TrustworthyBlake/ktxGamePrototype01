@@ -1,4 +1,4 @@
-package ktxGamePrototype01.entityComponentSystem.components
+package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -50,9 +50,9 @@ class playerControl {
         })
         Gdx.input.inputProcessor = stage
         val table = Table()
-        table.left().bottom()
+        table.bottom()  //this is pointless, the button is ALWAYS bottom left
         val upImg = Image(Texture(Gdx.files.internal("graphics/red_square.png")))
-        upImg.setSize(50f, 50f)
+        upImg.setSize(200f, 30f)
         upImg.addListener(object : InputListener() {
             override fun touchDown(
                 event: InputEvent,
@@ -75,6 +75,7 @@ class playerControl {
         table.add(upImg).size(upImg.width, upImg.height)
         table.add()
         table.row().pad(5f, 5f, 5f, 5f)
+        table.setFillParent(true)
         stage.addActor(table)
     }
 }
