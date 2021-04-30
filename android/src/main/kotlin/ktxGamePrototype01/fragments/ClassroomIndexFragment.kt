@@ -49,6 +49,12 @@ class ClassroomIndexFragment : Fragment() {
         binding.btnOpenCreateQuiz.setOnClickListener {
             findNavController().navigate(R.id.dest_create_quiz)
         }
+
+        binding.btnLaunchGame.setOnClickListener {
+            //initialize(Prot01(), AndroidApplicationConfiguration())
+            //(activity as AppActivity?)!!.launchGame(1)
+        }
+
         return binding.root
     }
 }
