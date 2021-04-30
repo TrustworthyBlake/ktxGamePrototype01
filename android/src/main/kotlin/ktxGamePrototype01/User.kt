@@ -139,6 +139,4 @@ object User {
             DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
         }
 
-
-
 }

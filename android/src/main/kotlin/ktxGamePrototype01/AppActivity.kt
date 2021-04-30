@@ -32,17 +32,15 @@ class AppActivity : AppCompatActivity() {
             setTheme(R.style.GreenTheme)
         }else if(savedDarkData.loadOrangeModeState() == true){
             setTheme(R.style.OrangeTheme)
-        } else if(savedDarkData.loadPurpleModeState() == true){
+        }else if(savedDarkData.loadPurpleModeState() == true){
             setTheme(R.style.PurpleTheme)
-        } else{
+        }else{
             setTheme((R.style.AppTheme))
         }
 
         super.onCreate(savedInstanceState)
         binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //binding.toolbar.setupWithNavController(navController, appBarConfig)
         val navController = findNavController(R.id.nav_fragment)
         val appBarConfig = AppBarConfiguration(navController.graph, binding.mainDrawerLayout)
 

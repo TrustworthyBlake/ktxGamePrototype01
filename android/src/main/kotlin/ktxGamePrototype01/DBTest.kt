@@ -8,11 +8,13 @@ class DBTest() {
         val teacher = "Teacher Test"
         val year = 2021
         //DBObject.addClassroom(courseName, grade, teacher, year)
-        val className = "5th grade Math 2021"
+        val className = "2nd grade English 2021"
         val studentList = listOf("2IeVdJbHnoRUbtqs7nnAHCh0Fis1", "FY7Kq5vspicFcMbw33rht0CtDUb2")
         //DBObject.addStudents(className, studentList)
 
 
+        val module = "module test"
+        //DBObject.newModule(className, module)
 
 
     }

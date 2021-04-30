@@ -40,6 +40,8 @@ class UserFragment : Fragment() {
         // TODO REMOVE BEFORE LAUNCH
         // To test db functionality (Adding classrooms and adding students to classrooms)
         val test = DBTest()
+        val className = "2nd grade English 2021"
+        getClassroomData(className)
 
 
         // display bottom navigation menu bar
@@ -170,6 +172,22 @@ class UserFragment : Fragment() {
         return list
     }
 
+    // getting all data from a user and storing it in a user object
+    fun getClassroomData(className: String) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("classrooms").document(className).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val quizList = task.result?.get("quizes") as List<String>
+                val studentList = task.result?.get("students") as List<String>
+                val teacherName = task.result?.get("teacher name").toString()
+                val announcementsList = task.result?.get("announcements") as List<String>
+
+                // TODO do something with data here
+
+            }
+        }
+    }
 
     private fun setUserScore(userName : String, score : Int){
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
