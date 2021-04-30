@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/dest_classroom_front"
-        android:title="Classroom Home"
+        android:id="@+id/dest_classroom_chat"
+        android:title="Classroom"
         android:icon="@drawable/baseline_chat_black_24" />
 
     <item

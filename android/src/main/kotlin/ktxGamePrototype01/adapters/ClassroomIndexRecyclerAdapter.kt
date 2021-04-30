@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,6 @@ import kotlinx.android.synthetic.main.module_entry.view.*
 import ktxGamePrototype01.inflate
 
 class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : RecyclerView.Adapter<ClassroomIndexRecyclerAdapter.ClassroomHolder>() {
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassroomIndexRecyclerAdapter.ClassroomHolder {
@@ -39,8 +39,8 @@ class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : 
             view.setOnClickListener(this)
         }
 
-        fun bindText(photo: String) {
-            this.text = photo
+        fun bindText(className: String) {
+            this.text = className
             view.module_name.text = this.text
         }
 
@@ -50,8 +50,9 @@ class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : 
            // val showPhotoIntent = Intent(context, PhotoActivity::class.java)
            // showPhotoIntent.putExtra(PHOTO_KEY, photo)
            // context.startActivity(showPhotoIntent)
-            val classroom = "Error 404"
+            val classroom = this.text
             val bundle = bundleOf("classroom" to classroom)
+            v
 
             findNavController(v).navigate(R.id.dest_classroom, bundle)
 

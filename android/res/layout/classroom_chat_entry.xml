@@ -13,45 +13,60 @@
         android:focusable="true"
         android:clickable="true"
         app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/design_default_color_background"
         android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_marginLeft="5dp"
+            android:padding="10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/lbl_module_name"
+                    android:id="@+id/classroom_chat_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:text="Class:"/>
+                    android:text="Classname:"/>
+
+                <TextView
+                    android:id="@+id/classroom_chat_timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="210dp"
+                    android:gravity="start"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:alpha="0.5"
+                    android:text="2021-01-30"/>
+
+
 
             </LinearLayout>
 
 
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/module_name"
+                    android:id="@+id/classroom_chat_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"

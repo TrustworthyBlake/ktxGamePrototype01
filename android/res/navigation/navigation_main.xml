@@ -151,6 +151,7 @@
         tools:layout="@layout/fragment_edit_profile"/>
 
 
+    <!--     CLASSROOM FRAGMENTS -->
     <fragment
         android:id="@+id/dest_classroom_chat"
         android:name="ktxGamePrototype01.fragments.ClassroomFragment"
