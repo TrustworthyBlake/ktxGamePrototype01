@@ -151,7 +151,10 @@ class CreateQuizFragment : Fragment() {
 
                 qzName = "$quizName-" + User.getName()
 
-                addQuizToDatabase()
+                // TODO module name needs to be gotten from somewhere in the app
+                val module = "module test"
+
+                addQuizToDatabase(module)
                 tempQuizList.clear()
             }
             tempQuizList.isNullOrEmpty() -> {
@@ -218,7 +221,7 @@ class CreateQuizFragment : Fragment() {
         Toast.makeText(activity, "Total player score = $totalPlayerScore", Toast.LENGTH_SHORT).show()
     }
 
-    private fun addQuizToDatabase() {
+    private fun addQuizToDatabase(module: String) {
         val db = FirebaseFirestore.getInstance()
 
         val quiz = hashMapOf(
@@ -235,6 +238,10 @@ class CreateQuizFragment : Fragment() {
                     .document(classroom)
                     .update("quizes", FieldValue.arrayUnion(qzName)).addOnSuccessListener {
                         Log.d("SUCCESS", "Successfully added quiz to classroom")
+                        // add quiz to module in firestore
+                        db.collection("modules")
+                                .document(module)
+                                .update("quizes", FieldValue.arrayUnion(qzName))
                     }
                     .addOnFailureListener { e ->
                         Log.w("FAIL", "Error adding classroom to DB", e)
