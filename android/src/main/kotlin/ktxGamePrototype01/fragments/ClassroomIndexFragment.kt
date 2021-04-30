@@ -33,8 +33,7 @@ class ClassroomIndexFragment : Fragment() {
         binding.recyclerViewClasses.adapter = adapter
         binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
 
-        binding.btnCreateModule.setOnClickListener() {
-            /*
+        binding.btnJoinClassroom.setOnClickListener() {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
@@ -44,16 +43,19 @@ class ClassroomIndexFragment : Fragment() {
                 adapter.notifyItemInserted(textList.size - 1)
             }
             builder.show()
-            */
 
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            val x = User.getTeacherAvatars()
-            val y = User.getName()
-            (activity as AppActivity?)!!.launchGame("OpenWorldScreen", y, "test9", x )
+
         }
         binding.btnOpenCreateQuiz.setOnClickListener {
             findNavController().navigate(R.id.dest_create_quiz)
         }
+
+        binding.btnLaunchGame.setOnClickListener {
+            val x = User.getTeacherAvatars()
+            val y = User.getName()
+            (activity as AppActivity?)!!.launchGame("OpenWorldScreen", y, "test9", x )
+        }
+
         return binding.root
     }
 }
