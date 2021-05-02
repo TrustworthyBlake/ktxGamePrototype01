@@ -29,7 +29,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
     private fun createQuestsSignPosts(entity: Entity) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
         require(qQuestComp != null){"Error: Missing quiz quest component"}
-        val signPostTexture = Texture(Gdx.files.internal("graphics/skill_icons1.png"))
+        val signPostTexture = Texture(Gdx.files.internal("graphics/signpost.png"))
         val helpFun = HelperFunctions()
         var qPosArray = Array<Vector2>()
         qPosArray.add(Vector2(1f, 11f))

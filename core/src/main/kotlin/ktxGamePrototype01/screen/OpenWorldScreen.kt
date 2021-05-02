@@ -21,8 +21,15 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private var viewport = FitViewport(9f, 16f)
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
+    private val playerTextureHead1 = Texture(Gdx.files.internal("graphics/head1.png"))
+    private val playerTextureHead2 = Texture(Gdx.files.internal("graphics/head2.png"))
+    private val playerTextureHead3 = Texture(Gdx.files.internal("graphics/head3.png"))
+    private val playerTextureHead4 = Texture(Gdx.files.internal("graphics/head4.png"))
+    private val playerTextureBody1 = Texture(Gdx.files.internal("graphics/body1.png"))
+    private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
+    private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
+    private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
-    private val quizQuestTexture = Texture(Gdx.files.internal("graphics/skill_icons1.png"))
     var playeContr: playerControl = playerControl(batch as SpriteBatch)
 
     override fun show() {
@@ -53,7 +60,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     // Open up window which lets the user decide which quiz to do or place the different quizes as entities on the map
     // When quiz is chosen, close the open world and open up the quiz screen
     private fun createUserEntityFromPlayerData(){
-        val prefs: Preferences = Gdx.app.getPreferences(playerUserName) // playerName string from app
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + playerUserName) // playerName string from app
         val playerHead = prefs.getString("avatarHead")
         val playerBody = prefs.getString("avatarBody")
         if(playerBody != null && playerHead != null) {
@@ -64,9 +71,11 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 with<MovementComponent>()
                 with<GraphicComponent>{
                     sprite.run{
-                        when(playerHead){
-                            "todo1" -> setRegion(playerTextureBody)
-                            "todo2" -> setRegion(playerTextureBody)
+                        when(playerBody){
+                            "colour1" -> setRegion(playerTextureBody1)
+                            "colour2" -> setRegion(playerTextureBody2)
+                            "colour3" -> setRegion(playerTextureBody3)
+                            "colour4" -> setRegion(playerTextureBody4)
                             else -> setRegion(playerTextureBody)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -93,8 +102,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 with<GraphicComponent>{
                     sprite.run{
                         when(playerHead){
-                            "todo1" -> setRegion(playerTextureHead)
-                            "todo2" -> setRegion(playerTextureHead)
+                            "colour1" -> setRegion(playerTextureHead1)
+                            "colour2" -> setRegion(playerTextureHead2)
+                            "colour3" -> setRegion(playerTextureHead3)
+                            "colour4" -> setRegion(playerTextureHead4)
                             else -> setRegion(playerTextureHead)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -154,8 +165,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<GraphicComponent> {
                             sprite.run {
                                 when (head) {
-                                    "todo1" -> setRegion(playerTextureHead)
-                                    "todo2" -> setRegion(playerTextureHead)
+                                    "head1" -> setRegion(playerTextureHead1)
+                                    "head2" -> setRegion(playerTextureHead2)
+                                    "head3" -> setRegion(playerTextureHead3)
+                                    "head4" -> setRegion(playerTextureHead4)
                                     else -> setRegion(playerTextureHead)
                                 }
                                 setSize(texture.width * unitScale, texture.height * unitScale)
@@ -179,8 +192,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<GraphicComponent> {
                             sprite.run {
                                 when (body) {
-                                    "todo1" -> setRegion(playerTextureBody)
-                                    "todo2" -> setRegion(playerTextureBody)
+                                    "body1" -> setRegion(playerTextureBody1)
+                                    "body2" -> setRegion(playerTextureBody2)
+                                    "body3" -> setRegion(playerTextureBody3)
+                                    "body4" -> setRegion(playerTextureBody4)
                                     else -> setRegion(playerTextureBody)
                                 }
                                 setSize(texture.width * unitScale, texture.height * unitScale)
@@ -206,7 +221,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
-                    val Thing2 = engine.entity {
+                    val mapEntity = engine.entity {
                         with<TransformComponent> {
                             posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }

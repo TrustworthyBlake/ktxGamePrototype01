@@ -7,8 +7,7 @@ import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.*
-import ktxGamePrototype01.screen.FirstScreen
-import ktxGamePrototype01.screen.OpenWorldScreen
+import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
 const val WrongAnswerPoints = 0
@@ -124,9 +123,9 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         qQuestComp.showAvailableQuizes = true
                     }
                     if (interact.isQuest) {
-                        p.gameInst.addScreen(FirstScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
-                        if(p.gameInst.containsScreen<FirstScreen>()) {LOG.debug { "Switching to FirstScreen" }
-                            p.gameInst.setScreen<FirstScreen>()
+                        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
+                        if(p.gameInst.containsScreen<QuizScreen>()) {LOG.debug { "Switching to FirstScreen" }
+                            p.gameInst.setScreen<QuizScreen>()
                         }
                     }
                     //  SET STANDARD COLLISION

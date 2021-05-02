@@ -156,9 +156,10 @@ class UserProfileFragment : Fragment() {
 
         db.collection("quiz").document(name).get().addOnCompleteListener() { task ->
             if(task.isSuccessful){
-                val quizList = task.result?.get("question") as MutableList<String>
-
+                val quizList = task.result?.get("question") as? MutableList<String>
+                if(quizList !=null){
                 writeQuizToFile(name, quizList)
+                }
             }
         }
     }

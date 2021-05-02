@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.viewport.FitViewport
-import ktx.app.KtxScreen
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.graphics.use
@@ -57,7 +56,7 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
         engine.update(delta)
         if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
             dispose()
-            game.setScreen<FirstScreen>()
+            game.setScreen<QuizScreen>()
         }
     }
 
