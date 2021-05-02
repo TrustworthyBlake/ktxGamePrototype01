@@ -51,7 +51,7 @@ class playerControl {
         Gdx.input.inputProcessor = stage
         val table = Table()
         table.bottom()  //this is pointless, the button is ALWAYS bottom left
-        val upImg = Image(Texture(Gdx.files.internal("graphics/red_square.png")))
+        val upImg = Image(Texture(Gdx.files.internal("graphics/activateButton.png")))//("graphics/red_square.png")))
         upImg.setSize(200f, 30f)
         upImg.addListener(object : InputListener() {
             override fun touchDown(

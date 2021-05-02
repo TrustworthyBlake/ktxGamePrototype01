@@ -22,7 +22,6 @@ private val LOG = logger<QuizScreen>()
 
 class QuizScreen(game: Prot01, qzName : String, private val playerUserName : String) : AbstractScreen(game) {
     private var viewport = FitViewport(9f, 16f)
-    private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
@@ -48,6 +47,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
     }
 
+    // When this game screen is shown, called once
     override fun show() {
         createPlayerEntity()
         createMapEntities()
@@ -56,9 +56,10 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         viewport.update(width, height, true)
     }
     override fun render(delta: Float) {
-
+        // Displays button
         playeContr = playerControl(batch as SpriteBatch)
 
+        // Displays end screen when finished with quiz
         // TODO: Currently constantly checking if the variable has changed
         playerEntities.forEach { player ->
             player[QuizComponent.mapper]?.let { quiz ->
@@ -84,6 +85,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         super.hide()
     }
 
+    // Creates the player entity with the users avatar preferences from playerData+userName.xml
     private fun createPlayerEntity(){
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + playerUserName) // playerName string from app
         val playerHead = prefs.getString("avatarHead")
@@ -92,12 +94,14 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
             val playerEntityBody = engine.entity {
                 var totScore = 0f
                 with<TransformComponent> {
+                    // Where the entity is positioned in the game world
                     posVec3.set(4.5f, 10f, -1f)
                 }
                 with<MovementComponent>()
                 with<GraphicComponent> {
                     sprite.run {
-                        when(playerHead){
+                        // Sets the entity's texture based on the string
+                        when(playerBody){
                             "colour1" -> setRegion(playerTextureBody1)
                             "colour2" -> setRegion(playerTextureBody2)
                             "colour3" -> setRegion(playerTextureBody3)
@@ -114,9 +118,12 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                 }
                 with<OrientationComponent>()
                 with<TextComponent> {
+                    // Activates HUD to display current player score
                     isText = true
                     drawPlayScoreHUD = true
+                    // Makes text clearer
                     font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    // Scales the text up by 4
                     font.data.setScale(4.0f, 4.0f)
                 }
                 with<QuizComponent> {
@@ -127,9 +134,10 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                 with<TransformComponent>{
                     posVec3.set(4.5f, 10f, -1f)
                 }
-                with<MovementComponent>()
+                //with<MovementComponent>()
                 with<GraphicComponent>{
                     sprite.run{
+                        // Sets the entity's texture based on the string
                         when(playerHead){
                             "colour1" -> setRegion(playerTextureHead1)
                             "colour2" -> setRegion(playerTextureHead2)
@@ -143,6 +151,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                 }
                 with<BindEntitiesComponent> {
                     masterEntity = playerEntityBody
+                    // Offset by 1 in the y direction so the head is above the body entity
                     posOffset.set(0f, 1f)
                 }
                 with<OrientationComponent>()
@@ -150,6 +159,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         }
     }
 
+    // Creates the map entities from map.txt file
     private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
@@ -178,7 +188,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                     charNr=charNr+1
                 }
                 lineNr=lineNr+1
-                //LOG.debug { line }
             }
         }catch (e: Exception){
             e.printStackTrace()

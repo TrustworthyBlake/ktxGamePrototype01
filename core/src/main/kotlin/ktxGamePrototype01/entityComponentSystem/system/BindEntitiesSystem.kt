@@ -10,6 +10,7 @@ import ktxGamePrototype01.entityComponentSystem.components.GraphicComponent
 import ktxGamePrototype01.entityComponentSystem.components.NukePooledComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
+// The system controls the bound slave entity to its master entity
 class BindEntitiesSystem : IteratingSystem(
     allOf(
         BindEntitiesComponent::class,

@@ -16,6 +16,7 @@ import ktxGamePrototype01.unitScale
 
 private val LOG = logger<QuizSystem>()
 
+// Handles logic relevant to the QuizScreen game
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     var lastTextPositionModifier = 1

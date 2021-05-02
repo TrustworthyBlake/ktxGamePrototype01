@@ -15,22 +15,26 @@ import ktxGamePrototype01.unitScale
 import kotlin.with
 
 private val LOG = logger<QuizQuestSystem>()
+// Main logic for generating quest entities in the OpenWorldScreen
 class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude(NukePooledComponent::class).get()){
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
         require(qQuestComp != null){"Error: Missing quiz quest component"}
-        if (qQuestComp.showAvailableQuizes){
-            createQuestsSignPosts(entity)
-            qQuestComp.showAvailableQuizes = false
-        }
+        if (qQuestComp.showAvailableQuizes){            // When an entity has quizQuestComponent and
+            createQuestsSignPosts(entity)               //               showAvailableQuizes is true
+            qQuestComp.showAvailableQuizes = false      // Set to false so this function is not
+        }                                               //           called for every rendered frame
     }
 
+    // Creates the quest entities with their corresponding quiz from a given teacher entity
     private fun createQuestsSignPosts(entity: Entity) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
         require(qQuestComp != null){"Error: Missing quiz quest component"}
         val signPostTexture = Texture(Gdx.files.internal("graphics/signpost.png"))
         val helpFun = HelperFunctions()
+
+        // Array that holds the vector position for 4 entities
         var qPosArray = Array<Vector2>()
         qPosArray.add(Vector2(1f, 11f))
         qPosArray.add(Vector2(7f, 11f))
@@ -40,6 +44,8 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
         var qName = ""
         val maxLength = 26
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
+
+        // If the teacher entity has no quizzes then no quest entities will be created
         if (!list.isNullOrEmpty()){
             list.forEach {
                 qName = it.replace(".txt", "")
@@ -73,6 +79,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
         }
     }
 
+    // The function takes the teacher name and returns a list of all quizzes belonging to that teacher
     private fun findAllQuizBelongingToTeacher(tName : String): MutableList<String>{
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }

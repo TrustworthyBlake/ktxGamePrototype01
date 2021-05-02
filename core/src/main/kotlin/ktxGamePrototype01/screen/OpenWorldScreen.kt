@@ -17,7 +17,11 @@ import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<OpenWorldScreen>()
-class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?, private val playerUserName : String) : AbstractScreen(game) {       // Todo add list of teachers and name of user
+// Contains the Open World Game Screen
+// Takes Prot01, teacherDataList and userName. Inherits from Abstract Screen
+class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
+                      private val playerUserName : String) : AbstractScreen(game) {
+
     private var viewport = FitViewport(9f, 16f)
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
@@ -32,6 +36,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     var playeContr: playerControl = playerControl(batch as SpriteBatch)
 
+    // When this game screen is shown, called once
     override fun show() {
         createMapEntities()
         createUserEntityFromPlayerData()
@@ -52,13 +57,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         super.hide()
     }
 
-    // Get player data of sprite
-    // Get all teacher player data sprite
-    // Dynamically add the teachers to the map
-    // Make teachers intractable
-    // Quest marker if teacher has added new quiz user haven't completed yet
-    // Open up window which lets the user decide which quiz to do or place the different quizes as entities on the map
-    // When quiz is chosen, close the open world and open up the quiz screen
+    // Creates the player entity with the users avatar preferences from playerData+userName.xml
     private fun createUserEntityFromPlayerData(){
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + playerUserName) // playerName string from app
         val playerHead = prefs.getString("avatarHead")
@@ -66,11 +65,13 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         if(playerBody != null && playerHead != null) {
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
+                    // Where the entity is positioned in the game world
                     posVec3.set(4.5f, 11f, -1f)
                 }
                 with<MovementComponent>()
                 with<GraphicComponent>{
                     sprite.run{
+                        // Sets the entity's texture based on the string
                         when(playerBody){
                             "colour1" -> setRegion(playerTextureBody1)
                             "colour2" -> setRegion(playerTextureBody2)
@@ -88,9 +89,12 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 }
                 with<OrientationComponent>()
                 with<TextComponent> {
+                    // Activates HUD to display current player score
                     isText = true
                     drawPlayScoreHUD = true
+                    // Makes text clearer
                     font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    // Scales the text up by 4
                     font.data.setScale(4.0f, 4.0f)
                 }
             }
@@ -98,9 +102,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 with<TransformComponent>{
                     posVec3.set(4.5f, 10f, -1f)
                 }
-                with<MovementComponent>()
+                //with<MovementComponent>()
                 with<GraphicComponent>{
                     sprite.run{
+                        // Sets the entity's texture based on the string
                         when(playerHead){
                             "colour1" -> setRegion(playerTextureHead1)
                             "colour2" -> setRegion(playerTextureHead2)
@@ -114,6 +119,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 }
                 with<BindEntitiesComponent> {
                     masterEntity = playerEntityBody
+                    // Offset by 1 in the y direction so the head is above the body entity
                     posOffset.set(0f, 1f)
                 }
                 with<OrientationComponent>()
@@ -141,6 +147,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         if (!teacherList.isNullOrEmpty()) {
             val helpFun = HelperFunctions()
             for (i in 0 until teacherList.size) {
+                // Sets the name of teacher, avatar body and head to the correct variables
                 var line = teacherList.elementAt(i)
                 when (pos) {
                     1 -> {
@@ -153,17 +160,21 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         teacherName = line; LOG.debug { "Teachers name: $line" }
                     }
                 }
+                // Chops the string
                 var (teacherNameChopped , spacer, centerTextPos) = helpFun.chopString(teacherName, maxLength)
                 pos += 1
+                // Each time 3 elements have been iterated trough a new teacher entity is created
                 if (pos % 3 == 0) {
                     count += 1
                     pos = 0
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
+                            // Where the entity is positioned in the game world, uses the pos from array
                             posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y + 1f, -1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
+                                // Sets the entity's texture based on the string
                                 when (head) {
                                     "head1" -> setRegion(playerTextureHead1)
                                     "head2" -> setRegion(playerTextureHead2)
@@ -178,8 +189,11 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<TextComponent> {
                             isText = true
                             textStr = teacherNameChopped
+                            // Makes text clearer
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                            // Scales the text up by 4
                             font.data.setScale(4.0f, 4.0f)
+                            // Position of text in the game world
                             posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 1.7f)
                         }
                         with<InteractableComponent> { isTeacher = true }
@@ -187,10 +201,12 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     }
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
+                            // Where the entity is positioned in the game world, uses the pos from array
                             posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y, -1f)
                         }
                         with<GraphicComponent> {
                             sprite.run {
+                                // Sets the entity's texture based on the string
                                 when (body) {
                                     "body1" -> setRegion(playerTextureBody1)
                                     "body2" -> setRegion(playerTextureBody2)
@@ -209,6 +225,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             }
         }else{LOG.debug { "Error: Can not find teacher list" }}
     }
+
+    // Creates the map entities from map.txt file
     private fun createMapEntities(){
         val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
@@ -247,11 +265,5 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         }finally{
             LOG.debug { "Done Reading" }
         }
-    }
-    private fun createQuizQuestEntities(){
-        // Teacher name: who own the quiz
-        // Place entity with name of quiz on map when interacting with teacher
-        // Remove current placed quests when starting a new interaction with another teacher
-        // Start quiz game when activating quest
     }
 }
