@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -79,7 +80,7 @@ class ModuleFragment : Fragment() {
             val bundle = bundleOf("module" to module)
             when (binding.gameSpinner.selectedItem.toString()){
                 "Theory" -> print("PLACEHOLDER")
-                "Quiz" -> findNavController().navigate(R.id.dest_create_quiz)
+                "Quiz" -> findNavController().navigate(R.id.dest_create_quiz, bundle)
             }
         }
 

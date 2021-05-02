@@ -30,8 +30,8 @@ class CreateQuizFragment : Fragment() {
 
 
         // TODO remove: just for testing
-
-
+        val className = arguments?.getString("module")
+        Toast.makeText(activity, className, Toast.LENGTH_SHORT).show()
 
 
         binding.addButton.setOnClickListener {
@@ -39,7 +39,7 @@ class CreateQuizFragment : Fragment() {
             //getTotalPlayerScoreFromPrefs() // For Debugging
         }
         binding.createQuizButton.setOnClickListener{
-            createQuiz()
+            createQuiz(className.toString())
         }
         binding.checkBoxIsQuestion.setOnClickListener {
             checkBoxIsAnswer.isChecked = false
@@ -135,7 +135,7 @@ class CreateQuizFragment : Fragment() {
         }
     }
 
-    private fun createQuiz(){
+    private fun createQuiz(module: String){
         when {
             TextUtils.isEmpty(binding.createQuizTextIn.text.toString()) -> {
                 Toast.makeText(activity, "Error: You must give your quiz a name!", Toast.LENGTH_SHORT).show()
@@ -151,6 +151,7 @@ class CreateQuizFragment : Fragment() {
 
                 qzName = "$quizName-" + User.getName()
 
+                addQuizToModuleDatabase(module)
                 addQuizToDatabase()
                 tempQuizList.clear()
             }
@@ -241,6 +242,15 @@ class CreateQuizFragment : Fragment() {
                         Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
                     }
         }
+    }
+
+    private fun addQuizToModuleDatabase(module: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("modules")
+            .document(module)
+            .update("quizes", FieldValue.arrayUnion(qzName))
+
     }
 
     private fun getQuizFromDatabase(name: String) {
