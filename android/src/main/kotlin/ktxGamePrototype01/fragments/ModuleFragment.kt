@@ -23,14 +23,12 @@ import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomModuleBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentModuleBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
-import ktxGamePrototype01.adapters.ClassroomModuleRecyclerAdapter
-import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
+import ktxGamePrototype01.adapters.*
 import java.util.ArrayList
 
 class ModuleFragment : Fragment() {
     private lateinit var binding: FragmentModuleBinding
-    private var moduleGameList: ArrayList<String> = ArrayList()
+    private var moduleGameList: ArrayList<Game> = ArrayList()
     private lateinit var adapter: ModuleRecyclerAdapter
     private val classroomVM: ClassroomViewModel by activityViewModels()
     private val db = FirebaseFirestore.getInstance()
@@ -112,8 +110,9 @@ class ModuleFragment : Fragment() {
                 // if query is successful, reads the data and stores in variables
                 val gameList = task.result?.get("quizes") as List<String>
                 for(game in gameList) {
-                    if(!moduleGameList.contains(game)) {
-                        moduleGameList.add(game)
+                    val tempGame = Game(game, "Quiz")
+                    if(!moduleGameList.contains(tempGame)) {
+                        moduleGameList.add(tempGame)
                         adapter.notifyItemInserted(moduleGameList.size - 1)
                     }
                 }
