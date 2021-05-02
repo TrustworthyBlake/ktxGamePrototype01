@@ -110,24 +110,6 @@ class ModuleFragment : Fragment() {
             builder.show()
         }
 
-/*
-
-
-        binding.btnCreateModule.setOnClickListener() {
-            val builder = AlertDialog.Builder(context)
-            val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
-            val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
-            builder.setView(dialogLayout)
-            builder.setPositiveButton("OK") { dialogInterface, i ->
-                moduleList.add(editText.text.toString())
-                adapter.notifyItemInserted(moduleList.size - 1)
-            }
-            builder.show()
-
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            //(activity as AppActivity?)!!.launchGame(1)
-        }
-*/
 
         return binding.root
     }

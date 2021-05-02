@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomLeaderboardBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomModuleBinding
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import ktxGamePrototype01.DBObject
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
 import ktxGamePrototype01.adapters.ClassroomModuleRecyclerAdapter
@@ -44,6 +46,9 @@ class ClassroomModuleFragment : Fragment() {
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
+
+                addModule(editText.text.toString())
+
                 classroomModuleList.add(editText.text.toString())
                 adapter.notifyItemInserted(classroomModuleList.size - 1)
             }
@@ -51,6 +56,24 @@ class ClassroomModuleFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun addModule(id: String){
+        // Put module into database
+        val module = hashMapOf(
+            "classroom" to classroomVM.selected,
+            "name" to id,
+            "quizes" to mutableListOf<String>(),
+        )
+        db.collection("modules")
+            .document(id)
+            .set(module)
+
+        // Add module to the classrooms module list
+
+        db.collection("classrooms")
+            .document(classroomVM.selected)
+            .update("modules", FieldValue.arrayUnion(id))
     }
 
     private fun populateModules(id: String){
