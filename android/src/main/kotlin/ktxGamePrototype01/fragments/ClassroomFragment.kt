@@ -70,7 +70,6 @@ class ClassroomFragment : Fragment() {
 
 
         val className = arguments?.getString("classroom")
-        Toast.makeText(context,className.toString(),Toast.LENGTH_SHORT)
         if(classroomVM.selected.isNullOrBlank() && !className.isNullOrEmpty()){
             classroomVM.select(className.toString())
         }

@@ -11,6 +11,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.github.trustworthyblake.ktxGamePrototype01.R
+import kotlinx.android.synthetic.main.classroom_index_entry.view.*
 import kotlinx.android.synthetic.main.module_entry.view.*
 import ktxGamePrototype01.inflate
 
@@ -18,7 +19,7 @@ class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassroomIndexRecyclerAdapter.ClassroomHolder {
-        val view = parent.inflate(R.layout.module_entry, false)
+        val view = parent.inflate(R.layout.classroom_index_entry, false)
         return ClassroomHolder(view)
     }
 
@@ -41,7 +42,7 @@ class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : 
 
         fun bindText(className: String) {
             this.text = className
-            view.module_name.text = this.text
+            view.classroom_name.text = this.text
         }
 
         //4
@@ -62,6 +63,8 @@ class ClassroomIndexRecyclerAdapter(private val classText: ArrayList<String>) : 
         }
 
     }
+
+
 
 
 }

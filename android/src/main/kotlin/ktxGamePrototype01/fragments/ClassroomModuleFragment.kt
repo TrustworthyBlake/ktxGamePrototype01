@@ -14,23 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomLeaderboardBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomModuleBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
+import ktxGamePrototype01.adapters.ClassroomModuleRecyclerAdapter
 import java.util.ArrayList
 
 class ClassroomModuleFragment : Fragment() {
     private lateinit var binding: FragmentClassroomModuleBinding
-    private var textList: ArrayList<String> = ArrayList()
-    private lateinit var adapter: ClassroomIndexRecyclerAdapter
+    private var classroomModuleList: ArrayList<String> = ArrayList()
+    private lateinit var adapter: ClassroomModuleRecyclerAdapter
     private val classroomVM: ClassroomViewModel by activityViewModels()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classroom_module, container, false)
         val navController = requireActivity().findNavController(R.id.nav_fragment)
         binding.classroomNav.setupWithNavController(navController)
 
+        populateModules(classroomVM.selected)
 
-
-        adapter = ClassroomIndexRecyclerAdapter(textList)
+        adapter = ClassroomModuleRecyclerAdapter(classroomModuleList)
         binding.recyclerViewModules.adapter = adapter
         binding.recyclerViewModules.layoutManager = LinearLayoutManager(context)
 
@@ -40,17 +44,28 @@ class ClassroomModuleFragment : Fragment() {
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
-                textList.add(editText.text.toString())
-                adapter.notifyItemInserted(textList.size - 1)
+                classroomModuleList.add(editText.text.toString())
+                adapter.notifyItemInserted(classroomModuleList.size - 1)
             }
             builder.show()
-
-            //initialize(Prot01(), AndroidApplicationConfiguration())
-            //(activity as AppActivity?)!!.launchGame(1)
         }
 
         return binding.root
     }
 
+    private fun populateModules(id: String){
+        db.collection("classrooms").document(id).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val moduleList = task.result?.get("modules") as List<String>
+                for(module in moduleList) {
+                    if(!classroomModuleList.contains(module)) {
+                        classroomModuleList.add(module)
+                        adapter.notifyItemInserted(classroomModuleList.size - 1)
+                    }
+                }
+            }
+        }
+    }
 }
 

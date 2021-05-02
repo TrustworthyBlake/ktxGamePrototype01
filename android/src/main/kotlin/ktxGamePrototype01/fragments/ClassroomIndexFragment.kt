@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
@@ -32,6 +33,7 @@ class ClassroomIndexFragment : Fragment() {
     private var classList: ArrayList<String> = ArrayList()
     private lateinit var adapter: ClassroomIndexRecyclerAdapter
     private val db = FirebaseFirestore.getInstance()
+    private val classroomVM: ClassroomViewModel by activityViewModels()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +41,7 @@ class ClassroomIndexFragment : Fragment() {
         adapter = ClassroomIndexRecyclerAdapter(classList)
         binding.recyclerViewClasses.adapter = adapter
         binding.recyclerViewClasses.layoutManager = LinearLayoutManager(context)
+        classroomVM.select("")
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         fetchClassrooms(userID)
 

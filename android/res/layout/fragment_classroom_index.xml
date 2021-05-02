@@ -48,7 +48,7 @@
             android:id="@+id/recycler_view_classes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/module_entry" />
+            tools:listitem="@layout/classroom_index_entry" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
