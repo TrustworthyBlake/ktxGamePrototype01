@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.github.trustworthyblake.ktxGamePrototype01.R
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_create_quiz.*
 import ktxGamePrototype01.User
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.Thread.sleep
 
 
 class CreateQuizFragment : Fragment() {
@@ -34,6 +36,7 @@ class CreateQuizFragment : Fragment() {
         Toast.makeText(activity, className, Toast.LENGTH_SHORT).show()
 
 
+
         binding.addButton.setOnClickListener {
             addToQuiz()
             //getTotalPlayerScoreFromPrefs() // For Debugging
@@ -46,6 +49,9 @@ class CreateQuizFragment : Fragment() {
         }
         binding.checkBoxIsAnswer.setOnClickListener {
             checkBoxIsQuestion.isChecked = false
+        }
+        binding.buttonFinished.setOnClickListener {
+            findNavController().navigateUp()
         }
         binding.checkBoxIsAnswer.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
@@ -159,6 +165,7 @@ class CreateQuizFragment : Fragment() {
                 Toast.makeText(activity, "Error: You must add questions and answers to your quiz!", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     private fun writeQuizToFile(quizName: String, quizData: MutableList<String>) {

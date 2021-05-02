@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassroomModuleBinding
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentModuleBinding
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import ktxGamePrototype01.adapters.*
 import java.util.ArrayList
@@ -82,6 +83,31 @@ class ModuleFragment : Fragment() {
                 "Theory" -> print("PLACEHOLDER")
                 "Quiz" -> findNavController().navigate(R.id.dest_create_quiz, bundle)
             }
+        }
+        binding.btnImportGame.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
+            val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { dialogInterface, i ->
+
+                db.collection("quiz").document(editText.text.toString()).get().addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        // if query is successful, reads the data and stores in variables
+
+                        db.collection("modules")
+                            .document(moduleName.toString())
+                            .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
+
+                        moduleGameList.add(Game(editText.text.toString(), "Quiz"))
+                        adapter.notifyItemInserted(moduleGameList.size - 1)
+                    }else{
+                        Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            }
+            builder.show()
         }
 
 /*
