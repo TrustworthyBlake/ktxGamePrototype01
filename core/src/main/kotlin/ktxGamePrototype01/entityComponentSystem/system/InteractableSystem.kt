@@ -12,6 +12,7 @@ import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
 const val WrongAnswerPoints = 0
+const val hitboxScaler = 1.2f
 
 // Handles collision detection and relevant logic
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
@@ -91,8 +92,8 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                 playerHitbox.set(
                         playerTransform.posVec3.x,
                         playerTransform.posVec3.y,
-                        playerTransform.sizeVec2.x,
-                        playerTransform.sizeVec2.y
+                        playerTransform.sizeVec2.x* hitboxScaler,
+                        playerTransform.sizeVec2.y* hitboxScaler
                 )
                 //  IF PLAYER OVERLAPS WITH HITBOX
                 if (playerHitbox.overlaps(interactableHitbox)) {
