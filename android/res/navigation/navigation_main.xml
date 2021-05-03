@@ -177,4 +177,10 @@
         android:label="Leaderboard"
         tools:layout="@layout/fragment_classroom_leaderboard"/>
 
+    <fragment
+        android:id="@+id/dest_module"
+        android:name="ktxGamePrototype01.fragments.ModuleFragment"
+        android:label="Module"
+        tools:layout="@layout/fragment_module"/>
+
 </navigation>
