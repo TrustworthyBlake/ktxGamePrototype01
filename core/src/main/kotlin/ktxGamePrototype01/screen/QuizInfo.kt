@@ -25,17 +25,13 @@ class QuizInfo {
     var viewport: Viewport
     var stage: Stage
     var isUpPressed = false
-    val vpW = 480f
-    val vpH = 800f
+    val vpW = 1080f
+    val vpH = 1920f
 
     val shapeRenderer = ShapeRenderer()
     val atlas = TextureAtlas(Gdx.files.internal("uiskin.atlas"))
     val skin = Skin(Gdx.files.internal("uiskin.json"), atlas)
-
-
     var backgroundHeightModifier = 0f
-
-
 
     fun resize(width: Int, height: Int) {
         viewport.update(width, height, )
@@ -80,35 +76,27 @@ class QuizInfo {
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 isUpPressed = false
                 Gdx.app.exit()
-
             }
         })
-
-
-
-
-
         table.add()
         table.row()
         for (result in list){
             val textField = Label(result, skin)
+            textField.setFontScale(3f)
             table.add(textField)
             table.row()
         }
-
-        table.add(exitButton)
+        table.add(exitButton).size(150f, 90f)
+        exitButton.label.setFontScale(3f)
         table.add()
-
         stage.addActor(table)
     }
 
-
-
-
     fun draw() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.setColor(Color.SALMON)
-        shapeRenderer.rect((Gdx.graphics.width - (9f * 48))/2, (Gdx.graphics.height - (16f * 48f)+16*backgroundHeightModifier)/2, (9f * 48), (16f * 48f)+16*backgroundHeightModifier)
+        shapeRenderer.setColor(Color.FOREST)
+        shapeRenderer.rect(0f,0f,Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        //shapeRenderer.rect((Gdx.graphics.width - (9f * 48))/2, (Gdx.graphics.height - (16f * 48f)+16*backgroundHeightModifier)/2, (9f * 48), (16f * 48f)+16*backgroundHeightModifier)
         shapeRenderer.end()
         stage.act()
         stage.draw()
