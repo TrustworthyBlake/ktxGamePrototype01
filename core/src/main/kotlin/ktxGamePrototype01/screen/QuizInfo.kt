@@ -74,7 +74,6 @@ class QuizInfo {
         exitButton.addListener(object : InputListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 isUpPressed = true
-                LOG.debug { "button pressed" }
                 Gdx.app.exit()
                 return true
             }

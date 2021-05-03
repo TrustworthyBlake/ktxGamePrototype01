@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -47,6 +48,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     }
     override fun render(delta: Float) {
         engine.update(delta)
+        // Draw call for ActivateButton
         playeContr.draw()
     }
     override fun dispose() {
@@ -231,6 +233,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
         val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+        val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
@@ -245,14 +248,29 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         }
                         with<SpriteComponent> {
                             sprite.run {
-                                if(char == '1'){setRegion(holeTexture)}
-                                if(char == '0') {setRegion(grassTexture)}
+                                setRegion(grassTexture)
                                 setSize(texture.width * unitScale, texture.height * unitScale)
                                 setOriginCenter()
                             }
                         }
-                        if(char == '1'){
-                            with<InteractableComponent>()
+                        if (char != '0'){
+                            val mapNewLayerEntity = engine.entity {
+                                with<TransformComponent> {
+                                    posVec3.set(charNr.toFloat(), lineNr.toFloat(), -1f)
+                                }
+                                with<SpriteComponent> {
+                                    sprite.run {
+                                        when (char) {   // Lowest layer
+                                            '1' ->  setRegion(holeTexture)
+                                            '2' -> setRegion(grassTexture)
+                                            '3' -> setRegion(treeTexture1)
+                                            else -> setRegion(treeTexture1)
+                                        }
+                                        setScale(3f, 3f)
+                                        setSize((texture.width * unitScale), (texture.height * unitScale))
+                                    }
+                                }
+                            }
                         }
                     }
                     charNr=charNr+1

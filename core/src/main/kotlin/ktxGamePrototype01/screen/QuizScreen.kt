@@ -23,7 +23,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
     private var viewport = FitViewport(9f, 16f)
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
-    private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
@@ -68,7 +67,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         var tempDelta = delta
         //if(gameEndFlag == true ) tempDelta = 0f
         engine.update(tempDelta)
-        // Displays button
+        // Displays activate button
         playeContr.draw()
         if(gameEndFlag == true ) quizInfo.draw()
     }
