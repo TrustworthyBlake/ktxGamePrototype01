@@ -22,53 +22,56 @@
             android:layout_marginLeft="5dp"
             android:padding="10dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+
+
+
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:layout_gravity="left"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
                 <TextView
                     android:id="@+id/classroom_chat_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textStyle="bold"
+                    android:text="Classname:"
                     android:textSize="16sp"
-                    android:text="Classname:"/>
-
-                <TextView
-                    android:id="@+id/classroom_chat_timestamp"
+                    android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="210dp"
-                    android:gravity="start"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:alpha="0.5"
-                    android:text="2021-01-30"/>
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="-25dp"
+                    android:orientation="vertical">
 
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/classroom_chat_timestamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.5"
+                        android:text="2021-01-30"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/classroom_chat_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
+                    android:gravity="left"
                     android:text="x"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -79,7 +82,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" />
-
 
 
         </LinearLayout>
