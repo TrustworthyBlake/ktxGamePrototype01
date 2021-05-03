@@ -149,7 +149,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             with<TransformComponent> {
                                 posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
                             }
-                            with<GraphicComponent> {
+                            with<SpriteComponent> {
                                 sprite.run {
                                     setRegion(holeTexture)
                                     setSize(texture.width * unitScale, texture.height * unitScale)

@@ -12,7 +12,6 @@ import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
-import kotlin.with
 
 private val LOG = logger<QuizQuestSystem>()
 // Main logic for generating quest entities in the OpenWorldScreen
@@ -54,7 +53,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
                     with<TransformComponent> {
                         posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
                     }
-                    with<GraphicComponent> {
+                    with<SpriteComponent> {
                         sprite.run{
                             setRegion(signPostTexture)
                             setSize(texture.width * unitScale, texture.height * unitScale)

@@ -69,7 +69,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     posVec3.set(4.5f, 11f, -1f)
                 }
                 with<MovementComponent>()
-                with<GraphicComponent>{
+                with<SpriteComponent>{
                     sprite.run{
                         // Sets the entity's texture based on the string
                         when(playerBody){
@@ -102,8 +102,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 with<TransformComponent>{
                     posVec3.set(4.5f, 10f, -1f)
                 }
-                //with<MovementComponent>()
-                with<GraphicComponent>{
+                with<SpriteComponent>{
                     sprite.run{
                         // Sets the entity's texture based on the string
                         when(playerHead){
@@ -172,7 +171,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             // Where the entity is positioned in the game world, uses the pos from array
                             posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y + 1f, -1f)
                         }
-                        with<GraphicComponent> {
+                        with<SpriteComponent> {
                             sprite.run {
                                 // Sets the entity's texture based on the string
                                 when (head) {
@@ -204,7 +203,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             // Where the entity is positioned in the game world, uses the pos from array
                             posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y, -1f)
                         }
-                        with<GraphicComponent> {
+                        with<SpriteComponent> {
                             sprite.run {
                                 // Sets the entity's texture based on the string
                                 when (body) {
@@ -243,7 +242,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<TransformComponent> {
                             posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }
-                        with<GraphicComponent> {
+                        with<SpriteComponent> {
                             sprite.run {
                                 if(char == '1'){setRegion(holeTexture)}
                                 if(char == '0') {setRegion(grassTexture)}

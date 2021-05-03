@@ -10,7 +10,7 @@ class OrientationComponent : Component, Pool.Poolable{
     var tempDir = Vector2(0f,0f)
     override fun reset() {
         direction = OrientationDirection.up
-        tempDir = Vector2(0f, 0f)
+        tempDir.set(Vector2.Zero)
     }
     companion object{
         val mapper = mapperFor<OrientationComponent>()

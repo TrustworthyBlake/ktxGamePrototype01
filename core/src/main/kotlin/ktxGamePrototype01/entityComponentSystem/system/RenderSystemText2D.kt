@@ -17,10 +17,11 @@ import ktxGamePrototype01.entityComponentSystem.components.TextComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
 private val LOG = logger<RenderSystemText2D>()
+private const val updateRate = 1f / 30f
 
 // The system handles all of the TEXT entities to draw to the screen
 class RenderSystemText2D(
-        private val batchText: Batch, private var gameViewport: Viewport
+        private val batchText: Batch
 ) :  SortedIteratingSystem(
         allOf(TextComponent::class).get(),
         compareBy { entity -> entity[TextComponent.mapper] }

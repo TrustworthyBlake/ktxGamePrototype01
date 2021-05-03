@@ -23,7 +23,7 @@ class SecondScreen(game:Prot01) : AbstractScreen(game) {
             posVec3.set(5f,5f,0f)
         }
         with<MovementComponent>()
-        with<GraphicComponent>{
+        with<SpriteComponent>{
             sprite.run{
                 setRegion(playerTexture)
                 setSize(texture.width * unitScale, texture.height * unitScale)

@@ -36,11 +36,12 @@ class Prot01(private val showScreen: String, private val playerName : String,
         addSystem(MovementSystem())
         addSystem(InteractableSystem())
         addSystem(RenderSystem2D(batch, gameViewport))
-        addSystem(RenderSystemText2D(batchText, gameViewport))
+        addSystem(RenderSystemText2D(batchText))
         addSystem(QuizSystem())
         addSystem(BindEntitiesSystem())
         addSystem(QuizQuestSystem())
-        addSystem(NukePooledSystem())}  }
+        addSystem(NukePooledSystem())
+    }  }
 
     // Adds and sets the game screen based on the showScreen string, defaults to OpenWorldScreen
     override fun create() {

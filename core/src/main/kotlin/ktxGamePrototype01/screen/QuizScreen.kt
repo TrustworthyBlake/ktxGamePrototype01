@@ -1,7 +1,6 @@
 package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -98,7 +97,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                     posVec3.set(4.5f, 10f, -1f)
                 }
                 with<MovementComponent>()
-                with<GraphicComponent> {
+                with<SpriteComponent> {
                     sprite.run {
                         // Sets the entity's texture based on the string
                         when(playerBody){
@@ -135,7 +134,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                     posVec3.set(4.5f, 10f, -1f)
                 }
                 //with<MovementComponent>()
-                with<GraphicComponent>{
+                with<SpriteComponent>{
                     sprite.run{
                         // Sets the entity's texture based on the string
                         when(playerHead){
@@ -173,7 +172,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                         with<TransformComponent> {
                             posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }
-                        with<GraphicComponent> {
+                        with<SpriteComponent> {
                             sprite.run {
                                 if(char == '1'){setRegion(holeTexture)}
                                 if(char == '0') {setRegion(grassTexture)}
