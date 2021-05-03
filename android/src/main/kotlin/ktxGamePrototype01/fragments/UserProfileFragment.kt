@@ -72,18 +72,18 @@ class UserProfileFragment : Fragment() {
 
         val daImage1 : String = getHead(User.getName())
         when (daImage1){
-            "default1" ->  {headImage.setImageResource(R.drawable.default1); }
-            "default2" ->  {headImage.setImageResource(R.drawable.default2);  }
-            "ebin" ->  {headImage.setImageResource(R.drawable.ebin);  }
-            "gond" ->  {headImage.setImageResource(R.drawable.gond);  }
+            "colour1" ->  {headImage.setImageResource(R.drawable.head1);}
+            "colour2" ->  {headImage.setImageResource(R.drawable.head2);}
+            "colour3" ->  {headImage.setImageResource(R.drawable.head3);}
+            "colour4" ->  {headImage.setImageResource(R.drawable.head4);}
         }
 
         val daImage2 : String = getBody(User.getName())
         when (daImage2){
-            "default1" ->  {bodyImage.setImageResource(R.drawable.default1); }
-            "default2" ->  {bodyImage.setImageResource(R.drawable.default2);  }
-            "ebin" ->  {bodyImage.setImageResource(R.drawable.ebin);  }
-            "gond" ->  {bodyImage.setImageResource(R.drawable.gond);  }
+            "colour1" -> {bodyImage.setImageResource(R.drawable.body1);}
+            "colour2" -> {bodyImage.setImageResource(R.drawable.body2);}
+            "colour3" -> {bodyImage.setImageResource(R.drawable.body3);}
+            "colour4" -> {bodyImage.setImageResource(R.drawable.body4);}
         }
 
         // reading in quizes from db
@@ -156,9 +156,10 @@ class UserProfileFragment : Fragment() {
 
         db.collection("quiz").document(name).get().addOnCompleteListener() { task ->
             if(task.isSuccessful){
-                val quizList = task.result?.get("question") as MutableList<String>
-
+                val quizList = task.result?.get("question") as? MutableList<String>
+                if(quizList !=null){
                 writeQuizToFile(name, quizList)
+                }
             }
         }
     }

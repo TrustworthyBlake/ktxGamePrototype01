@@ -50,7 +50,40 @@ class ClassroomIndexFragment : Fragment() {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         fetchClassrooms(userID)
 
-        binding.btnJoinClassroom.setOnClickListener() {
+        User.addToUserScore()
+
+
+        binding.btnJoinClassroom.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
+            val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { dialogInterface, i ->
+
+
+                db.collection("classrooms").document(editText.text.toString()).get().addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        // If classroom is found, add it to student list
+                        db.collection("users")
+                                .document(userID)
+                                .update("courses", FieldValue.arrayUnion(editText.text.toString()))
+
+                        db.collection("classrooms")
+                                .document(editText.text.toString())
+                                .update("students", FieldValue.arrayUnion(userID))
+                    } else {
+                        Toast.makeText(activity, "Classroom not found", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                classList.add(editText.text.toString())
+                adapter.notifyItemInserted(classList.size - 1)
+            }
+            builder.show()
+        }
+
+
+        binding.btnCreateClassroom.setOnClickListener() {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)

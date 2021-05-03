@@ -28,7 +28,7 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
-    val items = arrayOf("default1", "default2", "ebin", "gond")
+    val items = arrayOf("colour1", "colour2", "colour3", "colour4")
     //val imegs = arrayOf(R.drawable.default1, R.drawable.default2, R.drawable.ebin, R.drawable.gond)
 
 
@@ -89,17 +89,17 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         val setswitch2 = getBody(User.getName())
 
         when (setswitch1){
-            "default1" ->  {spinner1.setSelection(0)}
-            "default2" ->  {spinner1.setSelection(1)}
-            "ebin" ->  {spinner1.setSelection(2)}
-            "gond" ->  {spinner1.setSelection(3)}
+            "colour1" ->  {spinner1.setSelection(0)}
+            "colour2" ->  {spinner1.setSelection(1)}
+            "colour3" ->  {spinner1.setSelection(2)}
+            "colour4" ->  {spinner1.setSelection(3)}
         }
 
         when (setswitch2) {
-            "default1" -> {spinner2.setSelection(0)}
-            "default2" -> {spinner2.setSelection(1)}
-            "ebin" -> {spinner2.setSelection(2)}
-            "gond" -> {spinner2.setSelection(3)}
+            "colour1" -> {spinner2.setSelection(0)}
+            "colour2" -> {spinner2.setSelection(1)}
+            "colour3" -> {spinner2.setSelection(2)}
+            "colour4" -> {spinner2.setSelection(3)}
         }
 
 
@@ -114,10 +114,10 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
 
                 type1 = parent.getItemAtPosition(position).toString()
                 when (type1){
-                    "default1" ->  {headImage.setImageResource(R.drawable.default1); saveDatahead(type1, User.getName()) }
-                    "default2" ->  {headImage.setImageResource(R.drawable.default2); saveDatahead(type1, User.getName()) }
-                    "ebin" ->  {headImage.setImageResource(R.drawable.ebin); saveDatahead(type1, User.getName()) }
-                    "gond" ->  {headImage.setImageResource(R.drawable.gond); saveDatahead(type1, User.getName()) }
+                    "colour1" ->  {headImage.setImageResource(R.drawable.head1); saveDatahead(type1, User.getName()) }
+                    "colour2" ->  {headImage.setImageResource(R.drawable.head2); saveDatahead(type1, User.getName()) }
+                    "colour3" ->  {headImage.setImageResource(R.drawable.head3); saveDatahead(type1, User.getName()) }
+                    "colour4" ->  {headImage.setImageResource(R.drawable.head4); saveDatahead(type1, User.getName()) }
                 }
             }
 
@@ -139,10 +139,10 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 // setting the previewed characters clothing according to the user's selection of magic type
                 type2 = parent.getItemAtPosition(position).toString()
                 when (type2) {
-                    "default1" -> {bodyImage.setImageResource(R.drawable.default1); saveDatabody(type2, User.getName()) }
-                    "default2" -> {bodyImage.setImageResource(R.drawable.default2); saveDatabody(type2, User.getName()) }
-                    "ebin" -> {bodyImage.setImageResource(R.drawable.ebin); saveDatabody(type2, User.getName()) }
-                    "gond" -> {bodyImage.setImageResource(R.drawable.gond); saveDatabody(type2, User.getName()) }
+                    "colour1" -> {bodyImage.setImageResource(R.drawable.body1); saveDatabody(type2, User.getName()) }
+                    "colour2" -> {bodyImage.setImageResource(R.drawable.body2); saveDatabody(type2, User.getName()) }
+                    "colour3" -> {bodyImage.setImageResource(R.drawable.body3); saveDatabody(type2, User.getName()) }
+                    "colour4" -> {bodyImage.setImageResource(R.drawable.body4); saveDatabody(type2, User.getName()) }
                 }
             }
 

@@ -28,6 +28,7 @@ class RenderSystem2D(
     override fun update(deltaTime: Float) {
         gameViewport.update(Gdx.graphics.width,Gdx.graphics.height, false)
         forceSort()
+        // Sets the updated viewport camera in batch
         batch.use(gameViewport.camera.combined){
             super.update(deltaTime)
         }
@@ -42,6 +43,7 @@ class RenderSystem2D(
         val player = entity[PlayerComponent.mapper]
         if (player != null) {
             entity[TransformComponent.mapper]?.let { trans ->
+                // So the viewport follows the player entity
                 gameViewport.camera.position.x = trans.posVec3.x
                 gameViewport.camera.position.y = trans.posVec3.y
             }
@@ -50,6 +52,7 @@ class RenderSystem2D(
             graphicComp.sprite.run{
                 rotation = transformComp.rotationDeg
                 setBounds(transformComp.posVec3.x, transformComp.posVec3.y, transformComp.sizeVec2.x, transformComp.sizeVec2.y)
+                // LibGDX draw call for the batch
                 draw(batch)
             }
         }

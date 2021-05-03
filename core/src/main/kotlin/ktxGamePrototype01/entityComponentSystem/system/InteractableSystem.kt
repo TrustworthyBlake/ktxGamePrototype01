@@ -7,12 +7,12 @@ import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.*
-import ktxGamePrototype01.screen.FirstScreen
-import ktxGamePrototype01.screen.OpenWorldScreen
+import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
 const val WrongAnswerPoints = 0
 
+// Handles collision detection and relevant logic
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
 
     private val playerHitbox = Rectangle()
@@ -61,10 +61,13 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             q.playerHasAnswered = true
         }
     }
+
+    // Removes the quest entities
     private fun removeQuestEntities(){
         interactableEntities.forEach { interactable ->
             val interact = interactable[InteractableComponent.mapper]
             require(interact != null)
+            // If it is a quest entity its removed
             if(interact.isQuest)engine.removeEntity(interactable)
         }
     }
@@ -117,16 +120,18 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         //  Run update on entities
                         hasAnsweredQuiz(interact)
                     }
+                    // If it is teacher entity the QuizQuestSystem will create the quest entities based on showAvailableQuizes bool
                     if (interact.isTeacher){
                         val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
                         require(qQuestComp != null){"Error: Missing quiz quest component"}
                         removeQuestEntities()
                         qQuestComp.showAvailableQuizes = true
                     }
+                    // Starts the quiz game
                     if (interact.isQuest) {
-                        p.gameInst.addScreen(FirstScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
-                        if(p.gameInst.containsScreen<FirstScreen>()) {LOG.debug { "Switching to FirstScreen" }
-                            p.gameInst.setScreen<FirstScreen>()
+                        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
+                        if(p.gameInst.containsScreen<QuizScreen>()) {LOG.debug { "Switching to FirstScreen" }
+                            p.gameInst.setScreen<QuizScreen>()
                         }
                     }
                     //  SET STANDARD COLLISION

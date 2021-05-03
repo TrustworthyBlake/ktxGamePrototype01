@@ -68,6 +68,29 @@ object DBObject {
             .addOnFailureListener { e -> Log.w(failTAG, "Error adding user to DB", e) }
     }
 
+    // adding new module to firestore
+    fun newModule(className: String, moduleName: String) {
+        val db = getInstance()
+
+        val emptyList: List<String> = emptyList()
+        val module = hashMapOf(
+                "quizes" to emptyList,
+                "classroom" to className,
+                "name" to moduleName
+        )
+        // add selected data to database
+        db.collection("modules").document(moduleName)
+                .set(module)
+                .addOnSuccessListener {
+                    // add module to classroom
+                    db.collection("classrooms")
+                            .document(className)
+                            .update("modules", FieldValue.arrayUnion(moduleName))
+                    Log.d(successTAG, "Successfully added user to DB") }
+                .addOnFailureListener { e -> Log.w(failTAG, "Error adding user to DB", e) }
+
+    }
+
     // function for adding students to a class
     fun addStudents(className: String, studentList: List<String>) {
         val db = getInstance()
@@ -220,6 +243,17 @@ object DBObject {
         User.setQuizes(list)
     }
 
+
+
+    fun addAchievement(userID: String, achievement: String) {
+        val db = getInstance()
+        db.collection("users")
+            .document(userID)
+            .update("achievement", FieldValue.arrayUnion(achievement))
+            .addOnFailureListener { e -> Log.w(failTAG, "Error adding user to DB", e) }
+    }
+
+
     fun updateUser(userId: String, userName: String, userEmail: String, userScore: Int, playerHead: String, playerBody: String) {
         val db = getInstance()
 
@@ -232,6 +266,7 @@ object DBObject {
         docRef.update("body", playerBody).addOnFailureListener { e -> Log.w(failTAG, "Error updating user", e) }
 
     }
+
 
 
 }

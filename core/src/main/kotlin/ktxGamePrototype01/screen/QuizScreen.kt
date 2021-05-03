@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -17,33 +15,40 @@ import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.unitScale
-import java.io.File
 
 /** First screen of the application. Displayed after the application is created.  */
 
-private val LOG = logger<FirstScreen>()
+private val LOG = logger<QuizScreen>()
 
-class FirstScreen(game: Prot01, qzName : String, private val playerUserName : String) : AbstractScreen(game) {
+class QuizScreen(game: Prot01, qzName : String, private val playerUserName : String) : AbstractScreen(game) {
     private var viewport = FitViewport(9f, 16f)
-    private val playerTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     private val treeTexture = Texture(Gdx.files.internal("graphics/tree.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private val playerTextureHead = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
     private val playerTextureBody = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
+    private val playerTextureHead1 = Texture(Gdx.files.internal("graphics/head1.png"))
+    private val playerTextureHead2 = Texture(Gdx.files.internal("graphics/head2.png"))
+    private val playerTextureHead3 = Texture(Gdx.files.internal("graphics/head3.png"))
+    private val playerTextureHead4 = Texture(Gdx.files.internal("graphics/head4.png"))
+    private val playerTextureBody1 = Texture(Gdx.files.internal("graphics/body1.png"))
+    private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
+    private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
+    private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private var doOnce = 0 // For debugging of saveScore, used in renderer func
     private val tempQuizName = qzName
     val errorList = mutableListOf<String>("Error: No results found")
     var quizInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
+    var playeContr: playerControl = playerControl(batch as SpriteBatch)
     var gameEndFlag = false
     private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
     }
 
+    // When this game screen is shown, called once
     override fun show() {
-        LOG.debug { "First screen is displayed" }
         createPlayerEntity()
         createMapEntities()
     }
@@ -51,24 +56,10 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
         viewport.update(width, height, true)
     }
     override fun render(delta: Float) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)){
-            game.addScreen(SecondScreen(game))
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            game.removeScreen(SecondScreen::class.java)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
-           game.setScreen<SecondScreen>()
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (doOnce == 0) {
+        // Displays button
+        playeContr = playerControl(batch as SpriteBatch)
 
-                //Put functions to debug here
-                doOnce = 1
-            }
-        }
-
-
+        // Displays end screen when finished with quiz
         // TODO: Currently constantly checking if the variable has changed
         playerEntities.forEach { player ->
             player[QuizComponent.mapper]?.let { quiz ->
@@ -78,6 +69,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                 }
             }
         }
+
         var tempDelta = delta
         //if(gameEndFlag == true ) tempDelta = 0f
         engine.update(tempDelta)
@@ -93,22 +85,27 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
         super.hide()
     }
 
+    // Creates the player entity with the users avatar preferences from playerData+userName.xml
     private fun createPlayerEntity(){
-        val prefs: Preferences = Gdx.app.getPreferences(playerUserName) // playerName string from app
+        val prefs: Preferences = Gdx.app.getPreferences("playerData" + playerUserName) // playerName string from app
         val playerHead = prefs.getString("avatarHead")
         val playerBody = prefs.getString("avatarBody")
         if(playerBody != null && playerHead != null) {
             val playerEntityBody = engine.entity {
                 var totScore = 0f
                 with<TransformComponent> {
+                    // Where the entity is positioned in the game world
                     posVec3.set(4.5f, 10f, -1f)
                 }
                 with<MovementComponent>()
                 with<GraphicComponent> {
                     sprite.run {
-                        when(playerHead){
-                            "todo1" -> setRegion(playerTextureBody)
-                            "todo2" -> setRegion(playerTextureBody)
+                        // Sets the entity's texture based on the string
+                        when(playerBody){
+                            "colour1" -> setRegion(playerTextureBody1)
+                            "colour2" -> setRegion(playerTextureBody2)
+                            "colour3" -> setRegion(playerTextureBody3)
+                            "colour4" -> setRegion(playerTextureBody4)
                             else -> setRegion(playerTextureBody)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -121,9 +118,12 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                 }
                 with<OrientationComponent>()
                 with<TextComponent> {
+                    // Activates HUD to display current player score
                     isText = true
                     drawPlayScoreHUD = true
+                    // Makes text clearer
                     font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    // Scales the text up by 4
                     font.data.setScale(4.0f, 4.0f)
                 }
                 with<QuizComponent> {
@@ -134,12 +134,15 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                 with<TransformComponent>{
                     posVec3.set(4.5f, 10f, -1f)
                 }
-                with<MovementComponent>()
+                //with<MovementComponent>()
                 with<GraphicComponent>{
                     sprite.run{
+                        // Sets the entity's texture based on the string
                         when(playerHead){
-                            "todo1" -> setRegion(playerTextureHead)
-                            "todo2" -> setRegion(playerTextureHead)
+                            "colour1" -> setRegion(playerTextureHead1)
+                            "colour2" -> setRegion(playerTextureHead2)
+                            "colour3" -> setRegion(playerTextureHead3)
+                            "colour4" -> setRegion(playerTextureHead4)
                             else -> setRegion(playerTextureHead)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -148,6 +151,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                 }
                 with<BindEntitiesComponent> {
                     masterEntity = playerEntityBody
+                    // Offset by 1 in the y direction so the head is above the body entity
                     posOffset.set(0f, 1f)
                 }
                 with<OrientationComponent>()
@@ -155,6 +159,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
         }
     }
 
+    // Creates the map entities from map.txt file
     private fun createMapEntities(){
         try{
             var tileArray = arrayOf<CharArray>()
@@ -164,7 +169,7 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
-                    val Thing2 = engine.entity {
+                    val mapEntity = engine.entity {
                         with<TransformComponent> {
                             posVec3.set(charNr.toFloat(), lineNr.toFloat(), 1f)
                         }
@@ -183,7 +188,6 @@ class FirstScreen(game: Prot01, qzName : String, private val playerUserName : St
                     charNr=charNr+1
                 }
                 lineNr=lineNr+1
-                //LOG.debug { line }
             }
         }catch (e: Exception){
             e.printStackTrace()

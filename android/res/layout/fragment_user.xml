@@ -189,7 +189,7 @@
             android:id="@+id/imageBody"
             android:layout_width="74dp"
             android:layout_height="77dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="92dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.863"
             app:layout_constraintStart_toStartOf="parent"

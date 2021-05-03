@@ -79,8 +79,7 @@ class NewClassroomFragment : Fragment() {
     private fun addClassroom(courseName: String, grade: String, teacher: String, year: Int) {
         val db = FirebaseFirestore.getInstance()
         // create data entry for the course
-        val studentList: List<String> = emptyList()
-        val announcementList: List<String> = emptyList()
+        val emptyList: List<String> = emptyList()
         //val userID = findUserByName(capitalize(teacher))
 
         val course = hashMapOf(
@@ -88,8 +87,9 @@ class NewClassroomFragment : Fragment() {
                 "grade" to grade,
                 "teacher name" to DBObject.capitalize(teacher),
                 "year" to year,
-                "students" to studentList,
-                "announcements" to announcementList
+                "students" to emptyList,
+                "announcements" to emptyList,
+                "modules" to emptyList
         )
         // add the data into the database
         db.collection("classrooms").document("$grade grade $courseName $year")

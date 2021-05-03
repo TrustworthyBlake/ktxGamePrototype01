@@ -15,6 +15,7 @@ import kotlin.math.min
 
 private const val updateRate = 1f / 30f
 
+// The system controls the position translation of entities
 class MovementSystem : IteratingSystem(allOf(TransformComponent::class, MovementComponent::class).exclude(NukePooledComponent::class).get()) {
     private var accumulator = 0f
     override fun update(deltaTime: Float) {         // Used to prevent unpredictable behavior of game engine, if not used wonky logic can occur during a rendered frame
@@ -41,8 +42,8 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
 
 
     private fun movePlayer(transform: TransformComponent, movement: MovementComponent, mvmt: Vector2, direction: OrientationComponent, deltaTime: Float){
-        /*
-        movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
+
+ /*       movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
             OrientationDirection.left -> min(0f, movement.velocity.x - 15f * deltaTime)
             OrientationDirection.right -> max(0f, movement.velocity.x + 15f * deltaTime)
             else -> 0f
@@ -54,9 +55,9 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
             else -> 0f
         }
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)
-         */
-        movement.velocity.x = mvmt.x*0.01f
-        movement.velocity.y = mvmt.y*0.01f
+*/
+        movement.velocity.x = mvmt.x*0.009f
+        movement.velocity.y = mvmt.y*0.009f
 
         moveEntity(transform, movement, deltaTime)
     }

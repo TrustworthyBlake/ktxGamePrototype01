@@ -1,5 +1,8 @@
 package ktxGamePrototype01
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
+
 object User {
 
     private var userID = ""
@@ -117,8 +120,23 @@ object User {
             return achievements
         }
 
+
+        fun getId(): String {
+        return userID
+        }
+
+        fun addToUserScore(){
+            val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+            var score : Float = prefs.getFloat("totalPlayerScore")
+            val scoreInt = score.toInt()
+            if (scoreInt != 0) {
+                setScore(scoreInt)
+                updateFirestoreUser()
+            }
+        }
+
         fun updateFirestoreUser() {
             DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
         }
-    
+
 }

@@ -90,7 +90,7 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
             sleep(200)
              val x = User.getTeacherAvatars()
              val y = User.getName()
-             (view.context as AppActivity?)!!.launchGame("FirstScreen", y, tempQuizName, x)
+             (view.context as AppActivity?)!!.launchGame("QuizScreen", y, tempQuizName, x)
         }
 
     }
