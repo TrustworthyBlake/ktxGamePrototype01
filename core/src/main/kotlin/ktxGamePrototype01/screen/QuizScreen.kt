@@ -36,7 +36,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
-    private var doOnce = 0 // For debugging of saveScore, used in renderer func
     private val tempQuizName = qzName
     val errorList = mutableListOf<String>("Error: No results found")
     var quizInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
@@ -55,9 +54,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         viewport.update(width, height, true)
     }
     override fun render(delta: Float) {
-        // Displays button
-        playeContr = playerControl(batch as SpriteBatch)
-
         // Displays end screen when finished with quiz
         // TODO: Currently constantly checking if the variable has changed
         playerEntities.forEach { player ->
@@ -72,8 +68,9 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         var tempDelta = delta
         //if(gameEndFlag == true ) tempDelta = 0f
         engine.update(tempDelta)
+        // Displays button
+        playeContr.draw()
         if(gameEndFlag == true ) quizInfo.draw()
-        //engine.update(delta)
     }
 
     override fun dispose() {
@@ -91,7 +88,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
         val playerBody = prefs.getString("avatarBody")
         if(playerBody != null && playerHead != null) {
             val playerEntityBody = engine.entity {
-                var totScore = 0f
                 with<TransformComponent> {
                     // Where the entity is positioned in the game world
                     posVec3.set(4.5f, 10f, -1f)
@@ -112,8 +108,8 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                     }
                 }
                 with<PlayerComponent> {
-                    totScore = playerScore
                     playerName = playerUserName
+                    playerControl = playeContr
                 }
                 with<OrientationComponent>()
                 with<TextComponent> {
@@ -133,7 +129,6 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                 with<TransformComponent>{
                     posVec3.set(4.5f, 10f, -1f)
                 }
-                //with<MovementComponent>()
                 with<SpriteComponent>{
                     sprite.run{
                         // Sets the entity's texture based on the string

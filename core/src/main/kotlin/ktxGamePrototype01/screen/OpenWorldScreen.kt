@@ -34,7 +34,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
-    var playeContr: playerControl = playerControl(batch as SpriteBatch)
+    private var playeContr: playerControl = playerControl(batch as SpriteBatch)
 
     // When this game screen is shown, called once
     override fun show() {
@@ -86,6 +86,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 with<PlayerComponent> {
                     playerName = playerUserName
                     gameInst = game
+                    playerControl = playeContr
                 }
                 with<OrientationComponent>()
                 with<TextComponent> {

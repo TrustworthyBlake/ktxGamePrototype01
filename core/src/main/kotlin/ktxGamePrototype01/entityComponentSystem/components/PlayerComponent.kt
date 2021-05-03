@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 import ktxGamePrototype01.Prot01
+import ktxGamePrototype01.screen.playerControl
 
 const val maxHp = 100f
 
@@ -13,6 +14,7 @@ class PlayerComponent : Component, Pool.Poolable{
     var playerScore = 0f
     var playerName = ""
     lateinit var gameInst : Prot01
+    lateinit var playerControl: playerControl
 
     override fun reset() {
         currentPlayerHp = maxHp

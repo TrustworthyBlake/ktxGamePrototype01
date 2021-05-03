@@ -2,6 +2,7 @@ package ktxGamePrototype01.entityComponentSystem.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import ktx.ashley.*
 import ktx.log.debug
@@ -95,43 +96,46 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                 )
                 //  IF PLAYER OVERLAPS WITH HITBOX
                 if (playerHitbox.overlaps(interactableHitbox)) {
+                    if(p.playerControl.isPressed) {
 
-                    //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
-                    if (interact.correctAnswer) {
-                        //  COUNT SCORE
-                        p.playerScore += interact.maxPointsQuestion
-                        player[QuizComponent.mapper]?.let { quiz ->
-                            quiz.quizResultList.add(interact.maxPointsQuestion.toString())
-                        }
+                        //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
+                        if (interact.correctAnswer) {
+                            //  COUNT SCORE
+                            p.playerScore += interact.maxPointsQuestion
+                            player[QuizComponent.mapper]?.let { quiz ->
+                                quiz.quizResultList.add(interact.maxPointsQuestion.toString())
+                            }
 
-                        // RESET START
-                        playerTransform.posVec3.x = 5f
-                        playerTransform.posVec3.y = 2f
-                        //  Run update on entities
-                        hasAnsweredQuiz(interact)
-                    }else if(!interact.isQuest && !interact.isTeacher){
-                        p.playerScore += WrongAnswerPoints
-                        player[QuizComponent.mapper]?.let { quiz ->
-                            quiz.quizResultList.add("0")
+                            // RESET START
+                            playerTransform.posVec3.x = 4.5f
+                            playerTransform.posVec3.y = 10f
+                            //  Run update on entities
+                            hasAnsweredQuiz(interact)
+                        } else if (!interact.isQuest && !interact.isTeacher) {
+                            p.playerScore += WrongAnswerPoints
+                            player[QuizComponent.mapper]?.let { quiz ->
+                                quiz.quizResultList.add("0")
+                            }
+                            // RESET START
+                            playerTransform.posVec3.x = 4.5f
+                            playerTransform.posVec3.y = 10f
+                            //  Run update on entities
+                            hasAnsweredQuiz(interact)
                         }
-                        // RESET START
-                        playerTransform.posVec3.x = 5f
-                        playerTransform.posVec3.y = 2f
-                        //  Run update on entities
-                        hasAnsweredQuiz(interact)
-                    }
-                    // If it is teacher entity the QuizQuestSystem will create the quest entities based on showAvailableQuizes bool
-                    if (interact.isTeacher){
-                        val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
-                        require(qQuestComp != null){"Error: Missing quiz quest component"}
-                        removeQuestEntities()
-                        qQuestComp.showAvailableQuizes = true
-                    }
-                    // Starts the quiz game
-                    if (interact.isQuest) {
-                        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
-                        if(p.gameInst.containsScreen<QuizScreen>()) {LOG.debug { "Switching to FirstScreen" }
-                            p.gameInst.setScreen<QuizScreen>()
+                        // If it is teacher entity the QuizQuestSystem will create the quest entities based on showAvailableQuizes bool
+                        if (interact.isTeacher) {
+                            val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
+                            require(qQuestComp != null) { "Error: Missing quiz quest component" }
+                            removeQuestEntities()
+                            qQuestComp.showAvailableQuizes = true
+                        }
+                        // Starts the quiz game
+                        if (interact.isQuest) {
+                            p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
+                            if (p.gameInst.containsScreen<QuizScreen>()) {
+                                LOG.debug { "Switching to FirstScreen" }
+                                p.gameInst.setScreen<QuizScreen>()
+                            }
                         }
                     }
                     //  SET STANDARD COLLISION
