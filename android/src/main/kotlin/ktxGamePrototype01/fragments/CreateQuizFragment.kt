@@ -18,6 +18,8 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.DialogDeleteQu
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentCreateQuizBinding
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_create_quiz.*
+import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.NukeLocalFiles
 import ktxGamePrototype01.User
 import java.io.File
 import java.io.FileOutputStream
@@ -34,7 +36,6 @@ class CreateQuizFragment : Fragment() {
         // TODO remove: just for testing
         val className = arguments?.getString("module")
         Toast.makeText(activity, className, Toast.LENGTH_SHORT).show()
-
 
 
         binding.addButton.setOnClickListener {

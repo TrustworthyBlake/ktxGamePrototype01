@@ -13,6 +13,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentSettin
 import kotlinx.android.synthetic.main.fragment_setting.*
 import ktxGamePrototype01.AndroidLauncher
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.NukeLocalFiles
 import ktxGamePrototype01.sharedprefs
 
 class SettingFragment : Fragment() {
@@ -22,7 +23,6 @@ class SettingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
-
 
         return binding.root
     }
@@ -97,7 +97,6 @@ class SettingFragment : Fragment() {
             savedDarkData.setPurpleModeState(false)
             (activity as AppActivity).recreate();
         }
-
     }
 
 
