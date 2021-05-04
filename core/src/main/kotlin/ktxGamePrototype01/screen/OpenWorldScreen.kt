@@ -140,7 +140,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         teacherPosArray.add(Vector2(51f, 18f))
         teacherPosArray.add(Vector2(43f, 22f))
         teacherPosArray.add(Vector2(51f, 22f))
-        var count = 1
+        var count = 0
         var pos = 0
         var teacherName = ""
         var head = ""
@@ -168,7 +168,6 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 pos += 1
                 // Each time 3 elements have been iterated trough a new teacher entity is created
                 if (pos % 3 == 0) {
-                    count += 1
                     pos = 0
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
@@ -224,6 +223,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<InteractableComponent> { isTeacher = true }
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
+                    count += 1
                 }
             }
         }else{LOG.debug { "Error: Can not find teacher list" }}
