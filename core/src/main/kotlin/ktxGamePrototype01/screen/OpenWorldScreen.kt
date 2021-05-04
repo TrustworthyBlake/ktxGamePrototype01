@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
@@ -68,7 +69,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(4.5f, 11f, -1f)
+                    posVec3.set(47.5f, 15f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -103,7 +104,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             }
             val playerEntityHead = engine.entity {
                 with<TransformComponent>{
-                    posVec3.set(4.5f, 10f, -1f)
+                    posVec3.set(Vector3.Zero)
                 }
                 with<SpriteComponent>{
                     sprite.run{
@@ -135,16 +136,16 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     )*/
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
-        teacherPosArray.add(Vector2(1f, 11f))
-        teacherPosArray.add(Vector2(7f, 11f))
-        teacherPosArray.add(Vector2(1f, 4f))
-        teacherPosArray.add(Vector2(7f, 4f))
+        teacherPosArray.add(Vector2(43f, 18f))
+        teacherPosArray.add(Vector2(51f, 18f))
+        teacherPosArray.add(Vector2(43f, 22f))
+        teacherPosArray.add(Vector2(51f, 22f))
         var count = 1
         var pos = 0
         var teacherName = ""
         var head = ""
         var body = ""
-        val maxLength = 26
+        val maxLength = 34
         LOG.debug { "Teacher list data: $teacherList" }
         if (!teacherList.isNullOrEmpty()) {
             val helpFun = HelperFunctions()
@@ -242,7 +243,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             var charNr = 0
             var lineNr = 0
             var sizeMultiplier = 1f
-            val lines:List<String> = (quizMap.readString()).lines()
+            val lines:List<String> = (quizMap.readString()).lines().reversed()
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
@@ -268,7 +269,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                                             '1' -> {setRegion(treeTexture1); sizeMultiplier = 3f}
                                             '2' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
                                             '3' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
-                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1f}
+                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1.25f}
                                             '9' -> {setRegion(rockTexture4); sizeMultiplier = 1f}
                                             else -> {setRegion(blankTexture); sizeMultiplier = 1f}
                                         }
