@@ -12,6 +12,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<QuizSystem>()
@@ -51,8 +52,6 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                 updateScoreOnce = false
             }
 
-
-
             indexInArr = 0
             i = 0
         }
@@ -91,10 +90,10 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
     // the player has completed of the quiz, it takes a string which is the name of the quiz that is to be played
     private fun createQuizTextEntities( quizName: String) {
         var qPosArray = Array<Vector2>()
-        qPosArray.add(Vector2(1f, 11f))
+        qPosArray.add(Vector2(7f, 16f))
+        qPosArray.add(Vector2(13f, 16f))
         qPosArray.add(Vector2(7f, 11f))
-        qPosArray.add(Vector2(1f, 4f))
-        qPosArray.add(Vector2(7f, 4f))
+        qPosArray.add(Vector2(13f, 11f))
         if (!readQuizFromFile(quizName).isNullOrEmpty()) {
 
             val quizList = readQuizFromFile(quizName)
@@ -119,9 +118,9 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                     isCorrect = tempQuizList[2].toBoolean()
                     maxLength = when{
                         isQuestion -> 34
-                        else -> 26
+                        else -> 24
                     }
-                    var (questAnswChopped , spacer, centerTextPos) = helpFun.chopString(questAnsw, maxLength)
+                    var (questAnswChopped , spacer) = helpFun.chopString(questAnsw, maxLength)
                     if (isQuestion && 4 == tempQuizList.size) maxPoints = tempQuizList[3].toInt()
                     charToNum = Character.getNumericValue(line.first())
                     if(charToNum != previousQuestionNr){
@@ -134,11 +133,11 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             textStr = questAnswChopped
                             when{
                                 isQuestion ->{
-                                    posTextVec2.set((4.5f - centerTextPos), 15.5f)
+                                    posTextVec2.set(10f, 21f)
                                 }
                                 !isQuestion -> {
-                                    posTextVec2.set((qPosArray[count].x-centerTextPos), (qPosArray[count].y+spacer))}
-                                else -> {posTextVec2.set((qPosArray[count].x-centerTextPos), (qPosArray[count].y+1)) }
+                                    posTextVec2.set(qPosArray[count].x, (qPosArray[count].y+spacer))}
+                                else -> {posTextVec2.set(qPosArray[count].x, (qPosArray[count].y+1)) }
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                             font.data.setScale(4.0f, 4.0f)
@@ -147,7 +146,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                     if(!isQuestion) {
                         val choiceEnti = engine.entity {
                             with<TransformComponent> {
-                                posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
+                                posVec3.set(qPosArray[count].x - offsetPos, qPosArray[count].y, -1f)
                             }
                             with<SpriteComponent> {
                                 sprite.run {
@@ -159,6 +158,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
                             with<InteractableComponent>{
                                 maxPointsQuestion = maxPoints
                                 correctAnswer = isCorrect
+                                isQuestOrAnswer = true
                             }
                         }
                     }

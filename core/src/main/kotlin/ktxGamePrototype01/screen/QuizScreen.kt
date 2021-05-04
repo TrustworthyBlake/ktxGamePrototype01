@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -13,6 +14,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 /** First screen of the application. Displayed after the application is created.  */
@@ -89,7 +91,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
             val playerEntityBody = engine.entity {
                 with<TransformComponent> {
                     // Where the entity is positioned in the game world
-                    posVec3.set(4.5f, 10f, -1f)
+                    posVec3.set(10.5f- offsetPos, 14f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent> {
@@ -126,7 +128,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
             }
             val playerEntityHead = engine.entity {
                 with<TransformComponent>{
-                    posVec3.set(4.5f, 10f, -1f)
+                    posVec3.set(Vector3.Zero)
                 }
                 with<SpriteComponent>{
                     sprite.run{
@@ -154,11 +156,19 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
 
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
+        val quizMap = Gdx.files.internal("maps/map0.txt")
+        val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
+        val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
+        val treeTexture4 = Texture(Gdx.files.internal("graphics/tree4.png"))
+        val rockTexture1 = Texture(Gdx.files.internal("graphics/rock1.png"))
+        val rockTexture2 = Texture(Gdx.files.internal("graphics/rock2.png"))
+        val rockTexture4 = Texture(Gdx.files.internal("graphics/rock4.png"))
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
             var lineNr = 0
-            val lines:List<String> = (quizMap.readString()).lines()
+            var sizeMultiplier = 1f
+            val lines:List<String> = (quizMap.readString()).lines().reversed()
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
@@ -168,14 +178,34 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                         }
                         with<SpriteComponent> {
                             sprite.run {
-                                if(char == '1'){setRegion(holeTexture)}
-                                if(char == '0') {setRegion(grassTexture)}
+                                setRegion(grassTexture)
                                 setSize(texture.width * unitScale, texture.height * unitScale)
                                 setOriginCenter()
                             }
                         }
-                        if(char == '1'){
-                            with<InteractableComponent>()
+                        if (char != '0'){
+                            val mapNewLayerEntity = engine.entity {
+                                with<TransformComponent> {
+                                    posVec3.set(charNr.toFloat(), lineNr.toFloat(), -1f)
+                                }
+                                with<SpriteComponent> {
+                                    sprite.run {
+                                        when (char) {   // Lowest layer
+                                            '1' -> {setRegion(treeTexture1); sizeMultiplier = 3f}
+                                            '2' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
+                                            '3' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
+                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1.25f}
+                                            '9' -> {setRegion(rockTexture4); sizeMultiplier = 1f}
+                                            else -> {setRegion(blankTexture); sizeMultiplier = 1f}
+                                        }
+                                        setScale(sizeMultiplier, sizeMultiplier)
+                                        setSize((texture.width * unitScale), (texture.height * unitScale))
+                                    }
+                                }
+                                if (char == '9'){
+                                    with<InteractableComponent>()
+                                }
+                            }
                         }
                     }
                     charNr=charNr+1
@@ -189,6 +219,5 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
             LOG.debug { "Done Reading" }
         }
     }
-
 }
 

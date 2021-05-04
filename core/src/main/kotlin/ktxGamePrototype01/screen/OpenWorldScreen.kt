@@ -16,6 +16,7 @@ import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<OpenWorldScreen>()
@@ -69,7 +70,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(47.5f, 15f, -1f)
+                    posVec3.set(47.5f-offsetPos, 15f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -145,7 +146,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         var teacherName = ""
         var head = ""
         var body = ""
-        val maxLength = 34
+        val maxLength = 24
         LOG.debug { "Teacher list data: $teacherList" }
         if (!teacherList.isNullOrEmpty()) {
             val helpFun = HelperFunctions()
@@ -164,7 +165,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     }
                 }
                 // Chops the string
-                var (teacherNameChopped , spacer, centerTextPos) = helpFun.chopString(teacherName, maxLength)
+                var (teacherNameChopped , spacer) = helpFun.chopString(teacherName, maxLength)
                 pos += 1
                 // Each time 3 elements have been iterated trough a new teacher entity is created
                 if (pos % 3 == 0) {
@@ -172,7 +173,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y + 1f, -1f)
+                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y + 1f, -1f)
                         }
                         with<SpriteComponent> {
                             sprite.run {
@@ -196,7 +197,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             // Scales the text up by 4
                             font.data.setScale(4.0f, 4.0f)
                             // Position of text in the game world
-                            posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 1.7f)
+                            posTextVec2.set(teacherPosArray[count].x, teacherPosArray[count].y + spacer + 1.7f)
                         }
                         with<InteractableComponent> { isTeacher = true }
                         with<QuizQuestComponent> { teacherStr = teacherName }
@@ -204,7 +205,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y, -1f)
+                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y, -1f)
                         }
                         with<SpriteComponent> {
                             sprite.run {

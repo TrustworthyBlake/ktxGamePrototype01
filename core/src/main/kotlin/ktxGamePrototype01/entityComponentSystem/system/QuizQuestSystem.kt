@@ -11,9 +11,11 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<QuizQuestSystem>()
+
 // Main logic for generating quest entities in the OpenWorldScreen
 class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude(NukePooledComponent::class).get()){
 
@@ -35,23 +37,23 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
 
         // Array that holds the vector position for 4 entities
         var qPosArray = Array<Vector2>()
-        qPosArray.add(Vector2(1f, 11f))
-        qPosArray.add(Vector2(7f, 11f))
-        qPosArray.add(Vector2(1f, 4f))
-        qPosArray.add(Vector2(7f, 4f))
+        qPosArray.add(Vector2(43f, 14f))
+        qPosArray.add(Vector2(51f, 14f))
+        qPosArray.add(Vector2(43f, 10f))
+        qPosArray.add(Vector2(51f, 10f))
         var count = 0
         var qName = ""
-        val maxLength = 26
+        val maxLength = 24
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
 
         // If the teacher entity has no quizzes then no quest entities will be created
         if (!list.isNullOrEmpty()){
             list.forEach {
                 qName = it.replace(".txt", "")
-                var (quizNameChopped , spacer, centerTextPos) = helpFun.chopString(qName, maxLength)
+                var (quizNameChopped , spacer) = helpFun.chopString(qName, maxLength)
                 val questSingPost = engine.entity {
                     with<TransformComponent> {
-                        posVec3.set(qPosArray[count].x, qPosArray[count].y, -1f)
+                        posVec3.set(qPosArray[count].x - offsetPos, qPosArray[count].y, -1f)
                     }
                     with<SpriteComponent> {
                         sprite.run{
@@ -67,7 +69,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
                     with<TextComponent> {
                         isText = true
                         textStr = quizNameChopped
-                        posTextVec2.set((qPosArray[count].x-centerTextPos), (qPosArray[count].y+spacer+0.5f))
+                        posTextVec2.set((qPosArray[count].x), (qPosArray[count].y+spacer+0.5f))
                         font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                         font.data.setScale(4.0f, 4.0f)
                     }
