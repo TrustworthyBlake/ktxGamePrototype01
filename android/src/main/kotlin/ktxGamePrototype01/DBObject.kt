@@ -226,10 +226,12 @@ object DBObject {
 
             db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
-                    val quizes = task.result?.get("quizes") as List<String>
+                    val quizes = task.result?.get("quizes") as List<String>?
 
-                    for (quiz in quizes) {
-                        quizList=quizList+quiz
+                    if (quizes != null) {
+                        for (quiz in quizes) {
+                            quizList=quizList+quiz
+                        }
                     }
 
                 }
