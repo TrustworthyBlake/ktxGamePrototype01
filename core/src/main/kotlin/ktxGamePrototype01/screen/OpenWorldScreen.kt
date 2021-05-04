@@ -232,12 +232,16 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private fun createMapEntities(){
         val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
-        val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
+        val treeTexture4 = Texture(Gdx.files.internal("graphics/tree4.png"))
+        val rockTexture1 = Texture(Gdx.files.internal("graphics/rock1.png"))
+        val rockTexture2 = Texture(Gdx.files.internal("graphics/rock2.png"))
+        val rockTexture4 = Texture(Gdx.files.internal("graphics/rock4.png"))
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
             var lineNr = 0
+            var sizeMultiplier = 1f
             val lines:List<String> = (quizMap.readString()).lines()
             lines.forEach { line ->
                 charNr = 0
@@ -261,14 +265,19 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                                 with<SpriteComponent> {
                                     sprite.run {
                                         when (char) {   // Lowest layer
-                                            '1' ->  setRegion(holeTexture)
-                                            '2' -> setRegion(grassTexture)
-                                            '3' -> setRegion(treeTexture1)
-                                            else -> setRegion(treeTexture1)
+                                            '1' -> {setRegion(treeTexture1); sizeMultiplier = 3f}
+                                            '2' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
+                                            '3' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
+                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1f}
+                                            '9' -> {setRegion(rockTexture4); sizeMultiplier = 1f}
+                                            else -> {setRegion(blankTexture); sizeMultiplier = 1f}
                                         }
-                                        setScale(3f, 3f)
+                                        setScale(sizeMultiplier, sizeMultiplier)
                                         setSize((texture.width * unitScale), (texture.height * unitScale))
                                     }
+                                }
+                                if (char == '9'){
+                                    with<InteractableComponent>()
                                 }
                             }
                         }

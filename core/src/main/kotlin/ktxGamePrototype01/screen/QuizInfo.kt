@@ -83,8 +83,18 @@ class QuizInfo {
                 Gdx.app.exit()
             }
         })
+        val strLabel = Label("Score pr. answer", skin)  // Above textField
+        strLabel.setFontScale(3f)
+
+        table.add(strLabel)
+        table.row()
+
         val emptyTextField = Label("",skin)
-                emptyTextField.setFontScale(3f)
+        emptyTextField.setFontScale(3f)
+
+        tableText.add(emptyTextField)
+        tableText.row()
+
         for (result in list){
             val textField = Label(result, skin)
             textField.setFontScale(3f)
