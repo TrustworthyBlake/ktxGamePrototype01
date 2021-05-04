@@ -49,8 +49,11 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     //  Function that edits entities on map
     private fun hasAnsweredQuiz(interact : InteractableComponent) {
         interactableEntities.forEach { interactable ->
-            if (!interact.isQuest && !interact.isTeacher && !interact.isQuestOrAnswer){
-            engine.removeEntity(interactable)
+            if (!interact.isQuest && !interact.isTeacher){
+               val temp = interactable[InteractableComponent.mapper]
+                if (temp != null) {
+                    if (temp.isQuestOrAnswer) engine.removeEntity(interactable)
+                }
             }
         }
         textEntities.forEach { text ->
