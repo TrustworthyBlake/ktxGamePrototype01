@@ -24,6 +24,8 @@ class SettingFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
 
+
+
         return binding.root
     }
 
@@ -96,6 +98,11 @@ class SettingFragment : Fragment() {
             savedDarkData.setGreenModeState(false)
             savedDarkData.setPurpleModeState(false)
             (activity as AppActivity).recreate();
+        }
+
+        binding.button6.setOnClickListener {
+            val nuke = NukeLocalFiles()
+            nuke.nukeStoredQuizzes(activity as AppActivity)
         }
     }
 

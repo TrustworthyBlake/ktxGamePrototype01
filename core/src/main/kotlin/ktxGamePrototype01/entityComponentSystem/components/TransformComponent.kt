@@ -15,11 +15,13 @@ class TransformComponent : Component, Pool.Poolable, Comparable<TransformCompone
     val posVec3 = Vector3()
     val sizeVec2 = Vector2(1f, 1f)
     var rotationDeg = 0f
+    var isColliding = false
 
     override fun reset() {
         posVec3.set(Vector3.Zero)
         sizeVec2.set(1f, 1f)
         rotationDeg = 0f
+        isColliding = false
 
     }
     override fun compareTo(other: TransformComponent): Int {

@@ -47,8 +47,6 @@ class AppActivity : AppCompatActivity() {
         binding.navigationView.setupWithNavController(navController)
         binding.bottomNav.setupWithNavController(navController)
 
-        showMenu()
-
 
 
         //val btn = findViewById<Button>(R.id.btnLogin)

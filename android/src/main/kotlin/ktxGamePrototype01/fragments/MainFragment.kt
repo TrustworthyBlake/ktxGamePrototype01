@@ -51,6 +51,7 @@ class MainFragment : Fragment() {
             if (currentUser != null) {
                 val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
                 DBObject.getUserData(userID)
+                (activity as AppActivity?)!!.showMenu()
                 // check if user data has been loaded, and if user is teacher or student
                 checkTeacherDB(userID)
             } else {

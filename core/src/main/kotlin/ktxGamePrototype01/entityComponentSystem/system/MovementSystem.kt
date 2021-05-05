@@ -24,12 +24,12 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
         require(movement != null) {"Error: 5008. entity=$entity"}
 
         val player = entity[PlayerComponent.mapper]
-        if (player != null){
+        if (player != null && transform.isColliding == false){
             entity[OrientationComponent.mapper]?.let { direction -> movePlayerEntity(transform, movement,
                     direction.tempDir, direction, deltaTime)}
         }
         else {
-            moveEntity(transform, movement, deltaTime)
+          //  moveEntity(transform, movement, deltaTime)
         }
     }
 

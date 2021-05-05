@@ -106,6 +106,20 @@
             app:layout_constraintTop_toBottomOf="@+id/button5"
             app:layout_constraintVertical_bias="0.0" />
 
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:layout_marginEnd="208dp"
+            android:text="@string/wipe_content"
+            android:textColor="@color/colorTextWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/d_modes"
+            app:layout_constraintVertical_bias="0.0" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
