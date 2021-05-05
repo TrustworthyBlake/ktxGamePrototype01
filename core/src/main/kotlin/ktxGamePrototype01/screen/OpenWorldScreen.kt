@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
@@ -15,6 +16,7 @@ import ktx.log.logger
 import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<OpenWorldScreen>()
@@ -68,7 +70,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(4.5f, 11f, -1f)
+                    posVec3.set(47.5f-offsetPos, 15f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -103,7 +105,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             }
             val playerEntityHead = engine.entity {
                 with<TransformComponent>{
-                    posVec3.set(4.5f, 10f, -1f)
+                    posVec3.set(Vector3.Zero)
                 }
                 with<SpriteComponent>{
                     sprite.run{
@@ -135,16 +137,16 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     )*/
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
-        teacherPosArray.add(Vector2(1f, 11f))
-        teacherPosArray.add(Vector2(7f, 11f))
-        teacherPosArray.add(Vector2(1f, 4f))
-        teacherPosArray.add(Vector2(7f, 4f))
-        var count = 1
+        teacherPosArray.add(Vector2(43f, 18f))
+        teacherPosArray.add(Vector2(51f, 18f))
+        teacherPosArray.add(Vector2(43f, 22f))
+        teacherPosArray.add(Vector2(51f, 22f))
+        var count = 0
         var pos = 0
         var teacherName = ""
         var head = ""
         var body = ""
-        val maxLength = 26
+        val maxLength = 24
         LOG.debug { "Teacher list data: $teacherList" }
         if (!teacherList.isNullOrEmpty()) {
             val helpFun = HelperFunctions()
@@ -163,16 +165,15 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     }
                 }
                 // Chops the string
-                var (teacherNameChopped , spacer, centerTextPos) = helpFun.chopString(teacherName, maxLength)
+                var (teacherNameChopped , spacer) = helpFun.chopString(teacherName, maxLength)
                 pos += 1
                 // Each time 3 elements have been iterated trough a new teacher entity is created
                 if (pos % 3 == 0) {
-                    count += 1
                     pos = 0
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y + 1f, -1f)
+                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y + 1f, -1f)
                         }
                         with<SpriteComponent> {
                             sprite.run {
@@ -196,7 +197,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             // Scales the text up by 4
                             font.data.setScale(4.0f, 4.0f)
                             // Position of text in the game world
-                            posTextVec2.set(teacherPosArray[count].x - centerTextPos, teacherPosArray[count].y + spacer + 1.7f)
+                            posTextVec2.set(teacherPosArray[count].x, teacherPosArray[count].y + spacer + 1.7f)
                         }
                         with<InteractableComponent> { isTeacher = true }
                         with<QuizQuestComponent> { teacherStr = teacherName }
@@ -204,7 +205,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     val teacherEntityBody = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x, teacherPosArray[count].y, -1f)
+                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y, -1f)
                         }
                         with<SpriteComponent> {
                             sprite.run {
@@ -223,6 +224,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<InteractableComponent> { isTeacher = true }
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
+                    count += 1
                 }
             }
         }else{LOG.debug { "Error: Can not find teacher list" }}
@@ -242,7 +244,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             var charNr = 0
             var lineNr = 0
             var sizeMultiplier = 1f
-            val lines:List<String> = (quizMap.readString()).lines()
+            val lines:List<String> = (quizMap.readString()).lines().reversed()
             lines.forEach { line ->
                 charNr = 0
                 line.forEach { char ->
@@ -268,7 +270,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                                             '1' -> {setRegion(treeTexture1); sizeMultiplier = 3f}
                                             '2' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
                                             '3' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
-                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1f}
+                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1.25f}
                                             '9' -> {setRegion(rockTexture4); sizeMultiplier = 1f}
                                             else -> {setRegion(blankTexture); sizeMultiplier = 1f}
                                         }

@@ -5,6 +5,7 @@ import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
@@ -31,7 +32,7 @@ class RenderSystemText2D(
     private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
     }
-    private val viewportSizeMultiplier = 120f
+    private val viewportSizeMultiplier = 120f       // 1080/9 1920/16
 
     override fun update(deltaTime: Float) {
         vp.update(Gdx.graphics.width,Gdx.graphics.height,false)
@@ -52,12 +53,12 @@ class RenderSystemText2D(
                     vp.camera.position.x = trans.posVec3.x
                     vp.camera.position.y = trans.posVec3.y
                     val plC = pl[PlayerComponent.mapper]    // Player component
-
+                    val w = GlyphLayout(textComp.font, textComp.textStr).width / 2f // Used for centering text
                     when {
                         // Draws the strings for text entities
                         textComp.isText && !textComp.drawPlayScoreHUD -> {
                             textComp.font.draw(batchText, textComp.textStr,
-                                    (textComp.posTextVec2.x * viewportSizeMultiplier)
+                                    ((textComp.posTextVec2.x * viewportSizeMultiplier)-w)
                                             - (trans.posVec3.x * viewportSizeMultiplier),
                                     (textComp.posTextVec2.y * viewportSizeMultiplier)
                                             - (trans.posVec3.y * viewportSizeMultiplier))

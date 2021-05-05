@@ -8,6 +8,7 @@ import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.*
+import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
@@ -49,7 +50,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private fun hasAnsweredQuiz(interact : InteractableComponent) {
         interactableEntities.forEach { interactable ->
             if (!interact.isQuest && !interact.isTeacher){
-            engine.removeEntity(interactable)
+               val temp = interactable[InteractableComponent.mapper]
+                if (temp != null) {
+                    if (temp.isQuestOrAnswer) engine.removeEntity(interactable)
+                }
             }
         }
         textEntities.forEach { text ->
@@ -108,8 +112,8 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             }
 
                             // RESET START
-                            playerTransform.posVec3.x = 4.5f
-                            playerTransform.posVec3.y = 10f
+                            playerTransform.posVec3.x = 10.5f - offsetPos
+                            playerTransform.posVec3.y = 14f
                             //  Run update on entities
                             hasAnsweredQuiz(interact)
                         } else if (!interact.isQuest && !interact.isTeacher) {
@@ -118,8 +122,8 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                                 quiz.quizResultList.add("0")
                             }
                             // RESET START
-                            playerTransform.posVec3.x = 4.5f
-                            playerTransform.posVec3.y = 10f
+                            playerTransform.posVec3.x = 10.5f - offsetPos
+                            playerTransform.posVec3.y = 14f
                             //  Run update on entities
                             hasAnsweredQuiz(interact)
                         }

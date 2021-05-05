@@ -111,9 +111,11 @@ class UserFragment : Fragment() {
         val userList : List<String> = User.getCourses()
 
         val daList = makeDaList(userList.size)
-        recycler_view_user.adapter = ListAdapter(daList)
-        recycler_view_user.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view_user.setHasFixedSize(true)
+        if (!daList.isNullOrEmpty()) {
+            recycler_view_user.adapter = ListAdapter(daList)
+            recycler_view_user.layoutManager = LinearLayoutManager(requireContext())
+            recycler_view_user.setHasFixedSize(true)
+        }
     }
 
 
@@ -165,10 +167,12 @@ class UserFragment : Fragment() {
     private fun makeDaList(size: Int): List<ListItem> {
         val list = ArrayList<ListItem>()
         val userList : List<String> = User.getAchievement()
-        for (i in 0 until size-1) {
-            val drawable = R.drawable.ic_attach_money_black_24dp
-            val item = ListItem(drawable, userList[i])
-            list += item
+        if (!userList.isNullOrEmpty()){
+            for (i in 0 until size-1) {
+                val drawable = R.drawable.ic_attach_money_black_24dp
+                val item = ListItem(drawable, userList[i])
+                list += item
+            }
         }
         return list
     }
@@ -179,10 +183,10 @@ class UserFragment : Fragment() {
         db.collection("classrooms").document(className).get().addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 // if query is successful, reads the data and stores in variables
-                val quizList = task.result?.get("quizes") as List<String>
-                val studentList = task.result?.get("students") as List<String>
+                val quizList = task.result?.get("quizes") as List<String>?
+                val studentList = task.result?.get("students") as List<String>?
                 val teacherName = task.result?.get("teacher name").toString()
-                val announcementsList = task.result?.get("announcements") as List<String>
+                val announcementsList = task.result?.get("announcements") as List<String>?
 
                 // TODO do something with data here
 
