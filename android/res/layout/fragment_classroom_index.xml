@@ -23,10 +23,21 @@
         android:id="@+id/btn_join_classroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="Join"
+        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Classroom"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_create_classroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        app:layout_constraintHorizontal_bias="0.685"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_open_create_quiz"
@@ -48,7 +59,7 @@
             android:id="@+id/recycler_view_classes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/module_entry" />
+            tools:listitem="@layout/classroom_index_entry" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

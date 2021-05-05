@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
@@ -25,17 +26,13 @@ class QuizInfo {
     var viewport: Viewport
     var stage: Stage
     var isUpPressed = false
-    val vpW = 480f
-    val vpH = 800f
+    private val vpW = 1080f
+    private val vpH = 1920f
 
-    val shapeRenderer = ShapeRenderer()
-    val atlas = TextureAtlas(Gdx.files.internal("uiskin.atlas"))
-    val skin = Skin(Gdx.files.internal("uiskin.json"), atlas)
-
-
+    private val shapeRenderer = ShapeRenderer()
+    private val atlas = TextureAtlas(Gdx.files.internal("uiskin.atlas"))
+    private val skin = Skin(Gdx.files.internal("uiskin.json"), atlas)
     var backgroundHeightModifier = 0f
-
-
 
     fun resize(width: Int, height: Int) {
         viewport.update(width, height, )
@@ -48,8 +45,10 @@ class QuizInfo {
         backgroundHeightModifier = list.size.toFloat()
 
         // Elements for list
-        val exitButton = TextButton("Exit", skin)
-
+        val exitLabel = Label("Exit", skin)
+        exitLabel.setFontScale(3f)
+        val exitButton = Image(Texture(Gdx.files.internal("graphics/Button01.png")))
+        exitButton.setSize(380f, 120f)
 
         // Keyboard listeners for debugging
         stage.addListener(object : InputListener() {
@@ -66,7 +65,10 @@ class QuizInfo {
         })
         Gdx.input.inputProcessor = stage
         val table = Table()
+        val tableText = Table()
         table.setFillParent(true)
+        tableText.setFillParent(true)
+        tableText.touchable = Touchable.disabled
 
         //  Add touch event when clicking button
         exitButton.addListener(object : InputListener() {
@@ -79,35 +81,40 @@ class QuizInfo {
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 isUpPressed = false
                 Gdx.app.exit()
-
             }
         })
+        val strLabel = Label("Score pr. answer", skin)  // Above textField
+        strLabel.setFontScale(3f)
 
-
-
-
-
-        table.add()
+        table.add(strLabel)
         table.row()
+
+        val emptyTextField = Label("",skin)
+        emptyTextField.setFontScale(3f)
+
+        tableText.add(emptyTextField)
+        tableText.row()
+
         for (result in list){
             val textField = Label(result, skin)
+            textField.setFontScale(3f)
             table.add(textField)
             table.row()
+            tableText.add(emptyTextField)       // Need to offset text inside button
+            tableText.row()
         }
-
-        table.add(exitButton)
-        table.add()
+        table.add(exitButton).size(exitButton.width, exitButton.height)//.size(150f, 90f)
+        tableText.add(exitLabel)
 
         stage.addActor(table)
+        stage.addActor(tableText)
     }
-
-
-
 
     fun draw() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.setColor(Color.SALMON)
-        shapeRenderer.rect((Gdx.graphics.width - (9f * 48))/2, (Gdx.graphics.height - (16f * 48f)+16*backgroundHeightModifier)/2, (9f * 48), (16f * 48f)+16*backgroundHeightModifier)
+        shapeRenderer.setColor(Color.FOREST)
+        shapeRenderer.rect(0f,0f,Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        //shapeRenderer.rect((Gdx.graphics.width - (9f * 48))/2, (Gdx.graphics.height - (16f * 48f)+16*backgroundHeightModifier)/2, (9f * 48), (16f * 48f)+16*backgroundHeightModifier)
         shapeRenderer.end()
         stage.act()
         stage.draw()

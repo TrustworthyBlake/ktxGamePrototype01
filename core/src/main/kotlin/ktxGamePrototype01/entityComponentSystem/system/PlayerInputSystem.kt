@@ -19,6 +19,7 @@ import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
 private val LOG = logger <PlayerInputSystem>()
 
+// Handles user input, and passes on
 class PlayerInputSystem(
         private val gameViewport: Viewport
         ) : IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class, OrientationComponent::class).get()) {
@@ -36,21 +37,13 @@ class PlayerInputSystem(
         require(transform != null) {"Error: 5005. entity=$entity"}
 
 
-
+        // User touchscreen input
         if(Gdx.input.isTouched) {
-            //gameViewport.unproject(tempPosVec)
-            //tempPosVec.y = Gdx.input.deltaY.toFloat()
-            //tempPosVec.x = Gdx.input.deltaX.toFloat()
+           /* gameViewport.unproject(tempPosVec)
+            tempPosVec.y = Gdx.input.deltaY.toFloat()
+            tempPosVec.x = Gdx.input.deltaX.toFloat()
 
-            gameViewport.unproject(onHoldPosition)
-            onHoldPosition.x = Gdx.input.x.toFloat()
-            onHoldPosition.y = Gdx.input.y.toFloat()
-
-
-            if(Gdx.input.justTouched())  { onClickPosition = Vector2(onHoldPosition.x, onHoldPosition.y) }
-            /*
             //      LEGACY MOVEMENT
-
             if(tempPosVec.x > 3) {
                 orientation.direction = OrientationDirection.right
 
@@ -66,22 +59,33 @@ class PlayerInputSystem(
             if (tempPosVec.y < -3){
                 orientation.direction = OrientationDirection.up
             }
-             */
+            */
+
+            gameViewport.unproject(onHoldPosition)
+            onHoldPosition.x = Gdx.input.x.toFloat()
+            onHoldPosition.y = Gdx.input.y.toFloat()
+
+            if(Gdx.input.justTouched())  { onClickPosition = Vector2(onHoldPosition.x, onHoldPosition.y) }
 
             val diffX = onHoldPosition.x-onClickPosition.x
             val diffY = onHoldPosition.y-onClickPosition.y
+
+            // Moves right
             if(onHoldPosition.x > onClickPosition.x) {
                 orientation.direction = OrientationDirection.right
                 finalPositionModifier.x = diffX
             }
+            // Moves left
             if(onHoldPosition.x < onClickPosition.x) {
                 orientation.direction = OrientationDirection.left
                 finalPositionModifier.x = diffX
             }
+            // Moves down
             if(onHoldPosition.y > onClickPosition.y){
                 orientation.direction = OrientationDirection.down
                 finalPositionModifier.y = -diffY
             }
+            // Moves up
             if (onHoldPosition.y < onClickPosition.y){
                 orientation.direction = OrientationDirection.up
                 finalPositionModifier.y = -diffY
@@ -91,7 +95,7 @@ class PlayerInputSystem(
             //LOG.debug { "pointer pos x.y = $tempPosVec" }
             //LOG.debug { "diffDistX = $diffDistX" }
 
-
+            // Sets the vector, used in MovementSystem
             orientation.tempDir.x = finalPositionModifier.x
             orientation.tempDir.y = finalPositionModifier.y
         }
@@ -99,8 +103,10 @@ class PlayerInputSystem(
             orientation.direction = OrientationDirection.tempOri
             //onHoldPosition = Vector2(0f, 0f)
             orientation.tempDir = Vector2(0f, 0f)
-        }
 
+        }//else orientation.direction = OrientationDirection.tempOri
+
+        // Debugging key-binds, used for desktop application
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
             orientation.direction = OrientationDirection.left
         }

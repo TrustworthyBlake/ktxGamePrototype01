@@ -125,13 +125,15 @@ object User {
         return userID
         }
 
-        fun addToUserScore(){
-            val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
-            var score : Float = prefs.getFloat("totalPlayerScore")
-            val scoreInt = score.toInt()
-            if (scoreInt != 0) {
-                setScore(scoreInt)
-                updateFirestoreUser()
+        fun addToUserScore() {
+            if (Gdx.app.getPreferences("playerData" + userName) != null) {
+                val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
+                var score: Float = prefs.getFloat("totalPlayerScore")
+                val scoreInt = score.toInt()
+                if (scoreInt != 0) {
+                    setScore(scoreInt)
+                    updateFirestoreUser()
+                }
             }
         }
 

@@ -3,10 +3,9 @@ package ktxGamePrototype01.entityComponentSystem.components
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.utils.Pool
-import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.mapperFor
 
-class GraphicComponent: Component, Pool.Poolable {
+class SpriteComponent: Component, Pool.Poolable {
     val sprite = Sprite()
 
     override fun reset() {
@@ -15,6 +14,6 @@ class GraphicComponent: Component, Pool.Poolable {
 
     }
     companion object{
-        val mapper = mapperFor<GraphicComponent>()
+        val mapper = mapperFor<SpriteComponent>()
     }
 }

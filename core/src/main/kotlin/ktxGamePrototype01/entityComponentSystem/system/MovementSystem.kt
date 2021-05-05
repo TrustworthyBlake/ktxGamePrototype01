@@ -3,26 +3,20 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
 import ktxGamePrototype01.entityComponentSystem.components.*
-import kotlin.math.max
-import kotlin.math.min
 
 
 private const val updateRate = 1f / 30f
 
+// The system controls the position translation of entities
 class MovementSystem : IteratingSystem(allOf(TransformComponent::class, MovementComponent::class).exclude(NukePooledComponent::class).get()) {
-    private var accumulator = 0f
-    override fun update(deltaTime: Float) {         // Used to prevent unpredictable behavior of game engine, if not used wonky logic can occur during a rendered frame
-        accumulator += deltaTime
-        while (accumulator >= updateRate){
-            accumulator -= updateRate
-        }
-        super.update(deltaTime)
+
+    override fun update(deltaTime: Float) {
+        super.update(updateRate)
     }
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -32,7 +26,8 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
 
         val player = entity[PlayerComponent.mapper]
         if (player != null){
-            entity[OrientationComponent.mapper]?.let { direction -> movePlayer(transform, movement, direction.tempDir, direction, deltaTime)}
+            entity[OrientationComponent.mapper]?.let { direction -> movePlayerEntity(transform, movement,
+                    direction.tempDir, direction, deltaTime)}
         }
         else {
             moveEntity(transform, movement, deltaTime)
@@ -40,9 +35,10 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
     }
 
 
-    private fun movePlayer(transform: TransformComponent, movement: MovementComponent, mvmt: Vector2, direction: OrientationComponent, deltaTime: Float){
-        /*
-        movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
+    private fun movePlayerEntity(transform: TransformComponent, movement: MovementComponent, mvmt: Vector2,
+                                 direction: OrientationComponent, deltaTime: Float){
+
+ /*       movement.velocity.x = when(direction.direction){                                    // Horizontal movement velocity
             OrientationDirection.left -> min(0f, movement.velocity.x - 15f * deltaTime)
             OrientationDirection.right -> max(0f, movement.velocity.x + 15f * deltaTime)
             else -> 0f
@@ -54,9 +50,9 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
             else -> 0f
         }
         movement.velocity.y = MathUtils.clamp(movement.velocity.y, -6f, 6f)
-         */
-        movement.velocity.x = mvmt.x*0.01f
-        movement.velocity.y = mvmt.y*0.01f
+*/
+        movement.velocity.x = mvmt.x*0.009f
+        movement.velocity.y = mvmt.y*0.009f
 
         moveEntity(transform, movement, deltaTime)
     }

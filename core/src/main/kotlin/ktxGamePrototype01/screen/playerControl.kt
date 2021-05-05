@@ -1,27 +1,34 @@
 package ktxGamePrototype01.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import ktx.log.debug
+import ktx.log.logger
+
+private val LOG = logger<AbstractScreen>()
 
 class playerControl {
     var viewport: Viewport
     var stage: Stage
     var isPressed = false
-
-    var cam: OrthographicCamera
-
+    private val atlas = TextureAtlas(Gdx.files.internal("uiskin.atlas"))
+    private val skin = Skin(Gdx.files.internal("uiskin.json"), atlas)
 
     fun draw() {
+        stage.act()
         stage.draw()
     }
 
@@ -30,30 +37,17 @@ class playerControl {
     }
 
     constructor(batch: SpriteBatch) {
-        cam = OrthographicCamera()
-        viewport = FitViewport(800f, 480f, cam)
+        val cam = OrthographicCamera()
+        viewport = FitViewport(1080f, 1920f, cam)
         stage = Stage(viewport, batch)
-        stage.addListener(object : InputListener() {
-            override fun keyDown(event: InputEvent, keycode: Int): Boolean {
-                when (keycode) {
-                    Input.Keys.UP -> isPressed = true
-                }
-                return true
-            }
-
-            override fun keyUp(event: InputEvent, keycode: Int): Boolean {
-                when (keycode) {
-                    Input.Keys.UP -> isPressed = false
-                }
-                return true
-            }
-        })
         Gdx.input.inputProcessor = stage
         val table = Table()
-        table.bottom()  //this is pointless, the button is ALWAYS bottom left
-        val upImg = Image(Texture(Gdx.files.internal("graphics/red_square.png")))
-        upImg.setSize(200f, 30f)
-        upImg.addListener(object : InputListener() {
+        val tableText = Table()
+        val strLabel = Label("Activate", skin)
+        strLabel.setFontScale(4f)
+        val activateButton = Image(Texture(Gdx.files.internal("graphics/Button01.png")))
+        activateButton.setSize(380f, 120f)
+        activateButton.addListener(object : InputListener() {
             override fun touchDown(
                 event: InputEvent,
                 x: Float,
@@ -69,13 +63,16 @@ class playerControl {
                 isPressed = false
             }
         })
+        tableText.setFillParent(true)
+        tableText.add(strLabel)
+        tableText.bottom().padBottom(30f)
+        tableText.touchable = Touchable.disabled
 
-
-        table.add()
-        table.add(upImg).size(upImg.width, upImg.height)
-        table.add()
-        table.row().pad(5f, 5f, 5f, 5f)
         table.setFillParent(true)
+        table.add(activateButton).size(activateButton.width, activateButton.height)
+        table.bottom().padBottom(20f)
+
         stage.addActor(table)
+        stage.addActor(tableText)
     }
 }
