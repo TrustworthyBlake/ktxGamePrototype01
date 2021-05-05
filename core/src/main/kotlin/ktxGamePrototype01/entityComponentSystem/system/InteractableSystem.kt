@@ -16,7 +16,7 @@ const val WrongAnswerPoints = 0
 const val hitboxScaler = 1.2f
 
 // Handles collision detection and relevant logic
-class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).exclude(NukePooledComponent::class).get()) {
+class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).get()) {
 
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()

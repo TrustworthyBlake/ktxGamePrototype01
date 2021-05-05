@@ -17,7 +17,7 @@ import ktxGamePrototype01.unitScale
 private val LOG = logger<QuizQuestSystem>()
 
 // Main logic for generating quest entities in the OpenWorldScreen
-class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude(NukePooledComponent::class).get()){
+class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val qQuestComp = entity[QuizQuestComponent.mapper]
@@ -42,7 +42,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).exclude
         qPosArray.add(Vector2(43f, 10f))
         qPosArray.add(Vector2(51f, 10f))
         var count = 0
-        var qName = ""
+        var qName : String
         val maxLength = 24
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
 

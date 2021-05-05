@@ -18,7 +18,7 @@ import ktxGamePrototype01.unitScale
 private val LOG = logger<QuizSystem>()
 
 // Handles logic relevant to the QuizScreen game
-class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePooledComponent::class).get()) {
+class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
     var lastTextPositionModifier = 1
     var quizCompletedCheck = false
@@ -186,7 +186,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).exclude(NukePoole
         val player = entity[PlayerComponent.mapper]
         require(player != null)
         LOG.debug { "Adding score = ${player.playerScore}" }
-        var score = 0f
+        var score : Float
         val prefs: Preferences = Gdx.app.getPreferences("playerData"+player.playerName)
         score = prefs.getFloat("totalPlayerScore")
         score += player.playerScore
