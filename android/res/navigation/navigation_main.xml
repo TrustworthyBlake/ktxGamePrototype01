@@ -33,11 +33,8 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_dest_login_to_dest_user_profile"
-            app:destination="@id/dest_user_profile" />
-        <action
-            android:id="@+id/action_dest_login_to_userTeacherProfileFragment"
-            app:destination="@id/dest_teacher_profile" />
+            android:id="@+id/action_dest_login_to_placeholder"
+            app:destination="@id/dest_home" />
     </fragment>
 
     <fragment
@@ -176,5 +173,19 @@
         android:name="ktxGamePrototype01.fragments.ClassroomLeaderboardFragment"
         android:label="Leaderboard"
         tools:layout="@layout/fragment_classroom_leaderboard"/>
+
+    <fragment android:id="@+id/dest_home"
+        android:name="ktxGamePrototype01.fragments.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home"
+        >
+
+        <action
+            android:id="@+id/action_placeholder_to_dest_user_profile"
+            app:destination="@id/dest_user_profile" />
+        <action
+            android:id="@+id/action_placeholder_to_dest_teacher_profile"
+            app:destination="@id/dest_teacher_profile" />
+    </fragment>
 
 </navigation>

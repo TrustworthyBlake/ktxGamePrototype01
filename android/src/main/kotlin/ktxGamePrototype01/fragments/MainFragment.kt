@@ -51,6 +51,7 @@ class MainFragment : Fragment() {
             if (currentUser != null) {
                 val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
                 DBObject.getUserData(userID)
+                (activity as AppActivity?)!!.showMenu()
                 // check if user data has been loaded, and if user is teacher or student
                 checkTeacherDB(userID)
             } else {
@@ -112,13 +113,13 @@ class MainFragment : Fragment() {
     // log in as teacher, go to teacher page
     private fun logInAsTeacher() {
         Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user_teacher)
+        findNavController().navigate(R.id.dest_home)
     }
 
     // log in as student, go to student page
     private fun logInAsStudent() {
         Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.dest_user_profile)
+        findNavController().navigate(R.id.dest_home)
     }
 
 

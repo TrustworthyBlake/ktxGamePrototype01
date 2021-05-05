@@ -38,14 +38,10 @@ class UserTeacherProfileFragment : Fragment(){
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         readData(userID)
 
-        val buttonSettings = binding.root.findViewById<Button>(R.id.settings_button)
         val buttonUserInfo = binding.root.findViewById<Button>(R.id.user_info_buttonT)
         val buttonLogout = binding.root.findViewById<Button>(R.id.log_out_button)
         val buttonEdit = binding.root.findViewById<Button>(R.id.btn_edit_profT)
 
-        buttonSettings.setOnClickListener(){
-            findNavController().navigate(R.id.dest_settings)
-        }
 
         buttonUserInfo.setOnClickListener(){
             findNavController().navigate(R.id.dest_user_teacher)

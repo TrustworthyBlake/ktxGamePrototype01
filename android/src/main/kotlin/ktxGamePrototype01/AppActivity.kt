@@ -2,6 +2,7 @@ package ktxGamePrototype01
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,11 +11,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.ActivityAppBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
     private val FIRST_GAME_REQUEST_CODE = 0
     private lateinit var savedDarkData: sharedprefs
+    private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
 
     var userObject = User
 
@@ -47,7 +52,6 @@ class AppActivity : AppCompatActivity() {
         binding.navigationView.setupWithNavController(navController)
         binding.bottomNav.setupWithNavController(navController)
 
-        showMenu()
 
 
 
@@ -61,7 +65,9 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.VISIBLE
         val menu = binding.navigationView.menu
         menu.findItem(R.id.dest_classroom_index).isVisible = true
-        menu.findItem(R.id.dest_user_profile).isVisible = true
+        if(checkTeacher(User.getName())){
+            menu.findItem(R.id.dest_teacher_profile).isVisible = true
+        }else{menu.findItem(R.id.dest_user_profile).isVisible = true}
         menu.findItem(R.id.dest_settings).isVisible = true
     }
 
@@ -87,4 +93,26 @@ class AppActivity : AppCompatActivity() {
         intent.putExtra("teacherDataList", newArrList)
         startActivityForResult(intent, FIRST_GAME_REQUEST_CODE)
     }
+
+    fun checkTeacher(name : String) : Boolean{
+        var kotlinBS : Boolean = false
+        /*
+        db.collection("users").document(name).get().addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                // if query is successful, reads the data and stores in variables
+                val res = task.result?.get("teacher")
+                // check if user logging in is teacher or student
+                if (res as Boolean) {
+                    kotlinBS
+                } else kotlinBS = false
+            } else {
+                // database read fail
+                Log.w("Failed to read database", "Error checking specified user in database")
+            }
+
+         */
+
+        return kotlinBS
+    }
+
 }

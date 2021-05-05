@@ -98,15 +98,12 @@ class UserTeacherFragment : Fragment() {
                 // if query is successful, reads the data and stores in variables
                 val name = task.result?.get("name")
                 val email = task.result?.get("email")
-                //val score = task.result?.get("score")
                 // getting the reference to the textViews
                 val userName = binding.root.findViewById<TextView>(R.id.user_name)
                 val userEmail = binding.root.findViewById<TextView>(R.id.user_email)
-                // val userScore = binding.root.findViewById<TextView>(R.id.user_score)
                 // displaying the data in the textViews
                 userName.text = name.toString()
                 userEmail.text = email.toString()
-                //userScore.text = score.toString()
             }
         }
     }
