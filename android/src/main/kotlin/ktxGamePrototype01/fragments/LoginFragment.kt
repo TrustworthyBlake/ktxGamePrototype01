@@ -65,6 +65,7 @@ class LoginFragment : Fragment() {
                 ) { task ->
                     if (task.isSuccessful) {   // Sign in success
                         val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
+                        (activity as AppActivity?)!!.showMenu()
                         DBObject.getUserData(userID)
                         // check if user data has been loaded, and if user is teacher or student
                         checkTeacherDB(userID)

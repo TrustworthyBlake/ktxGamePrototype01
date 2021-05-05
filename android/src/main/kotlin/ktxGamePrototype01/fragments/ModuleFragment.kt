@@ -96,8 +96,12 @@ class ModuleFragment : Fragment() {
                         // if query is successful, reads the data and stores in variables
 
                         db.collection("modules")
-                            .document(moduleName.toString())
-                            .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
+                                .document(moduleName.toString())
+                                .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
+
+                        db.collection("classrooms")
+                                .document(classroomVM.selected)
+                                .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
 
                         moduleGameList.add(Game(editText.text.toString(), "Quiz"))
                         adapter.notifyItemInserted(moduleGameList.size - 1)
@@ -117,12 +121,14 @@ class ModuleFragment : Fragment() {
         db.collection("modules").document(id).get().addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 // if query is successful, reads the data and stores in variables
-                val gameList = task.result?.get("quizes") as List<String>
-                for(game in gameList) {
-                    val tempGame = Game(game, "Quiz")
-                    if(!moduleGameList.contains(tempGame)) {
-                        moduleGameList.add(tempGame)
-                        adapter.notifyItemInserted(moduleGameList.size - 1)
+                val gameList = task.result?.get("quizes") as? List<String>
+                if(gameList != null) {
+                    for (game in gameList) {
+                        val tempGame = Game(game, "Quiz")
+                        if (!moduleGameList.contains(tempGame)) {
+                            moduleGameList.add(tempGame)
+                            adapter.notifyItemInserted(moduleGameList.size - 1)
+                        }
                     }
                 }
             }

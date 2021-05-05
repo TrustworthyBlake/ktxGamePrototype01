@@ -65,11 +65,29 @@ class ClassroomModuleFragment : Fragment() {
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
 
-             db.collection("modules").document(editText.text.toString()).get().addOnCompleteListener() { task ->
+
+                db.collection("modules").document(editText.text.toString()).get().addOnCompleteListener() { task ->
                  if (task.isSuccessful) {
                     db.collection("classrooms")
                         .document(classroomVM.selected)
                         .update("modules", FieldValue.arrayUnion(editText.text.toString()))
+
+                     var quizList: List<String> = emptyList()
+                     if (task.isSuccessful) {
+                         val quizes = task.result?.get("quizes") as? List<String>
+                         if(quizes != null) {
+                             for (quiz in quizes) {
+                                 quizList = quizList + quiz
+                             }
+                         }
+                     }
+
+                    for(quiz in quizList){
+                        db.collection("classrooms")
+                                .document(classroomVM.selected)
+                                .update("quizes", FieldValue.arrayUnion(quiz))
+                    }
+
 
                      classroomModuleList.add(editText.text.toString())
                      adapter.notifyItemInserted(classroomModuleList.size - 1)
@@ -77,6 +95,10 @@ class ClassroomModuleFragment : Fragment() {
                         Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()
                     }
                 }
+
+
+
+
             }
             builder.show()
         }

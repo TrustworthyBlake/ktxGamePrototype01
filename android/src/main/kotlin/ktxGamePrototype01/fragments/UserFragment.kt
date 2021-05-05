@@ -116,6 +116,7 @@ class UserFragment : Fragment() {
         recycler_view_user.setHasFixedSize(true)
     }
 
+
     // function to cast user data from the user object to the on-screen elements
     private fun showUserData() {
         // getting the reference to the textViews

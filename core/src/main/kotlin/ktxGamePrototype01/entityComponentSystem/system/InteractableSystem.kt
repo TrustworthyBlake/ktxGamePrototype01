@@ -140,10 +140,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         }
                     }
                     //  SET STANDARD COLLISION
-                    if (playerTransform.posVec3.x < interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.07f
-                    if (playerTransform.posVec3.x > interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.07f
-                    if (playerTransform.posVec3.y < interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y - 0.07f
-                    if (playerTransform.posVec3.y > interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.07f
+                    if (playerTransform.posVec3.x < interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.069f
+                    if (playerTransform.posVec3.x > interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.069f
+                    if (playerTransform.posVec3.y < interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y - 0.069f
+                    if (playerTransform.posVec3.y > interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.069f
                 }
             }
         }
