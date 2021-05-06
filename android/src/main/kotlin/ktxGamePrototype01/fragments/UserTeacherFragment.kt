@@ -82,7 +82,7 @@ class UserTeacherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userList : List<String> = User.getAchievement()
+        val userList : List<String> = User.getCourses()
 
         val daList = makeDaList(userList.size)
         recycler_view_userT.adapter = ListAdapter(daList)

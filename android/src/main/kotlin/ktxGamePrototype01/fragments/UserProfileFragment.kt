@@ -44,14 +44,10 @@ class UserProfileFragment : Fragment() {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         readData(userID)
 
-        val buttonSettings = binding.root.findViewById<Button>(R.id.settings_button)
         val buttonUserInfo = binding.root.findViewById<Button>(R.id.user_info_button)
         val buttonLogout = binding.root.findViewById<Button>(R.id.log_out_button)
         val buttonEdit = binding.root.findViewById<Button>(R.id.btn_edit_prof)
 
-        buttonSettings.setOnClickListener(){
-            findNavController().navigate(R.id.dest_settings)
-        }
 
         buttonUserInfo.setOnClickListener(){
             findNavController().navigate(R.id.dest_user)
@@ -59,6 +55,7 @@ class UserProfileFragment : Fragment() {
 
         buttonLogout.setOnClickListener(){
             auth.signOut()
+            (activity as AppActivity?)!!.hideMenu()
             Toast.makeText(activity,"Logged out!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.dest_login)
         }
@@ -130,7 +127,7 @@ class UserProfileFragment : Fragment() {
     private fun makeDaList(size: Int): List<ListItem> {
         val list = ArrayList<ListItem>()
         val userList : List<String> = User.getAchievement()
-        for (i in 0 until size-1) {
+        for (i in 0 until size) {
             val drawable = R.drawable.ic_attach_money_black_24dp
             val item = ListItem(drawable, userList[i])
             list += item

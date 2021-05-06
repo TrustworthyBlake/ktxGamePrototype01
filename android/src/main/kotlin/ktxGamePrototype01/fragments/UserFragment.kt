@@ -165,9 +165,9 @@ class UserFragment : Fragment() {
 
     private fun makeDaList(size: Int): List<ListItem> {
         val list = ArrayList<ListItem>()
-        val userList : List<String> = User.getAchievement()
+        val userList : List<String> = User.getCourses()
         if (!userList.isNullOrEmpty()){
-            for (i in 0 until size-1) {
+            for (i in 0 until size) {
                 val drawable = R.drawable.ic_attach_money_black_24dp
                 val item = ListItem(drawable, userList[i])
                 list += item

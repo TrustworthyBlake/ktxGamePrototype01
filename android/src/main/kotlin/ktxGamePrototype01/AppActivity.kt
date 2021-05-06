@@ -7,12 +7,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.ActivityAppBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
@@ -24,6 +27,7 @@ class AppActivity : AppCompatActivity() {
     var userObject = User
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        auth = Firebase.auth
         savedDarkData = sharedprefs(this)
         if(savedDarkData.loadDarkModeState() == true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -53,6 +57,14 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
 
 
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
+            DBObject.getUserData(userID)
+            showMenu()
+        }
+
+
 
 
         //val btn = findViewById<Button>(R.id.btnLogin)
@@ -63,11 +75,18 @@ class AppActivity : AppCompatActivity() {
 
     fun showMenu(){
         binding.bottomNav.visibility = View.VISIBLE
+        val botMenu = binding.bottomNav.menu
         val menu = binding.navigationView.menu
         menu.findItem(R.id.dest_classroom_index).isVisible = true
-        if(checkTeacher(User.getName())){
+        if(User.checkForTeacher()){
             menu.findItem(R.id.dest_teacher_profile).isVisible = true
-        }else{menu.findItem(R.id.dest_user_profile).isVisible = true}
+            botMenu.findItem(R.id.dest_teacher_profile).isVisible = true
+            menu.findItem(R.id.dest_user_profile).isVisible = false
+            botMenu.findItem(R.id.dest_user_profile).isVisible = false
+        }else{menu.findItem(R.id.dest_user_profile).isVisible = true
+            botMenu.findItem(R.id.dest_user_profile).isVisible = true
+            botMenu.findItem(R.id.dest_teacher_profile).isVisible = false
+            menu.findItem(R.id.dest_teacher_profile).isVisible = false}
         menu.findItem(R.id.dest_settings).isVisible = true
     }
 
@@ -92,27 +111,6 @@ class AppActivity : AppCompatActivity() {
         intent.putExtra("quizToUse", quizToUse)
         intent.putExtra("teacherDataList", newArrList)
         startActivityForResult(intent, FIRST_GAME_REQUEST_CODE)
-    }
-
-    fun checkTeacher(name : String) : Boolean{
-        var kotlinBS : Boolean = false
-        /*
-        db.collection("users").document(name).get().addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                // if query is successful, reads the data and stores in variables
-                val res = task.result?.get("teacher")
-                // check if user logging in is teacher or student
-                if (res as Boolean) {
-                    kotlinBS
-                } else kotlinBS = false
-            } else {
-                // database read fail
-                Log.w("Failed to read database", "Error checking specified user in database")
-            }
-
-         */
-
-        return kotlinBS
     }
 
 }

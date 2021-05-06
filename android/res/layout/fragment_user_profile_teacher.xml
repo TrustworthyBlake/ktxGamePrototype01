@@ -14,16 +14,6 @@
         android:layout_height="match_parent"
         tools:ignore="ExtraText"><![CDATA[
         tools:context=".fragments.UserFragment">
-
-
-
-
-
-
-
-
-
-
         ]]>
 
 
@@ -94,7 +84,7 @@
             android:text="Edit Profile"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_user_profileT"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
+            app:layout_constraintHorizontal_bias="0.704"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
             app:layout_constraintVertical_bias="0.141" />

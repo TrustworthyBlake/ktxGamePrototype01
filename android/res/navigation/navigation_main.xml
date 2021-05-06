@@ -174,7 +174,6 @@
         android:label="Leaderboard"
         tools:layout="@layout/fragment_classroom_leaderboard"/>
 
-<<<<<<< HEAD
     <fragment android:id="@+id/dest_home"
         android:name="ktxGamePrototype01.fragments.HomeFragment"
         android:label="HomeFragment"

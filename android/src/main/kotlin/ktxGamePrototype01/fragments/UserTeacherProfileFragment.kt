@@ -63,7 +63,7 @@ class UserTeacherProfileFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userList : List<String> = User.getAchievement()
+        val userList : List<String> = User.getCourses()
 
         val daList = makeDaList(userList.size)
         recycler_view_user_profileT.adapter = ListAdapter(daList)
@@ -76,12 +76,12 @@ class UserTeacherProfileFragment : Fragment(){
         db.collection("users").document(userID).get().addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 // if query is successful, reads the data and stores in variables
-                //val score = task.result?.get("score")
+                val name = task.result?.get("name")
                 // getting the reference to the textViews
 
-                val userScore = binding.root.findViewById<TextView>(R.id.user_score)
+                val userName = binding.root.findViewById<TextView>(R.id.user_name)
                 // displaying the data in the textViews
-
+                userName.text = name.toString()
                 //userScore.text = score.toString()
             }
         }

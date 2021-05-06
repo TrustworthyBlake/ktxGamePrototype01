@@ -23,20 +23,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_home" />
 
-    <TextView
-        android:id="@+id/homeUser_name"
-        android:layout_width="181dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="76dp"
-        android:text="TextView"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.703"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
+            <TextView
+                android:id="@+id/homeUser_name"
+                android:layout_width="171dp"
+                android:layout_height="102dp"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="60dp"
+                android:text="TextView"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.75"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/text_home" />
 
-    <TextView
+            <TextView
         android:id="@+id/text_getStarted"
         android:layout_width="285dp"
         android:layout_height="72dp"

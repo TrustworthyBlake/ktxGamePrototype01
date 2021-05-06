@@ -10,11 +10,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentSettingBinding
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_setting.*
-import ktxGamePrototype01.AndroidLauncher
-import ktxGamePrototype01.AppActivity
-import ktxGamePrototype01.NukeLocalFiles
-import ktxGamePrototype01.sharedprefs
+import ktxGamePrototype01.*
 
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
@@ -98,6 +96,8 @@ class SettingFragment : Fragment() {
             (activity as AppActivity).recreate();
         }
     }
+
+
 
 
 }
