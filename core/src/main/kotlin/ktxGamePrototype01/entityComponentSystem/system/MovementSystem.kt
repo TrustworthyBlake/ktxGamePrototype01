@@ -5,7 +5,6 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.allOf
-import ktx.ashley.exclude
 import ktx.ashley.get
 import ktxGamePrototype01.entityComponentSystem.components.*
 
@@ -13,7 +12,7 @@ import ktxGamePrototype01.entityComponentSystem.components.*
 private const val updateRate = 1f / 30f
 
 // The system controls the position translation of entities
-class MovementSystem : IteratingSystem(allOf(TransformComponent::class, MovementComponent::class).exclude(NukePooledComponent::class).get()) {
+class MovementSystem : IteratingSystem(allOf(TransformComponent::class, MovementComponent::class).get()) {
 
     override fun update(deltaTime: Float) {
         super.update(updateRate)
@@ -25,12 +24,12 @@ class MovementSystem : IteratingSystem(allOf(TransformComponent::class, Movement
         require(movement != null) {"Error: 5008. entity=$entity"}
 
         val player = entity[PlayerComponent.mapper]
-        if (player != null){
+        if (player != null && transform.isColliding == false){
             entity[OrientationComponent.mapper]?.let { direction -> movePlayerEntity(transform, movement,
                     direction.tempDir, direction, deltaTime)}
         }
         else {
-            moveEntity(transform, movement, deltaTime)
+          //  moveEntity(transform, movement, deltaTime)
         }
     }
 

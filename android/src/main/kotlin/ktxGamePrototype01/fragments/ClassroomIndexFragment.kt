@@ -84,6 +84,11 @@ class ClassroomIndexFragment : Fragment() {
 
 
         binding.btnCreateClassroom.setOnClickListener() {
+
+            findNavController().navigate(R.id.dest_create_classroom)
+
+
+            /*
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
@@ -91,12 +96,11 @@ class ClassroomIndexFragment : Fragment() {
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
                 addClassroom(DBObject.capitalize(editText.text.toString()), "3rd", "Teacher test", "2021".toInt(), userID)
-
                 classList.add(editText.text.toString())
                 adapter.notifyItemInserted(classList.size - 1)
             }
             builder.show()
-
+             */
 
         }
         binding.btnOpenCreateQuiz.setOnClickListener {

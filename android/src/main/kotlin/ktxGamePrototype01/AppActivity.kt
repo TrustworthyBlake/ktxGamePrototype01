@@ -57,14 +57,14 @@ class AppActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
 
 
+
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
             DBObject.getUserData(userID)
             showMenu()
         }
-
-
+        
 
 
         //val btn = findViewById<Button>(R.id.btnLogin)

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
@@ -28,6 +29,7 @@ import java.lang.Thread.sleep
 
 class CreateQuizFragment : Fragment() {
     private lateinit var binding: FragmentCreateQuizBinding
+    private val classroomVM: ClassroomViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_quiz, container, false)
@@ -80,7 +82,6 @@ class CreateQuizFragment : Fragment() {
     var hasCreatedQuestion = false
     var amountOfAnswers = 0
     // values for firestore under
-    var classroom = "2nd grade English 2021"
     var qzName= ""
     var noOfQuestions = 0
 
@@ -232,7 +233,7 @@ class CreateQuizFragment : Fragment() {
 
         val quiz = hashMapOf(
                 "name" to qzName,
-                "course" to classroom,
+                "course" to classroomVM.selected,
                 "question" to tempQuizList
         )
 
@@ -241,7 +242,7 @@ class CreateQuizFragment : Fragment() {
             Log.d("FAIL", "Successfully added quiz to DB")
             Toast.makeText(activity, "Quiz successfully created", Toast.LENGTH_LONG).show()
             db.collection("classrooms")
-                    .document(classroom)
+                    .document(classroomVM.selected)
                     .update("quizes", FieldValue.arrayUnion(qzName)).addOnSuccessListener {
                         Log.d("SUCCESS", "Successfully added quiz to classroom")
                         // add quiz to module in firestore

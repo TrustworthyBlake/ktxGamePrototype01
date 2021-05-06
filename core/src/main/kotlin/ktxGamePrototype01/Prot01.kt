@@ -41,7 +41,6 @@ class Prot01(private val showScreen: String, private val playerName : String,
         addSystem(QuizSystem())
         addSystem(BindEntitiesSystem())
         addSystem(QuizQuestSystem())
-        addSystem(NukePooledSystem())
     }  }
 
     // Adds and sets the game screen based on the showScreen string, defaults to OpenWorldScreen

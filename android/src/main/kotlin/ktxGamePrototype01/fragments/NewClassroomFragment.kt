@@ -17,6 +17,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentNewCla
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ktxGamePrototype01.AppActivity
@@ -31,6 +32,7 @@ class NewClassroomFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private val failTAG = "DATABASE ENTRY FAILED"
     private val successTAG = "DATABASE ENTRY SUCCESS"
+    val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -96,10 +98,15 @@ class NewClassroomFragment : Fragment() {
                 .set(course)
                 .addOnSuccessListener { Log.d(successTAG, "Successfully added classroom to DB")
                     Toast.makeText(activity, "Classroom successfully created", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.dest_user)}
+
+                    db.collection("users")
+                            .document(userID)
+                            .update("courses", FieldValue.arrayUnion("$grade grade $courseName $year"))
+                    findNavController().navigateUp()}
                 .addOnFailureListener { e -> Log.w(failTAG, "Error adding classroom to DB", e)
                     Toast.makeText(activity, "Classroom creation error", Toast.LENGTH_LONG).show()}
+        }
     }
 
 
-}
+
