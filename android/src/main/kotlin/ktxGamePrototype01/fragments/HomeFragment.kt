@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.User
 
 class HomeFragment : Fragment() {
 
@@ -32,6 +33,12 @@ class HomeFragment : Fragment() {
         auth = Firebase.auth
 
         showUserData()
+
+        binding.btnLaunchGame.setOnClickListener {
+            val x = User.getTeacherAvatars()
+            val y = User.getName()
+            (activity as AppActivity?)!!.launchGame("OpenWorldScreen", y, "test9", x )
+        }
 
 
         return binding.root

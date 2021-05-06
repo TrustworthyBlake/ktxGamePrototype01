@@ -103,16 +103,6 @@ class ClassroomIndexFragment : Fragment() {
              */
 
         }
-        binding.btnOpenCreateQuiz.setOnClickListener {
-            findNavController().navigate(R.id.dest_create_quiz)
-        }
-
-        binding.btnLaunchGame.setOnClickListener {
-            val x = User.getTeacherAvatars()
-            val y = User.getName()
-            (activity as AppActivity?)!!.launchGame("OpenWorldScreen", y, "test9", x )
-        }
-
         return binding.root
     }
 
