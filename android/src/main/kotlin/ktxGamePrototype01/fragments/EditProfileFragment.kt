@@ -111,7 +111,6 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 position: Int,
                 id: Long
             ) {
-
                 type1 = parent.getItemAtPosition(position).toString()
                 when (type1){
                     "colour1" ->  {headImage.setImageResource(R.drawable.head1); saveDatahead(type1, User.getName()) }
