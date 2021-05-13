@@ -25,6 +25,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassr
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentModuleBinding
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.*
 import java.util.ArrayList
 
@@ -48,6 +49,14 @@ class ModuleFragment : Fragment() {
         adapter = ModuleRecyclerAdapter(moduleGameList)
         binding.recyclerViewGames.adapter = adapter
         binding.recyclerViewGames.layoutManager = LinearLayoutManager(context)
+
+
+        if(User.checkForTeacher()){
+            binding.btnImportGame.visibility = View.VISIBLE
+            binding.gameSpinner.visibility = View.VISIBLE
+            binding.btnCreateGame.visibility = View.VISIBLE
+        }
+
 
         val spinnerAdapter: ArrayAdapter<String> = object: ArrayAdapter<String>(
             this.requireContext(),

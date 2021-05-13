@@ -53,6 +53,12 @@ class ClassroomIndexFragment : Fragment() {
         User.addToUserScore()
 
 
+        // Enable "Teacher only" elements
+        if(User.checkForTeacher()){
+            binding.btnCreateClassroom.visibility = View.VISIBLE
+        }
+
+
         binding.btnJoinClassroom.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)

@@ -6,6 +6,7 @@ import ktxGamePrototype01.Prot01
 import java.util.ArrayList
 
 /** Launches the desktop (LWJGL3) application.  */
+
 private var textList: ArrayList<String> = ArrayList()
 
     fun main() {

@@ -81,7 +81,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             "colour2" -> setRegion(playerTextureBody2)
                             "colour3" -> setRegion(playerTextureBody3)
                             "colour4" -> setRegion(playerTextureBody4)
-                            else -> setRegion(playerTextureBody)
+                            else -> setRegion(playerTextureBody1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
                         setOriginCenter()
@@ -115,7 +115,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             "colour2" -> setRegion(playerTextureHead2)
                             "colour3" -> setRegion(playerTextureHead3)
                             "colour4" -> setRegion(playerTextureHead4)
-                            else -> setRegion(playerTextureHead)
+                            else -> setRegion(playerTextureHead1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
                         setOriginCenter()
@@ -137,6 +137,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     )*/
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
+
         teacherPosArray.add(Vector2(43f, 18f))
         teacherPosArray.add(Vector2(51f, 18f))
         teacherPosArray.add(Vector2(43f, 22f))
