@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
@@ -21,11 +22,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
+import ktxGamePrototype01.sharedprefs
 import java.io.File
 import java.io.FileOutputStream
 
@@ -33,9 +34,10 @@ class UserProfileFragment : Fragment() {
     private lateinit var binding: FragmentUserProfileBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
+    private lateinit var savedDarkData: sharedprefs
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View? {
-
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -47,6 +49,42 @@ class UserProfileFragment : Fragment() {
         val buttonUserInfo = binding.root.findViewById<Button>(R.id.user_info_button)
         val buttonLogout = binding.root.findViewById<Button>(R.id.log_out_button)
         val buttonEdit = binding.root.findViewById<Button>(R.id.btn_edit_prof)
+        val levelText = binding.root.findViewById<TextView>(R.id.textView15)
+        val scoreview = binding.root.findViewById<TextView>(R.id.user_score)
+        val recyList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_user_profile)
+
+
+        /*
+        var testwhen : Boolean = false
+
+        when(testwhen){
+            savedDarkData.loadRedModeState() -> levelText.setBackgroundResource(R.drawable.circlered)
+            savedDarkData.loadGreenModeState() -> levelText.setBackgroundResource(R.drawable.circleblue)
+            else -> levelText.setBackgroundResource(R.drawable.circleblue)
+        }
+         */
+
+        if(savedDarkData.loadRedModeState() == true){
+            levelText.setBackgroundResource(R.drawable.circlered)
+            scoreview.setBackgroundResource(R.drawable.textview_borderred)
+            recyList.setBackgroundColor(resources.getColor(R.color.redfade))
+        }else if(savedDarkData.loadGreenModeState() == true){
+            levelText.setBackgroundResource(R.drawable.circlegreen)
+            scoreview.setBackgroundResource(R.drawable.textview_bordergreen)
+            recyList.setBackgroundColor(resources.getColor(R.color.greenfade))
+        }else if(savedDarkData.loadOrangeModeState() == true){
+            levelText.setBackgroundResource(R.drawable.circleorange)
+            scoreview.setBackgroundResource(R.drawable.textview_borderorange)
+            recyList.setBackgroundColor(resources.getColor(R.color.orangefade))
+        }else if(savedDarkData.loadPurpleModeState() == true){
+            levelText.setBackgroundResource(R.drawable.circlepurple)
+            scoreview.setBackgroundResource(R.drawable.textview_borderpurple)
+            recyList.setBackgroundColor(resources.getColor(R.color.purplefade))
+        }else{
+            levelText.setBackgroundResource(R.drawable.circleblue)
+            scoreview.setBackgroundResource(R.drawable.textview_borderblue)
+            recyList.setBackgroundColor(resources.getColor(R.color.bluefade))
+        }
 
 
         buttonUserInfo.setOnClickListener(){

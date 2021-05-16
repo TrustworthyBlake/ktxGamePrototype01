@@ -17,6 +17,12 @@
 
 
 
+
+
+
+
+
+
         ]]>
 
         <Button
@@ -29,7 +35,7 @@
             app:layout_constraintHorizontal_bias="0.052"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15"
-            app:layout_constraintVertical_bias="0.057" />
+            app:layout_constraintVertical_bias="0.08" />
 
         <ImageView
             android:id="@+id/imageHead"
@@ -50,18 +56,18 @@
             android:layout_height="35dp"
             android:text="Score"
             android:textSize="20sp"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_user_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_info_button"
-            app:layout_constraintVertical_bias="0.335" />
+            app:layout_constraintVertical_bias="0.163" />
 
         <TextView
             android:id="@+id/user_score"
             android:layout_width="191dp"
             android:layout_height="50dp"
-            android:background="@drawable/textview_border"
             android:gravity="center"
             android:text="Numbers"
             android:textSize="30sp"
@@ -70,37 +76,37 @@
             app:layout_constraintHorizontal_bias="0.072"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12"
-            app:layout_constraintVertical_bias="0.231" />
+            app:layout_constraintVertical_bias="0.168" />
 
         <TextView
             android:id="@+id/textView14"
-            android:layout_width="130dp"
-            android:layout_height="35dp"
+            android:layout_width="163dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="212dp"
             android:text="Achievements"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view_user_profile"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.056"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_score"
-            app:layout_constraintVertical_bias="0.815" />
+            app:layout_constraintTop_toBottomOf="@+id/textView15"
+            app:layout_constraintVertical_bias="0.127" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="178dp"
             android:layout_height="178dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/circle"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="1"
             android:textColor="#FFFFFF"
             android:textSize="85sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageHead"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.229"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.028" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/log_out_button"
@@ -110,10 +116,10 @@
             android:text="Log out"
             app:layout_constraintBottom_toTopOf="@+id/user_score"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.901"
+            app:layout_constraintHorizontal_bias="0.894"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageBody"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.036" />
 
         <Button
             android:id="@+id/btn_edit_prof"
@@ -131,12 +137,12 @@
             android:id="@+id/recycler_view_user_profile"
             android:layout_width="376dp"
             android:layout_height="225dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.457"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15"
-            app:layout_constraintVertical_bias="0.948"
-            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/textView14"
             tools:listitem="@layout/list_item" />
 
         <ImageView
