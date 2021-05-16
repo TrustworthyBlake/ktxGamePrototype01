@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.codinginflow.recyclerviewexample.ListAdapter
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserProfileTeacherBinding
@@ -20,19 +21,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.fragment_user_profile_teacher.*
+import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
+import ktxGamePrototype01.sharedprefs
 
 class UserTeacherProfileFragment : Fragment(){
     private lateinit var binding: FragmentUserProfileTeacherBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
+    private lateinit var savedDarkData: sharedprefs
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile_teacher, container, false)
         // Initialize Firebase Auth
         auth = Firebase.auth
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
 
         // get current user id
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -55,6 +60,20 @@ class UserTeacherProfileFragment : Fragment(){
 
         buttonEdit.setOnClickListener(){
             findNavController().navigate(R.id.dest_edit_profile)
+        }
+
+        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_user_profileT)
+
+        if(savedDarkData.loadRedModeState() == true){
+            leList.setBackgroundColor(resources.getColor(R.color.redfade))
+        }else if(savedDarkData.loadGreenModeState() == true){
+            leList.setBackgroundColor(resources.getColor(R.color.greenfade))
+        }else if(savedDarkData.loadOrangeModeState() == true){
+            leList.setBackgroundColor(resources.getColor(R.color.orangefade))
+        }else if(savedDarkData.loadPurpleModeState() == true){
+            leList.setBackgroundColor(resources.getColor(R.color.purplefade))
+        }else{
+            leList.setBackgroundColor(resources.getColor(R.color.bluefade))
         }
 
         return binding.root

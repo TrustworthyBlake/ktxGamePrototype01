@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
@@ -25,17 +26,20 @@ import kotlinx.android.synthetic.main.fragment_user_teacher.*
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
+import ktxGamePrototype01.sharedprefs
 
 class UserTeacherFragment : Fragment() {
 
     private lateinit var binding: FragmentUserTeacherBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
+    private lateinit var savedDarkData: sharedprefs
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_teacher, container, false)
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -76,6 +80,35 @@ class UserTeacherFragment : Fragment() {
             "colour3" -> {bodyImage.setImageResource(R.drawable.body3);}
             "colour4" -> {bodyImage.setImageResource(R.drawable.body4);}
         }
+
+
+        val textName = binding.root.findViewById<TextView>(R.id.user_name)
+        val textEmail = binding.root.findViewById<TextView>(R.id.user_email)
+        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_userT)
+
+        if(savedDarkData.loadRedModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderred)
+            textEmail.setBackgroundResource(R.drawable.textview_borderred)
+            leList.setBackgroundColor(resources.getColor(R.color.redfade))
+        }else if(savedDarkData.loadGreenModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_bordergreen)
+            textEmail.setBackgroundResource(R.drawable.textview_bordergreen)
+            leList.setBackgroundColor(resources.getColor(R.color.greenfade))
+        }else if(savedDarkData.loadOrangeModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderorange)
+            textEmail.setBackgroundResource(R.drawable.textview_borderorange)
+            leList.setBackgroundColor(resources.getColor(R.color.orangefade))
+        }else if(savedDarkData.loadPurpleModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderpurple)
+            textEmail.setBackgroundResource(R.drawable.textview_borderpurple)
+            leList.setBackgroundColor(resources.getColor(R.color.purplefade))
+        }else{
+            textName.setBackgroundResource(R.drawable.textview_borderblue)
+            textEmail.setBackgroundResource(R.drawable.textview_borderblue)
+            leList.setBackgroundColor(resources.getColor(R.color.bluefade))
+        }
+
+
         return binding.root
     }
 
