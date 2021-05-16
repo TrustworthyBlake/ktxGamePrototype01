@@ -54,7 +54,9 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
         fun bindText(gameEntity: Game) {
             this.gName = gameEntity.gamename
             this.gType = gameEntity.gametype
-            view.game_name.text = this.gName
+
+            var newGameName = this!!.gName!!.split("-")
+            view.game_name.text = newGameName[0]
         }
 
         //4

@@ -35,7 +35,6 @@
             android:id="@+id/game_spinner"
             android:layout_width="141dp"
             android:layout_height="37dp"
-            android:layout_marginBottom="580dp"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
             android:visibility="gone"
@@ -44,7 +43,7 @@
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.930" />
+            app:layout_constraintVertical_bias="0.155" />
 
         <Button
             android:id="@+id/btn_create_game"
@@ -78,7 +77,7 @@
 
             android:layout_height="610dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@id/btn_import_game"
+            app:layout_constraintTop_toBottomOf="@id/game_spinner"
             tools:layout_editor_absoluteX="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
