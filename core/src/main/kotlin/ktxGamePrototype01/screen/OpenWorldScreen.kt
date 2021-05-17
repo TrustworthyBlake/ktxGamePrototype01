@@ -98,7 +98,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     isText = true
                     drawPlayScoreHUD = true
                     // Makes text clearer
-                    font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    font.region.texture.setFilter(Texture.TextureFilter.Linear,
+                            Texture.TextureFilter.Linear)
                     // Scales the text up by 4
                     font.data.setScale(4.0f, 4.0f)
                 }
@@ -138,10 +139,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
 
-        teacherPosArray.add(Vector2(43f, 18f))
-        teacherPosArray.add(Vector2(51f, 18f))
-        teacherPosArray.add(Vector2(43f, 22f))
-        teacherPosArray.add(Vector2(51f, 22f))
+        var teacherPosX = 44f
+        var teacherPosY = 18f   // Starting values slightly above default spawn pos of player
         var count = 0
         var pos = 0
         var teacherName = ""
@@ -171,6 +170,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 // Each time 3 elements have been iterated trough a new teacher entity is created
                 if (pos % 3 == 0) {
                     pos = 0
+                    // Dynamically adding new position to Array for every teacher
+                    teacherPosArray.add(Vector2(teacherPosX, teacherPosY))
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
@@ -226,6 +227,11 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                     count += 1
+                    // For placing the teachers in a grid
+                    teacherPosX += 6f
+                    when {
+                        count % 2 == 0  -> {teacherPosY += 4f; teacherPosX = 44f}
+                    }
                 }
             }
         }else{LOG.debug { "Error: Can not find teacher list" }}

@@ -54,7 +54,7 @@ class OpenWorldGameRecyclerAdapter(private val openWorldGameObject: ArrayList<Ga
         }
 
         override fun onClick(v: View?) {
-            TODO("Not yet implemented")
+            Toast.makeText(view.context, "Playable from the Open World", Toast.LENGTH_SHORT).show()
         }
 
 

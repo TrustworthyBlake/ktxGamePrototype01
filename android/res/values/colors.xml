@@ -8,6 +8,19 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="neutral">#BDBDBD</color>
+    <color name="bluelevel">#1853BA</color>
+    <color name="redlevel">#D51A1A</color>
+    <color name="greenlevel">#1F9C11</color>
+    <color name="purplelevel">#8118BA</color>
+    <color name="orangelevel">#FABF10</color>
+    <color name="redlist">#F12626</color>
+
+    <color name="bluefade">#772364E6</color>
+    <color name="redfade">#77E62323</color>
+    <color name="greenfade">#7723E626</color>
+    <color name="orangefade">#77E69823</color>
+    <color name="purplefade">#77BC23E6</color>
+
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>

@@ -56,7 +56,7 @@
             android:layout_width="350dp"
             android:layout_height="65dp"
             android:layout_marginTop="70dp"
-            android:background="@drawable/textview_border"
+            android:background="@drawable/textview_borderblue"
             android:gravity="center"
             android:text="TextView"
             android:textSize="25sp"
@@ -70,7 +70,7 @@
             android:layout_width="350dp"
             android:layout_height="65dp"
             android:layout_marginTop="72dp"
-            android:background="@drawable/textview_border"
+            android:background="@drawable/textview_borderblue"
             android:gravity="center"
             android:text="TextView"
             android:textSize="25sp"
@@ -98,14 +98,15 @@
             android:layout_width="197dp"
             android:layout_height="135dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="79dp"
             android:text="User Info"
             android:textSize="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageBody"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.02" />
 
         <Button
             android:id="@+id/btn_logout"
@@ -138,22 +139,27 @@
             android:id="@+id/imageBody"
             android:layout_width="74dp"
             android:layout_height="77dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.863"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.042"
             tools:srcCompat="@tools:sample/avatars" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_user"
-            android:layout_width="382dp"
-            android:layout_height="162dp"
+            android:layout_width="381dp"
+            android:layout_height="196dp"
             android:layout_marginTop="68dp"
             android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_email"
+            app:layout_constraintVertical_bias="0.02"
             tools:listitem="@layout/list_item" />
 
 

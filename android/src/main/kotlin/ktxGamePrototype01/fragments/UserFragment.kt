@@ -1,6 +1,8 @@
 package ktxGamePrototype01.fragments
 
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
@@ -28,11 +31,13 @@ class UserFragment : Fragment() {
     private lateinit var binding: FragmentUserBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
+    private lateinit var savedDarkData: sharedprefs
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false)
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -52,6 +57,31 @@ class UserFragment : Fragment() {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
         val buttonProfile = binding.root.findViewById<Button>(R.id.btn_profile)
+        val textName = binding.root.findViewById<TextView>(R.id.user_name)
+        val textEmail = binding.root.findViewById<TextView>(R.id.user_email)
+        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_user)
+
+        if(savedDarkData.loadRedModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderred)
+            textEmail.setBackgroundResource(R.drawable.textview_borderred)
+            leList.setBackgroundColor(resources.getColor(R.color.redfade))
+        }else if(savedDarkData.loadGreenModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_bordergreen)
+            textEmail.setBackgroundResource(R.drawable.textview_bordergreen)
+            leList.setBackgroundColor(resources.getColor(R.color.greenfade))
+        }else if(savedDarkData.loadOrangeModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderorange)
+            textEmail.setBackgroundResource(R.drawable.textview_borderorange)
+            leList.setBackgroundColor(resources.getColor(R.color.orangefade))
+        }else if(savedDarkData.loadPurpleModeState() == true){
+            textName.setBackgroundResource(R.drawable.textview_borderpurple)
+            textEmail.setBackgroundResource(R.drawable.textview_borderpurple)
+            leList.setBackgroundColor(resources.getColor(R.color.purplefade))
+        }else{
+            textName.setBackgroundResource(R.drawable.textview_borderblue)
+            textEmail.setBackgroundResource(R.drawable.textview_borderblue)
+            leList.setBackgroundColor(resources.getColor(R.color.bluefade))
+        }
 
         buttonProfile.setOnClickListener() {
             findNavController().navigate(R.id.dest_user_profile)
@@ -155,13 +185,17 @@ class UserFragment : Fragment() {
     private fun getHead(userName : String): String {
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
         val headPog : String = prefs.getString("avatarHead")
-        return headPog
+        if(TextUtils.isEmpty(headPog)){return "colour1"}
+        else
+            return headPog
     }
 
     private fun getBody(userName : String): String {
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
         val bodyPog : String = prefs.getString("avatarBody")
-        return bodyPog
+        if(TextUtils.isEmpty(bodyPog)){return "colour1"}
+        else
+            return bodyPog
     }
 
     private fun makeDaList(size: Int): List<ListItem> {
