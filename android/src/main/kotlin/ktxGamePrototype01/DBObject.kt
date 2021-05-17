@@ -36,6 +36,7 @@ object DBObject {
                 )
                 getTeachersFromCourses(task.result?.get("courses") as List<String>)
                 getQuizesFromCourses(task.result?.get("courses") as List<String>)
+                getTeachersForQuizzes(task.result?.get("courses") as List<String>)
             }
         }
     }
@@ -243,6 +244,10 @@ object DBObject {
         User.setQuizes(list)
     }
 
+    private fun setQuizTeachers(list: List<String>){
+        User.setTeacherForQuizzes(list)
+    }
+
 
 
     fun addAchievement(userID: String, achievement: String) {
@@ -269,4 +274,25 @@ object DBObject {
 
 
 
+    //      Gets a list of teacher for each quiz
+    private fun getTeachersForQuizzes(list: List<String>) {
+
+        var teacherQuizList: List<String> = emptyList()
+
+        for(course in list) {
+            db.collection("classrooms").document(course).get().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val quizes = task.result?.get("quizes") as? List<String>
+                    val teacher = task.result?.get("teacher name").toString()
+                    if(quizes != null) {
+                        for (quiz in quizes) {
+                            teacherQuizList = teacherQuizList + teacher
+                        }
+                    }
+                }
+                setQuizTeachers(teacherQuizList)
+
+            }
+        }
+    }
 }
