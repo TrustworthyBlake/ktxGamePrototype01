@@ -51,10 +51,11 @@ Project is created using:
 [Andreas Blakli  ](https://github.com/TrustworthyBlake) | [Theo Camille Gascogne](https://github.com/ApparitionCat) | [Jesper Ulsrud](https://github.com/jesperu7) | [Vegard Årnes](https://github.com/VitriolicTurtle)
 
 ## Assets:
-Button: Wenrexa Assets UI, link: https://wenrexa.itch.io/kit-nesia2
-Trees: hernandack Sideview Tree Pack 1, link: https://hernandack.itch.io/sideview-tree-pack-1
-Skill icons: quintino_pixels Skill Icon Set, link: https://quintino-pixels.itch.io/free-pixel-art-skill-icons-pack
-Rocks: Pixel Overload 48x Rock Tile-maps, link: https://pixeloverload.itch.io/48x-rock-tile-maps
+Button: Wenrexa Assets UI, link: https://wenrexa.itch.io/kit-nesia2  
+Trees: hernandack Sideview Tree Pack 1, link: https://hernandack.itch.io/sideview-tree-pack-1  
+Skill icons: quintino_pixels Skill Icon Set, link: https://quintino-pixels.itch.io/free-pixel-art-skill-icons-pack  
+Rocks: Pixel Overload 48x Rock Tile-maps, link: https://pixeloverload.itch.io/48x-rock-tile-maps  
+Quiz Completion Sound: 320655__rhodesmas__level-up-01.mp3, link: https://freesound.org/people/shinephoenixstormcrow/sounds/337049/
 
 
 ## License
