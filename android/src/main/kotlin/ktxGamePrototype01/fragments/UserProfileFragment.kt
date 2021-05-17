@@ -223,7 +223,7 @@ class UserProfileFragment : Fragment() {
             FileOutputStream(quizTextFile).use {
                 it.write((tempStr).toByteArray())
             }
-            Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
         }
     }
 
