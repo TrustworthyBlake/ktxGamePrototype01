@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavArgument
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.trustworthyblake.ktxGamePrototype01.R
@@ -42,13 +43,18 @@ class ClassroomModuleFragment : Fragment() {
         adapter = ClassroomModuleRecyclerAdapter(classroomModuleList)
         binding.recyclerViewModules.adapter = adapter
         binding.recyclerViewModules.layoutManager = LinearLayoutManager(context)
-
+        binding.lblClassroomName.text = classroomVM.selected
 
         if(User.checkForTeacher()){
             binding.btnImportModule.visibility = View.VISIBLE
             binding.btnCreateModule.visibility = View.VISIBLE
+            binding.btnOpenWorld.visibility = View.VISIBLE
         }
 
+
+        binding.btnOpenWorld.setOnClickListener {
+            findNavController().navigate(R.id.dest_open_world_edit)
+        }
 
         binding.btnCreateModule.setOnClickListener() {
             val builder = AlertDialog.Builder(context)
@@ -80,6 +86,7 @@ class ClassroomModuleFragment : Fragment() {
                         .document(classroomVM.selected)
                         .update("modules", FieldValue.arrayUnion(editText.text.toString()))
 
+                     /* // Code for placing all of modules quizzes inside of openworld quiz list.
                      var quizList: List<String> = emptyList()
                      if (task.isSuccessful) {
                          val quizes = task.result?.get("quizes") as? List<String>
@@ -89,12 +96,13 @@ class ClassroomModuleFragment : Fragment() {
                              }
                          }
                      }
-
                     for(quiz in quizList){
                         db.collection("classrooms")
                                 .document(classroomVM.selected)
                                 .update("quizes", FieldValue.arrayUnion(quiz))
                     }
+
+                      */
 
 
                      classroomModuleList.add(editText.text.toString())

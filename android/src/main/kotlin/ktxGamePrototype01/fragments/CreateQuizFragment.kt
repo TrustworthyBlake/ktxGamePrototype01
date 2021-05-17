@@ -241,19 +241,15 @@ class CreateQuizFragment : Fragment() {
         db.collection("quiz").document(qzName).set(quiz).addOnSuccessListener {
             Log.d("FAIL", "Successfully added quiz to DB")
             Toast.makeText(activity, "Quiz successfully created", Toast.LENGTH_LONG).show()
-            db.collection("classrooms")
-                    .document(classroomVM.selected)
-                    .update("quizes", FieldValue.arrayUnion(qzName)).addOnSuccessListener {
-                        Log.d("SUCCESS", "Successfully added quiz to classroom")
-                        // add quiz to module in firestore
-                        db.collection("modules")
-                                .document(module)
-                                .update("quizes", FieldValue.arrayUnion(qzName))
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("FAIL", "Error adding classroom to DB", e)
-                        Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
-                    }
+
+
+            db.collection("modules")
+                .document(module)
+                .update("quizes", FieldValue.arrayUnion(qzName))
+                .addOnFailureListener { e ->
+                    Log.w("FAIL", "Error adding classroom to DB", e)
+                    Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
+                }
         }
     }
 

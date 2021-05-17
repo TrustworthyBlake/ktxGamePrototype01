@@ -108,9 +108,6 @@ class ModuleFragment : Fragment() {
                                 .document(moduleName.toString())
                                 .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
 
-                        db.collection("classrooms")
-                                .document(classroomVM.selected)
-                                .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
 
                         moduleGameList.add(Game(editText.text.toString(), "Quiz"))
                         adapter.notifyItemInserted(moduleGameList.size - 1)

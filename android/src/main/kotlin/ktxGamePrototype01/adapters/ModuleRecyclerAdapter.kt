@@ -31,13 +31,11 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
 
     override fun getItemCount() = gameObject.size
 
-    fun getQuizFromDatabase(name: String, view: View) {
-
-    }
 
     override fun onBindViewHolder(holder: ModuleRecyclerAdapter.ModuleHolder, position: Int) {
         val gameItem = gameObject[position]
         holder.bindText(gameItem)
+
     }
 
     //1
@@ -45,10 +43,12 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
         //2
         private var gName: String? = null
         private var gType: String? = null
-
         //3
         init {
             view.setOnClickListener(this)
+
+
+
         }
 
         fun bindText(gameEntity: Game) {
@@ -66,6 +66,8 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
             var tempQuizName = (gameName + "-" + User.getName())
 
             val db = FirebaseFirestore.getInstance()
+
+
             db.collection("quiz").document(gameName).get().addOnCompleteListener() { task ->
                 if(task.isSuccessful){
                     val quizList = task.result?.get("question") as? MutableList<String>
