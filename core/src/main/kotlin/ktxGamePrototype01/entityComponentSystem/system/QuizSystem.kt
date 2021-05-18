@@ -20,6 +20,7 @@ private val LOG = logger<QuizSystem>()
 // Handles logic relevant to the QuizScreen game
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
     private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+    private val quizCompletedSound = Gdx.audio.newSound(Gdx.files.internal("sounds/quizCompletedSound.mp3"));
     var lastTextPositionModifier = 1
     var quizCompletedCheck = false
 
@@ -48,6 +49,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
             quizComp.quizIsCompleted = true
 
             while(updateScoreOnce) {
+                quizCompletedSound.play(1.0f)
                 savePlayerScore(entity)
                 updateScoreOnce = false
             }
