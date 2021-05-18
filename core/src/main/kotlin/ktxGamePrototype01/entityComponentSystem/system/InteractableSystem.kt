@@ -15,7 +15,6 @@ private val LOG = logger<InteractableSystem>()
 const val WrongAnswerPoints = 0
 const val hitboxScalerMax = 2.0f
 const val hitboxScalerMin = 0.5f
-private const val updateRate = 1f / 30f
 
 // Handles collision detection and relevant logic
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).get()) {
@@ -42,7 +41,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
     private val interactables = mutableListOf<Int>()
     override fun update(deltaTime: Float) {
-        super.update(updateRate)
+        super.update(deltaTime)
         if (interactables.isEmpty()) {
             interactables.add(1)
             LOG.debug { "Spawned" }

@@ -15,7 +15,7 @@ import ktxGamePrototype01.offsetPos
 import ktxGamePrototype01.unitScale
 
 private val LOG = logger<QuizQuestSystem>()
-private const val updateRate = 1f / 30f
+
 // Main logic for generating quest entities in the OpenWorldScreen
 class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
 
@@ -26,10 +26,6 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
             createQuestsSignPosts(entity)               //               showAvailableQuizes is true
             qQuestComp.showAvailableQuizes = false      // Set to false so this function is not
         }                                               //           called for every rendered frame
-    }
-
-    override fun update(deltaTime: Float) {
-        super.update(updateRate)
     }
 
     // Creates the quest entities with their corresponding quiz from a given teacher entity
