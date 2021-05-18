@@ -13,13 +13,16 @@ import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
 const val WrongAnswerPoints = 0
-const val hitboxScaler = 1.2f
+const val hitboxScalerMax = 2.0f
+const val hitboxScalerMin = 0.5f
+private const val updateRate = 1f / 30f
 
 // Handles collision detection and relevant logic
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).get()) {
 
     private val playerHitbox = Rectangle()
     private val interactableHitbox = Rectangle()
+    private val playerActivationHitbox = Rectangle()
 
     private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).get())
@@ -39,7 +42,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
     private val interactables = mutableListOf<Int>()
     override fun update(deltaTime: Float) {
-        super.update(deltaTime)
+        super.update(updateRate)
         if (interactables.isEmpty()) {
             interactables.add(1)
             LOG.debug { "Spawned" }
@@ -84,10 +87,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         val interact = entity[InteractableComponent.mapper]
         require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
         interactableHitbox.set(
-                transform.posVec3.x,
-                transform.posVec3.y,
-                transform.sizeVec2.x,
-                transform.sizeVec2.y
+                transform.posVec3.x + 0.25f,
+                transform.posVec3.y - 0.0f,
+                transform.sizeVec2.x  * hitboxScalerMin,
+                transform.sizeVec2.y  * hitboxScalerMin
         )
         playerEntities.forEach { player ->
             val p = player[PlayerComponent.mapper]
@@ -96,11 +99,17 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                 playerHitbox.set(
                         playerTransform.posVec3.x,
                         playerTransform.posVec3.y,
-                        playerTransform.sizeVec2.x* hitboxScaler,
-                        playerTransform.sizeVec2.y* hitboxScaler
+                        playerTransform.sizeVec2.x,
+                        playerTransform.sizeVec2.y
                 )
-                //  IF PLAYER OVERLAPS WITH HITBOX
-                if (playerHitbox.overlaps(interactableHitbox)) {
+                playerActivationHitbox.set(
+                        playerTransform.posVec3.x - 0.5f,
+                        playerTransform.posVec3.y - 0.5f,
+                        playerTransform.sizeVec2.x* hitboxScalerMax,
+                        playerTransform.sizeVec2.y* hitboxScalerMax)
+
+                // If playerActivationHitbox overlaps with interactable hitbox
+                if(playerActivationHitbox.overlaps(interactableHitbox)){
                     if(p.playerControl.isPressed) {
 
                         //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
@@ -110,13 +119,12 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             player[QuizComponent.mapper]?.let { quiz ->
                                 quiz.quizResultList.add(interact.maxPointsQuestion.toString())
                             }
-
                             // RESET START
                             playerTransform.posVec3.x = 10.5f - offsetPos
                             playerTransform.posVec3.y = 14f
                             //  Run update on entities
                             hasAnsweredQuiz(interact)
-                        } else if (!interact.isQuest && !interact.isTeacher) {
+                        } else if (interact.isQuestOrAnswer && !interact.isQuest && !interact.isTeacher) {
                             p.playerScore += WrongAnswerPoints
                             player[QuizComponent.mapper]?.let { quiz ->
                                 quiz.quizResultList.add("0")
@@ -143,6 +151,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             }
                         }
                     }
+                }
+                //  IF PLAYER OVERLAPS WITH HITBOX
+                if (playerHitbox.overlaps(interactableHitbox)) {
+
                     //  SET STANDARD COLLISION
                     if (playerTransform.posVec3.x < interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.069f
                     if (playerTransform.posVec3.x > interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.069f

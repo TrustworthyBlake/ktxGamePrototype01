@@ -23,7 +23,7 @@ class BindEntitiesSystem : IteratingSystem(
             transformComp.posVec3.set(
                 bindTransform.posVec3.x + bindComp.posOffset.x,
                 bindTransform.posVec3.y + bindComp.posOffset.y,
-                transformComp.posVec3.z
+                bindTransform.posVec3.z
             )
         }
     }
