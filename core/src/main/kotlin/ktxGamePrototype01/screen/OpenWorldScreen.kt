@@ -70,7 +70,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(47.5f-offsetPos, 15f, -1f)
+                    posVec3.set(29.5f-offsetPos, 15f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -139,7 +139,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
 
-        var teacherPosX = 44f
+        var teacherPosX = 26f
         var teacherPosY = 18f   // Starting values slightly above default spawn pos of player
         var count = 0
         var pos = 0
@@ -231,7 +231,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     // For placing the teachers in a grid
                     teacherPosX += 6f
                     when {
-                        count % 2 == 0  -> {teacherPosY += 4f; teacherPosX = 44f}
+                        count % 2 == 0  -> {teacherPosY += 4f; teacherPosX = 26f}
                     }
                 }
             }
@@ -241,12 +241,15 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
         val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
-        val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
+        val grassTexture = Texture(Gdx.files.internal("graphics/Grass1.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
+        val treeTexture3 = Texture(Gdx.files.internal("graphics/tree3.png"))
         val treeTexture4 = Texture(Gdx.files.internal("graphics/tree4.png"))
         val rockTexture1 = Texture(Gdx.files.internal("graphics/rock1.png"))
         val rockTexture2 = Texture(Gdx.files.internal("graphics/rock2.png"))
         val rockTexture4 = Texture(Gdx.files.internal("graphics/rock4.png"))
+        val rockTexture5 = Texture(Gdx.files.internal("graphics/rock5.png"))
+        val rockTexture6 = Texture(Gdx.files.internal("graphics/rock6.png"))
         try{
             var tileArray = arrayOf<CharArray>()
             var charNr = 0
@@ -276,9 +279,12 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                                     sprite.run {
                                         when (char) {   // Lowest layer
                                             '1' -> {setRegion(treeTexture1); sizeMultiplier = 3f}
-                                            '2' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
-                                            '3' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
-                                            '4' -> {setRegion(rockTexture2); sizeMultiplier = 1.25f}
+                                            '2' -> {setRegion(treeTexture3); sizeMultiplier = 3f}
+                                            '3' -> {setRegion(treeTexture4); sizeMultiplier = 3f}
+                                            '4' -> {setRegion(rockTexture1); sizeMultiplier = 2f}
+                                            '5' -> {setRegion(rockTexture2); sizeMultiplier = 1.25f}
+                                            '7' -> {setRegion(rockTexture5); sizeMultiplier = 1.25f}
+                                            '8' -> {setRegion(rockTexture6); sizeMultiplier = 1.25f}
                                             '9' -> {setRegion(rockTexture4); sizeMultiplier = 1f}
                                             else -> {setRegion(blankTexture); sizeMultiplier = 1f}
                                         }

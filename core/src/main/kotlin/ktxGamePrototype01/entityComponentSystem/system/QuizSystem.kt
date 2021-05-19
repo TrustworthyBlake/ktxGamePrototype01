@@ -19,7 +19,7 @@ private val LOG = logger<QuizSystem>()
 
 // Handles logic relevant to the QuizScreen game
 class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
-    private val holeTexture = Texture(Gdx.files.internal("graphics/Hole.png"))
+    private val holeTexture = Texture(Gdx.files.internal("graphics/HoleS.png"))
     private val quizCompletedSound = Gdx.audio.newSound(Gdx.files.internal("sounds/quizCompletedSound.mp3"));
     var lastTextPositionModifier = 1
     var quizCompletedCheck = false
@@ -138,7 +138,7 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
                                     posTextVec2.set(10f, 21f)
                                 }
                                 !isQuestion -> {
-                                    posTextVec2.set(qPosArray[count].x, (qPosArray[count].y+spacer))}
+                                    posTextVec2.set(qPosArray[count].x, (qPosArray[count].y+spacer+0.3f))}
                                 else -> {posTextVec2.set(qPosArray[count].x, (qPosArray[count].y+1)) }
                             }
                             font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)

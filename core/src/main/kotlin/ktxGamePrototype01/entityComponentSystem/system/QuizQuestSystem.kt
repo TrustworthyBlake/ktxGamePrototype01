@@ -37,9 +37,9 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
 
         // Array that holds the vector position for 4 entities
         var qPosArray = Array<Vector2>()
-        var questPosX = 44f
+        var questPosX = 26f
         var questPosY = 10f
-        var tempPosX = 43f
+        var tempPosX = 26f
         var count = 0
         var qName : String
         var qNameSplit : String

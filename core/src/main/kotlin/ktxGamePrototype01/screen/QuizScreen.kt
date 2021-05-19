@@ -157,7 +157,7 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
         val quizMap = Gdx.files.internal("maps/map0.txt")
-        val grassTexture = Texture(Gdx.files.internal("graphics/Grass.png"))
+        val grassTexture = Texture(Gdx.files.internal("graphics/Grass1.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
         val treeTexture4 = Texture(Gdx.files.internal("graphics/tree4.png"))
         val rockTexture1 = Texture(Gdx.files.internal("graphics/rock1.png"))
