@@ -27,6 +27,7 @@ import ktxGamePrototype01.Prot01
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
+import ktxGamePrototype01.adapters.Game
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -53,6 +54,12 @@ class ClassroomIndexFragment : Fragment() {
         User.addToUserScore()
 
 
+        // Enable "Teacher only" elements
+        if(User.checkForTeacher()){
+            binding.btnCreateClassroom.visibility = View.VISIBLE
+        }
+
+
         binding.btnJoinClassroom.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             val dialogLayout = inflater.inflate(R.layout.prompt_join_classroom, null)
@@ -61,23 +68,23 @@ class ClassroomIndexFragment : Fragment() {
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
 
-                db.collection("classrooms").document(editText.text.toString()).get().addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        // If classroom is found, add it to student list
+                val doc = db.collection("classrooms").whereEqualTo("name", editText.text.toString()).get()
+                doc.addOnSuccessListener { documents ->
+                    for (document in documents) {
                         db.collection("users")
-                                .document(userID)
-                                .update("courses", FieldValue.arrayUnion(editText.text.toString()))
+                            .document(userID)
+                            .update("courses", FieldValue.arrayUnion(editText.text.toString()))
 
                         db.collection("classrooms")
-                                .document(editText.text.toString())
-                                .update("students", FieldValue.arrayUnion(userID))
-                    } else {
-                        Toast.makeText(activity, "Classroom not found", Toast.LENGTH_LONG).show()
-                    }
-                }
+                            .document(editText.text.toString())
+                            .update("students", FieldValue.arrayUnion(userID))
 
-                classList.add(editText.text.toString())
-                adapter.notifyItemInserted(classList.size - 1)
+                        classList.add(editText.text.toString())
+                        adapter.notifyItemInserted(classList.size - 1) }
+
+                }
+                Toast.makeText(activity, "Classroom joined if it exists", Toast.LENGTH_LONG).show()
+
             }
             builder.show()
         }

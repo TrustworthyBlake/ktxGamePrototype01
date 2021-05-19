@@ -17,6 +17,7 @@ object User {
     private var teacherList: List<String> = emptyList()
     private var teacherAvatarList = mutableListOf<String>()
     private var quizList: List<String> = emptyList()
+    private var quizTeacherList: List<String> = emptyList()
     private var achievements: List<String> = emptyList()
 
         fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, head: String, body: String, courses: List<String>, achievList: List<String>) {
@@ -91,6 +92,14 @@ object User {
         fun getQuizes(): List<String> {
             return quizList
         }
+
+        fun setTeacherForQuizzes(list: List<String>){
+            quizTeacherList = list
+        }
+
+         fun getTeacherForQuizzes(): List<String> {
+            return quizTeacherList
+         }
 
         fun setTeacherAvatars(name: String, head: String, body: String) {
             if(!teacherAvatarList.contains(name)){

@@ -25,6 +25,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassr
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentModuleBinding
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.*
 import java.util.ArrayList
 
@@ -48,6 +49,14 @@ class ModuleFragment : Fragment() {
         adapter = ModuleRecyclerAdapter(moduleGameList)
         binding.recyclerViewGames.adapter = adapter
         binding.recyclerViewGames.layoutManager = LinearLayoutManager(context)
+
+
+        if(User.checkForTeacher()){
+            binding.btnImportGame.visibility = View.VISIBLE
+            binding.gameSpinner.visibility = View.VISIBLE
+            binding.btnCreateGame.visibility = View.VISIBLE
+        }
+
 
         val spinnerAdapter: ArrayAdapter<String> = object: ArrayAdapter<String>(
             this.requireContext(),
@@ -91,24 +100,19 @@ class ModuleFragment : Fragment() {
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
-                db.collection("quiz").document(editText.text.toString()).get().addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        // if query is successful, reads the data and stores in variables
 
+                val doc = db.collection("quiz").whereEqualTo("name", editText.text.toString()).get()
+                doc.addOnSuccessListener { documents ->
+                    for (document in documents) {
                         db.collection("modules")
-                                .document(moduleName.toString())
-                                .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
-
-                        db.collection("classrooms")
-                                .document(classroomVM.selected)
-                                .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
+                            .document(moduleName.toString())
+                            .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
 
                         moduleGameList.add(Game(editText.text.toString(), "Quiz"))
-                        adapter.notifyItemInserted(moduleGameList.size - 1)
-                    }else{
-                        Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()
-                    }
+                        adapter.notifyItemInserted(moduleGameList.size - 1) }
+
                 }
+                Toast.makeText(activity, "Quiz added if it exists", Toast.LENGTH_LONG).show()
 
             }
             builder.show()

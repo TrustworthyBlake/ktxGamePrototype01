@@ -194,5 +194,11 @@
         android:label="Module"
         tools:layout="@layout/fragment_module"/>
 
+    <fragment
+        android:id="@+id/dest_open_world_edit"
+        android:name="ktxGamePrototype01.fragments.WorldEditFragment"
+        android:label="Module"
+        tools:layout="@layout/fragment_world_edit"/>
+
 
 </navigation>

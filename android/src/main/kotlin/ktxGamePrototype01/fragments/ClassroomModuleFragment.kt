@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavArgument
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.trustworthyblake.ktxGamePrototype01.R
@@ -18,6 +19,7 @@ import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentClassr
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import ktxGamePrototype01.DBObject
+import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomIndexRecyclerAdapter
 import ktxGamePrototype01.adapters.ClassroomModuleRecyclerAdapter
@@ -41,6 +43,18 @@ class ClassroomModuleFragment : Fragment() {
         adapter = ClassroomModuleRecyclerAdapter(classroomModuleList)
         binding.recyclerViewModules.adapter = adapter
         binding.recyclerViewModules.layoutManager = LinearLayoutManager(context)
+        binding.lblClassroomName.text = classroomVM.selected
+
+        if(User.checkForTeacher()){
+            binding.btnImportModule.visibility = View.VISIBLE
+            binding.btnCreateModule.visibility = View.VISIBLE
+            binding.btnOpenWorld.visibility = View.VISIBLE
+        }
+
+
+        binding.btnOpenWorld.setOnClickListener {
+            findNavController().navigate(R.id.dest_open_world_edit)
+        }
 
         binding.btnCreateModule.setOnClickListener() {
             val builder = AlertDialog.Builder(context)
@@ -64,38 +78,18 @@ class ClassroomModuleFragment : Fragment() {
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
-
-
-                db.collection("modules").document(editText.text.toString()).get().addOnCompleteListener() { task ->
-                 if (task.isSuccessful) {
-                    db.collection("classrooms")
-                        .document(classroomVM.selected)
-                        .update("modules", FieldValue.arrayUnion(editText.text.toString()))
-
-                     var quizList: List<String> = emptyList()
-                     if (task.isSuccessful) {
-                         val quizes = task.result?.get("quizes") as? List<String>
-                         if(quizes != null) {
-                             for (quiz in quizes) {
-                                 quizList = quizList + quiz
-                             }
-                         }
-                     }
-
-                    for(quiz in quizList){
+                val doc = db.collection("modules").whereEqualTo("name", editText.text.toString()).get()
+                doc.addOnSuccessListener { documents ->
+                    for (document in documents) {
                         db.collection("classrooms")
-                                .document(classroomVM.selected)
-                                .update("quizes", FieldValue.arrayUnion(quiz))
-                    }
+                            .document(classroomVM.selected)
+                            .update("modules", FieldValue.arrayUnion(editText.text.toString()))
 
+                        classroomModuleList.add(editText.text.toString())
+                        adapter.notifyItemInserted(classroomModuleList.size - 1) }
 
-                     classroomModuleList.add(editText.text.toString())
-                     adapter.notifyItemInserted(classroomModuleList.size - 1)
-                    }else{
-                        Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()
-                    }
                 }
-
+                Toast.makeText(activity, "Module added if it exists", Toast.LENGTH_LONG).show()
 
 
 

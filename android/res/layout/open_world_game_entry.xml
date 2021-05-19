@@ -17,6 +17,8 @@
 
 
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,19 +33,21 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/outline_class_black_24" />
+                    android:src="@drawable/outline_quiz_black_24" />
 
             </FrameLayout>
+
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/module_name"
+                    android:id="@+id/game_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -51,26 +55,12 @@
                     android:textSize="16sp"
                     android:text="x"/>
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/module_delete_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="5dp">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/outline_delete_black_24" />
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
-
-
-
         </LinearLayout>
+
+
+
+
+
+
     </androidx.cardview.widget.CardView>
 </layout>

@@ -23,6 +23,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.game_entry.view.*
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
@@ -124,9 +125,12 @@ class UserProfileFragment : Fragment() {
         // reading in quizes from db
         // TODO Need to refresh fragment for this to work
         var list = User.getQuizes()
+        var teacherList = User.getTeacherForQuizzes()
 
+        var counter = 0
         for (item in list) {
-            getQuizFromDatabase(item)
+            getQuizFromDatabase(item, teacherList[counter])
+            counter+=1
         }
 
         return binding.root
@@ -186,20 +190,20 @@ class UserProfileFragment : Fragment() {
     }
 
 
-    private fun getQuizFromDatabase(name: String) {
+    private fun getQuizFromDatabase(name: String, tName: String) {
         val db = FirebaseFirestore.getInstance()
 
         db.collection("quiz").document(name).get().addOnCompleteListener() { task ->
             if(task.isSuccessful){
                 val quizList = task.result?.get("question") as? MutableList<String>
                 if(quizList !=null){
-                writeQuizToFile(name, quizList)
+                writeQuizToFile(name, quizList, tName)
                 }
             }
         }
     }
 
-    private fun writeQuizToFile(quizName: String, quizData: MutableList<String>) {
+    private fun writeQuizToFile(quizName: String, quizData: MutableList<String>, tName: String) {
         val pathInternal = activity?.filesDir
         if (pathInternal != null) {
             val pathTextFile = File(pathInternal, "assets/quizFiles")
@@ -207,7 +211,11 @@ class UserProfileFragment : Fragment() {
                 pathTextFile.mkdirs()
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
-            val quizTextFile = File(pathTextFile, quizName + ".txt")
+
+            var splitQuizName = quizName!!.split("-")
+            var newQuizName = splitQuizName[0] + "-" + tName
+
+            val quizTextFile = File(pathTextFile, newQuizName + ".txt")
             var tempStr = ""
             quizData.forEach { line ->
                 tempStr += line + '\n'
@@ -215,7 +223,7 @@ class UserProfileFragment : Fragment() {
             FileOutputStream(quizTextFile).use {
                 it.write((tempStr).toByteArray())
             }
-            Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, "Quiz written to file", Toast.LENGTH_SHORT).show()
         }
     }
 

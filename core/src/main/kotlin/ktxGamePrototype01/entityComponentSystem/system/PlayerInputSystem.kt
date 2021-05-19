@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.ANY_KEY
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
@@ -96,8 +97,8 @@ class PlayerInputSystem(
             //LOG.debug { "diffDistX = $diffDistX" }
 
             // Sets the vector, used in MovementSystem
-            orientation.tempDir.x = finalPositionModifier.x
-            orientation.tempDir.y = finalPositionModifier.y
+            orientation.tempDir.x = MathUtils.clamp(finalPositionModifier.x, -500f, 500f)
+            orientation.tempDir.y = MathUtils.clamp(finalPositionModifier.y, -500f, 500f)
         }
         else{
             orientation.direction = OrientationDirection.tempOri

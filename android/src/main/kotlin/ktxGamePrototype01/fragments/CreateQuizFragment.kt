@@ -60,9 +60,11 @@ class CreateQuizFragment : Fragment() {
             if(isChecked){
                 binding.checkBoxIsCorrect.visibility = View.VISIBLE
                 binding.checkBoxIsWrong.visibility = View.VISIBLE
+                binding.giveQuestionMaxScore.isEnabled = false
             }else{
                 binding.checkBoxIsCorrect.visibility = View.GONE
                 binding.checkBoxIsWrong.visibility = View.GONE
+                binding.giveQuestionMaxScore.isEnabled = true
             }
         }
         binding.checkBoxIsCorrect.setOnCheckedChangeListener { _, isChecked ->
@@ -116,16 +118,19 @@ class CreateQuizFragment : Fragment() {
                         binding.giveQuestionMaxScore.setText("")
                         binding.createQuestionTextIn.setText("")
 
+                        //binding.giveQuestionMaxScore.isEnabled = false
+
                         Toast.makeText(activity, "Added question", Toast.LENGTH_SHORT).show()
                     }
                     !isQuestion && (hasCreatedQuestion || hasAddedAnswer) && questAnsw.count() < 170 && amountOfAnswers < 4-> {
                         tempQuizList.add(nrToQuestion.toString() + questAnsw + "-" + isQuestion + "-" + isCorrect)
                         hasAddedAnswer = true
                         hasCreatedQuestion = false
-                        binding.createQuizButton.visibility = View.VISIBLE
-                        binding.createQuizTextIn.visibility = View.VISIBLE
+                        //binding.createQuizButton.visibility = View.VISIBLE
+                        //binding.createQuizTextIn.visibility = View.VISIBLE
+                        binding.createQuizButton.isEnabled = true
+                        binding.createQuizTextIn.isEnabled = true
                         binding.createQuestionTextIn.setText("")
-
 
                         Toast.makeText(activity, "Added answer", Toast.LENGTH_SHORT).show()
                         amountOfAnswers += 1
@@ -153,15 +158,17 @@ class CreateQuizFragment : Fragment() {
                 writeQuizToFile(quizName, tempQuizList)
                 hasAddedAnswer = false
                 hasCreatedQuestion = false
-                binding.createQuizButton.visibility = View.INVISIBLE
-                binding.createQuizTextIn.visibility = View.INVISIBLE
-
+                //binding.createQuizButton.visibility = View.INVISIBLE
+                //binding.createQuizTextIn.visibility = View.INVISIBLE
+                binding.createQuizButton.isEnabled = false
+                binding.createQuizTextIn.isEnabled = false
 
                 qzName = "$quizName-" + User.getName()
 
                 addQuizToModuleDatabase(module)
                 addQuizToDatabase(module)
                 tempQuizList.clear()
+                binding.createQuizTextIn.setText("")
             }
             tempQuizList.isNullOrEmpty() -> {
                 Toast.makeText(activity, "Error: You must add questions and answers to your quiz!", Toast.LENGTH_SHORT).show()
@@ -241,19 +248,15 @@ class CreateQuizFragment : Fragment() {
         db.collection("quiz").document(qzName).set(quiz).addOnSuccessListener {
             Log.d("FAIL", "Successfully added quiz to DB")
             Toast.makeText(activity, "Quiz successfully created", Toast.LENGTH_LONG).show()
-            db.collection("classrooms")
-                    .document(classroomVM.selected)
-                    .update("quizes", FieldValue.arrayUnion(qzName)).addOnSuccessListener {
-                        Log.d("SUCCESS", "Successfully added quiz to classroom")
-                        // add quiz to module in firestore
-                        db.collection("modules")
-                                .document(module)
-                                .update("quizes", FieldValue.arrayUnion(qzName))
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("FAIL", "Error adding classroom to DB", e)
-                        Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
-                    }
+
+
+            db.collection("modules")
+                .document(module)
+                .update("quizes", FieldValue.arrayUnion(qzName))
+                .addOnFailureListener { e ->
+                    Log.w("FAIL", "Error adding classroom to DB", e)
+                    Toast.makeText(activity, "Quiz creation error", Toast.LENGTH_LONG).show()
+                }
         }
     }
 

@@ -39,8 +39,10 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         var qPosArray = Array<Vector2>()
         var questPosX = 44f
         var questPosY = 10f
+        var tempPosX = 43f
         var count = 0
         var qName : String
+        var qNameSplit : String
         val maxLength = 24
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
 
@@ -49,7 +51,8 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
             list.forEach {
                 qPosArray.add(Vector2(questPosX, questPosY))
                 qName = it.replace(".txt", "")
-                var (quizNameChopped, spacer) = helpFun.chopString(qName, maxLength)
+                qNameSplit = it.split("-")[0]
+                var (quizNameChopped, spacer) = helpFun.chopString(qNameSplit, maxLength)
                 val questSingPost = engine.entity {
                     with<TransformComponent> {
                         posVec3.set(qPosArray[count].x - offsetPos, qPosArray[count].y, -1f)
@@ -75,10 +78,8 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
                 }
                 count += 1
                 // For placing the quest's in a grid
-                questPosX += 6f
-                when{
-                    count % 2 == 0 -> {questPosY += 4f; questPosX = 44f}
-                }
+                questPosY += 4f
+                if(count % 2 == 0) {questPosX += 6f; questPosY = 10f;}
             }
         }
     }

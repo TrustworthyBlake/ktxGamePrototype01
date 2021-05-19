@@ -81,7 +81,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             "colour2" -> setRegion(playerTextureBody2)
                             "colour3" -> setRegion(playerTextureBody3)
                             "colour4" -> setRegion(playerTextureBody4)
-                            else -> setRegion(playerTextureBody)
+                            else -> setRegion(playerTextureBody1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
                         setOriginCenter()
@@ -116,7 +116,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             "colour2" -> setRegion(playerTextureHead2)
                             "colour3" -> setRegion(playerTextureHead3)
                             "colour4" -> setRegion(playerTextureHead4)
-                            else -> setRegion(playerTextureHead)
+                            else -> setRegion(playerTextureHead1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
                         setOriginCenter()
@@ -138,6 +138,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     )*/
     private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
         var teacherPosArray = Array<Vector2>()
+
         var teacherPosX = 44f
         var teacherPosY = 18f   // Starting values slightly above default spawn pos of player
         var count = 0
@@ -171,6 +172,29 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     pos = 0
                     // Dynamically adding new position to Array for every teacher
                     teacherPosArray.add(Vector2(teacherPosX, teacherPosY))
+
+                    val teacherEntityBody = engine.entity {
+                        with<TransformComponent> {
+                            // Where the entity is positioned in the game world, uses the pos from array
+                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y, -1f)
+                        }
+                        with<SpriteComponent> {
+                            sprite.run {
+                                // Sets the entity's texture based on the string
+                                when (body) {
+                                    "body1" -> setRegion(playerTextureBody1)
+                                    "body2" -> setRegion(playerTextureBody2)
+                                    "body3" -> setRegion(playerTextureBody3)
+                                    "body4" -> setRegion(playerTextureBody4)
+                                    else -> setRegion(playerTextureBody)
+                                }
+                                setSize(texture.width * unitScale, texture.height * unitScale)
+                                setOriginCenter()
+                            }
+                        }
+                        with<InteractableComponent> { isTeacher = true }
+                        with<QuizQuestComponent> { teacherStr = teacherName }
+                    }
                     val teacherEntityHead = engine.entity {
                         with<TransformComponent> {
                             // Where the entity is positioned in the game world, uses the pos from array
@@ -200,29 +224,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             // Position of text in the game world
                             posTextVec2.set(teacherPosArray[count].x, teacherPosArray[count].y + spacer + 1.7f)
                         }
-                        with<InteractableComponent> { isTeacher = true }
-                        with<QuizQuestComponent> { teacherStr = teacherName }
-                    }
-                    val teacherEntityBody = engine.entity {
-                        with<TransformComponent> {
-                            // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y, -1f)
-                        }
-                        with<SpriteComponent> {
-                            sprite.run {
-                                // Sets the entity's texture based on the string
-                                when (body) {
-                                    "body1" -> setRegion(playerTextureBody1)
-                                    "body2" -> setRegion(playerTextureBody2)
-                                    "body3" -> setRegion(playerTextureBody3)
-                                    "body4" -> setRegion(playerTextureBody4)
-                                    else -> setRegion(playerTextureBody)
-                                }
-                                setSize(texture.width * unitScale, texture.height * unitScale)
-                                setOriginCenter()
-                            }
-                        }
-                        with<InteractableComponent> { isTeacher = true }
+                        with<InteractableComponent>()
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                     count += 1

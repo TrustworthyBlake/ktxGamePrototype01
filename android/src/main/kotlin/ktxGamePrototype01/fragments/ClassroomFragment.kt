@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.DBObject
+import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.Chat
 import ktxGamePrototype01.adapters.ClassroomChatRecyclerAdapter
 import ktxGamePrototype01.adapters.ModuleRecyclerAdapter
@@ -75,6 +76,14 @@ class ClassroomFragment : Fragment() {
         }
         binding.classroomText.text = classroomVM.selected
         Toast.makeText(context,classroomVM.selected,Toast.LENGTH_SHORT)
+
+
+        if(User.checkForTeacher()){
+            binding.classroomChatTeacherInput.visibility = View.VISIBLE
+        }
+
+
+
 
         binding.classroomChatBtn.setOnClickListener {
             val tempMessage = binding.classroomChatInput.text.toString()
