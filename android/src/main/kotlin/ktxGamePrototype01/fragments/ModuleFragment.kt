@@ -46,7 +46,7 @@ class ModuleFragment : Fragment() {
         binding.lblModuleName.text = moduleName
         populateGames(moduleName.toString())
 
-        adapter = ModuleRecyclerAdapter(moduleGameList)
+        adapter = ModuleRecyclerAdapter(moduleGameList, moduleName.toString())
         binding.recyclerViewGames.adapter = adapter
         binding.recyclerViewGames.layoutManager = LinearLayoutManager(context)
 

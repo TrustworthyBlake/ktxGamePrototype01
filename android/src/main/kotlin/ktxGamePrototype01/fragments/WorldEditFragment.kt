@@ -49,7 +49,7 @@ class WorldEditFragment : Fragment() {
 
         populateGames(classroomVM.selected)
 
-        adapter = OpenWorldGameRecyclerAdapter(openWorldGameList)
+        adapter = OpenWorldGameRecyclerAdapter(openWorldGameList, classroomVM.selected)
         binding.recyclerViewOpenWorldGames.adapter = adapter
         binding.recyclerViewOpenWorldGames.layoutManager = LinearLayoutManager(context)
 

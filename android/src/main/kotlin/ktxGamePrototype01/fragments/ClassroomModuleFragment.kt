@@ -40,7 +40,7 @@ class ClassroomModuleFragment : Fragment() {
 
         populateModules(classroomVM.selected)
 
-        adapter = ClassroomModuleRecyclerAdapter(classroomModuleList)
+        adapter = ClassroomModuleRecyclerAdapter(classroomModuleList, classroomVM.selected)
         binding.recyclerViewModules.adapter = adapter
         binding.recyclerViewModules.layoutManager = LinearLayoutManager(context)
         binding.lblClassroomName.text = classroomVM.selected

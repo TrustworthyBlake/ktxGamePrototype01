@@ -21,7 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.Thread.sleep
 
-class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerView.Adapter<ModuleRecyclerAdapter.ModuleHolder>() {
+class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>, private val module: String) : RecyclerView.Adapter<ModuleRecyclerAdapter.ModuleHolder>() {
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleRecyclerAdapter.ModuleHolder {
@@ -32,10 +32,46 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>) : RecyclerV
     override fun getItemCount() = gameObject.size
 
 
+    private var onClickListener : OnClickListener? = null
+
+    fun setOnClickListener(onClickListener: OnClickListener){
+        this.onClickListener = onClickListener
+    }
+
+    interface OnClickListener {
+        fun onClick(position: Int){
+        }
+    }
+
+    private fun removeItem(position: Int){
+        gameObject.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, gameObject.size)
+        var gameNameList = mutableListOf<String>()
+        for(game in gameObject){
+            gameNameList.add(game.gamename)
+        }
+
+        db.collection("modules")
+            .document(module)
+            .update("quizes", gameNameList)
+            .addOnFailureListener { e ->
+                Log.w("FAIL", "Error deleting module from classroom", e)
+            }
+    }
+
+
     override fun onBindViewHolder(holder: ModuleRecyclerAdapter.ModuleHolder, position: Int) {
         val gameItem = gameObject[position]
         holder.bindText(gameItem)
 
+        if(User.checkForTeacher()){
+            holder.itemView.game_delete_icon.visibility = View.VISIBLE
+        }
+
+        holder.itemView.game_delete_icon.setOnClickListener {
+            removeItem(position)
+        }
     }
 
     //1

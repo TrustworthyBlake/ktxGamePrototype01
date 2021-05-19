@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import ktxGamePrototype01.fragments.ClassroomViewModel
 
 class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
@@ -23,7 +25,6 @@ class AppActivity : AppCompatActivity() {
     private lateinit var savedDarkData: sharedprefs
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
-
     var userObject = User
 
     override fun onCreate(savedInstanceState: Bundle?) {

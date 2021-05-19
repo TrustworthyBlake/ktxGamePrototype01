@@ -19,7 +19,7 @@ import ktxGamePrototype01.User
 import ktxGamePrototype01.fragments.ClassroomViewModel
 import ktxGamePrototype01.inflate
 
-class ClassroomModuleRecyclerAdapter (private var moduleText: ArrayList<String>) : RecyclerView.Adapter<ClassroomModuleRecyclerAdapter.ModuleHolder>() {
+class ClassroomModuleRecyclerAdapter (private var moduleText: ArrayList<String>, private val classroom: String) : RecyclerView.Adapter<ClassroomModuleRecyclerAdapter.ModuleHolder>() {
     private val db = FirebaseFirestore.getInstance()
 
 
@@ -46,6 +46,14 @@ class ClassroomModuleRecyclerAdapter (private var moduleText: ArrayList<String>)
         moduleText.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, moduleText.size)
+
+
+        db.collection("classrooms")
+            .document(classroom)
+            .update("modules", moduleText)
+            .addOnFailureListener { e ->
+                Log.w("FAIL", "Error deleting module from classroom", e)
+            }
     }
 
 
@@ -58,15 +66,6 @@ class ClassroomModuleRecyclerAdapter (private var moduleText: ArrayList<String>)
         }
 
         holder.itemView.module_delete_icon.setOnClickListener {
-
-            /*
-            db.collection("classrooms")
-                .document(holder.itemView.lbl_classroom_name.text.toString())
-                .update("quizes", FieldValue.arrayRemove(tempModule))
-                .addOnFailureListener { e ->
-                    Log.w("FAIL", "Error deleting module from classroom", e)
-                }
-            */
 
             removeItem(position)
         }
