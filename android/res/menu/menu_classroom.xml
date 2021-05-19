@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/dest_classroom_leaderboard"
-        android:title="Leaderboards"
+        android:title="Participants"
         android:icon="@drawable/baseline_leaderboard_black_24"/>
 
 </menu>

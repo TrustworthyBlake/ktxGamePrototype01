@@ -134,27 +134,4 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>, private val
         }
 
     }
-
-
-
-    private fun writeQuizToFile(quizName: String, quizData: MutableList<String>, view: View) {
-
-        val pathInternal = view.context?.filesDir
-        if (pathInternal != null) {
-            val pathTextFile = File(pathInternal, "assets/quizFiles")
-            if (!pathTextFile.exists()){
-                pathTextFile.mkdirs()
-                Toast.makeText(view.context, "Creating dir", Toast.LENGTH_SHORT).show()
-            }
-            val quizTextFile = File(pathTextFile, quizName + "-" + User.getName() + ".txt")
-            var tempStr = ""
-            quizData.forEach { line ->
-                tempStr += line + '\n'
-            }
-            FileOutputStream(quizTextFile).use {
-                it.write((tempStr).toByteArray())
-            }
-            Toast.makeText(view.context, "Quiz written to file", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
