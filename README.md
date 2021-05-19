@@ -18,7 +18,8 @@ The goal of this project is to create an application environment in which teache
 
 
 ## Demo
-Working demo APK can be downloaded here:  [ADD APK DOWNLOAD LINK]
+Working demo release APK can be downloaded here:  [https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/main/android/release/android-release.apk]
+Debug version APK can be downloaded here: []
 ```
 Demo credentials:  
 email: student9@test.com  
