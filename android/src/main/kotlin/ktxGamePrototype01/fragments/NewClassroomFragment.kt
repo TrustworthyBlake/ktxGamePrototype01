@@ -85,6 +85,7 @@ class NewClassroomFragment : Fragment() {
         //val userID = findUserByName(capitalize(teacher))
 
         val course = hashMapOf(
+                "name" to "$grade grade $courseName $year",
                 "course name" to courseName,
                 "grade" to grade,
                 "teacher name" to DBObject.capitalize(teacher),
