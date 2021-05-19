@@ -64,27 +64,45 @@ class WorldEditFragment : Fragment() {
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
 
-                db.collection("quiz").document(editText.text.toString()).get().addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        // if query is successful, reads the data and stores in variables
-
+                val doc = db.collection("quiz").whereEqualTo("name", editText.text.toString()).get()
+                doc.addOnSuccessListener { documents ->
+                    for (document in documents) {
                         db.collection("classrooms")
                             .document(classroomVM.selected)
                             .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
 
                         openWorldGameList.add(Game(editText.text.toString(), "Quiz"))
-                        adapter.notifyItemInserted(openWorldGameList.size - 1)
-                    }else{
-                        Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()
-                    }
-                }
+                        adapter.notifyItemInserted(openWorldGameList.size - 1) }
 
+                    }
+                Toast.makeText(activity, "Quiz added if it exists", Toast.LENGTH_LONG).show()
             }
+
+
+
+
+                /*
+                db.collection("quiz").document(editText.text.toString()).get()
+                    .addOnSuccessListener() {
+                        // if query is successful, reads the data and stores in variables
+                        db.collection("classrooms")
+                            .document(classroomVM.selected)
+                            .update("quizes", FieldValue.arrayUnion(editText.text.toString()))
+
+                        openWorldGameList.add(Game(editText.text.toString(), "Quiz"))
+                        adapter.notifyItemInserted(openWorldGameList.size - 1) }
+                    .addOnFailureListener { e ->  Toast.makeText(activity, "Quiz not found", Toast.LENGTH_LONG).show()  }
+                 }
+
+
+                 */
             builder.show()
+
         }
 
         return binding.root
     }
+
 
 
 
