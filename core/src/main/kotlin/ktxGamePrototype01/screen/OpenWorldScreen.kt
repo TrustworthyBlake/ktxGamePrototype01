@@ -225,10 +225,6 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             posTextVec2.set(teacherPosArray[count].x, teacherPosArray[count].y + spacer + 1.7f)
                         }
                         with<InteractableComponent>()
-                        with<BindEntitiesComponent> {
-                            masterEntity = teacherEntityBody
-                            // Offset by 1 in the y direction so the head is above the body entity
-                            posOffset.set(0f, 1f) }
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                     count += 1
