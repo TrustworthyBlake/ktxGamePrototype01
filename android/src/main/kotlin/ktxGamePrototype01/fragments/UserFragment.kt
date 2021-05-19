@@ -203,7 +203,7 @@ class UserFragment : Fragment() {
         val userList : List<String> = User.getCourses()
         if (!userList.isNullOrEmpty()){
             for (i in 0 until size) {
-                val drawable = R.drawable.ic_attach_money_black_24dp
+                val drawable = R.drawable.baseline_school_black_24
                 val item = ListItem(drawable, userList[i])
                 list += item
             }

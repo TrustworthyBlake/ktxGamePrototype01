@@ -39,6 +39,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         var qPosArray = Array<Vector2>()
         var questPosX = 44f
         var questPosY = 10f
+        var tempPosX = 43f
         var count = 0
         var qName : String
         var qNameSplit : String
@@ -77,10 +78,8 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
                 }
                 count += 1
                 // For placing the quest's in a grid
-                questPosX += 6f
-                when{
-                    count % 2 == 0 -> {questPosY += 4f; questPosX = 44f}
-                }
+                questPosY += 4f
+                if(count % 2 == 0) {questPosX += 6f; questPosY = 10f;}
             }
         }
     }

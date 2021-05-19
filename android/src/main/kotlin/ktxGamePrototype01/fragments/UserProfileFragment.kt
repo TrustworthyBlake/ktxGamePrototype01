@@ -170,7 +170,7 @@ class UserProfileFragment : Fragment() {
         val list = ArrayList<ListItem>()
         val userList : List<String> = User.getAchievement()
         for (i in 0 until size) {
-            val drawable = R.drawable.ic_attach_money_black_24dp
+            val drawable = R.drawable.medal
             val item = ListItem(drawable, userList[i])
             list += item
         }
