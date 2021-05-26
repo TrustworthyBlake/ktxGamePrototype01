@@ -2,7 +2,7 @@
 
 ## List of students in the team
 
-<strong>Group member and roles:  </strong>
+<strong>Group members and roles:  </strong>
 
 * Andreas Blakli - Group Leader  
 
