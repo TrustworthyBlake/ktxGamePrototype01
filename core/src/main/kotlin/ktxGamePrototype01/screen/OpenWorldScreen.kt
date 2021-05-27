@@ -134,6 +134,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         }else{LOG.debug { "Error: Can not find player data" }}
 }
 
+    // Splits up individual teachers from a list of strings, calls and passes on relevant data
+    // to createTeacherEntity.
     private fun createTeachers(teacherList : List<String>?) {
         val teacherPosArray = Array<Vector2>()
         var teacherPosX = 26f
