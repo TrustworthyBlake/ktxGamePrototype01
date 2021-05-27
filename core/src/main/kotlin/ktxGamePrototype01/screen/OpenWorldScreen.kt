@@ -184,6 +184,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     // and the position vector as a Vector2
     private fun createTeacherEntity(teacherName : String, head : String, body: String, teacherPos : Vector2){
         val maxLength = 24
+        val textPosOffset = 1.7f
         val helpFun = HelperFunctions()
         // Chops the string
         val (teacherNameChopped , spacer) = helpFun.chopString(teacherName, maxLength)
@@ -214,7 +215,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
         val teacherEntityHead = engine.entity {
             with<TransformComponent> {
                 // Where the entity is positioned in the game world, uses the pos from array
-                posVec3.set(teacherPos.x-offsetPos, teacherPos.y + 1f, -1f)
+                // Set to 0 because this entity has BindEntitiesComponent
+                posVec3.set(Vector3.Zero)
             }
             with<SpriteComponent> {
                 sprite.run {
@@ -238,7 +240,12 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                 // Scales the text up by 4
                 font.data.setScale(4.0f, 4.0f)
                 // Position of text in the game world
-                posTextVec2.set(teacherPos.x, teacherPos.y + spacer + 1.7f)
+                posTextVec2.set(teacherPos.x, teacherPos.y + spacer + textPosOffset)
+            }
+            with<BindEntitiesComponent> {
+                masterEntity = teacherEntityBody
+                // Offset by 1 in the y direction so the head is above the body entity
+                posOffset.set(0f, 1f)
             }
             with<InteractableComponent>()
             with<QuizQuestComponent> { teacherStr = teacherName }
