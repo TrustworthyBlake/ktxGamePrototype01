@@ -72,7 +72,33 @@ digitally is that it is a lot easier to talk over each other, which at times can
 
 ## Version Control System
 
+The development of the project has a version control system which came in the form of branching. Github was used as a repository for hosting the project code and Git to control branching, pulling, pushing and merging. It was used to manage work in progress and changes to the source code, and separate program development from each other. 
+The reason why this was heavily used during this project's development was to avoid adding broken features into the project and patch them separately from the main branch, allowed team members to switch between branches to help with development and to create an organised system to manage and test each version of the same code/project.
+
+Test and why branch?:
+Generally, branching is used to allow one or more developers to work on additions or bug fixes for the main branch separately from each other. In our case, this separation of development allowed each function to be tested separately by it's developer before merging to the main branch to ensure the function would not cause the program to crash which, without branching, would impede development for other functions until a fix is implemented.
+During each sprint, several functions would be under development. Once completed, the function would be ran trough several tests before merging with the supervision of another developer.
+These tests were done manually under development where each class and method was tested by it's developer before being tested for interaction between other components in the project.
+Once merging was completed, the system would be tested to find any bugs, performance or behavioural issues. These tests could have been automated, but because the core functionalities were under development, the source code would undergo several changes between sprints, so an automated test written during one sprint would become obsolete in another sprint. Therefore to be pragmatic, the tests were done manually to save time writing automated ones. This was not without its downsides however, as automated tests would catch most if not all minor bugs that went unnoticed during manual tests, which would resurface later while developing new features down the line.
+However once the core functions of the project finished development, automated tests could be written for future development where new additions to the project would be developed around it's core functions.
+
+Keeping track of progress:
+The version control was also used to get an overview of the different versions of the project. The weekly sprints held by the group helped to keep track of progress in the project as each scrum meeting would give a clear idea of how far functions were in development and could then re-prioritize based on how long its been in the Scrum task board. Once a function was finished and pushed into its branch, a local commit message would be written describing the new feature added to the project. While progress was documented separately from GitHub in a different platform, the commit messages should have been collected into a version list detailing the changes between versions and placed on the project repository for readers to view. Each merge should also have had a description of main features of the specific merge that were pushed into the main branch for each major iteration of the project.
+
 ## Programming Style Guide
+
+The programming style used in this project was the standard kotlin coding convention found here https://kotlinlang.org/docs/coding-conventions.html.
+The reason for this is partly due to how android studio sometimes flags wrong coding convention as an error, so the group members agreed on using this convention as the standard for this project and it was also a necessity to make android studio compile code. 
+ 
+ 
+Comments were kept to a minimal unless it was necessary to explain a chunk of code further. Comments would be one liners explaining the purpose of the code below it, and if more comments were needed, the code would be separated by one line of code explaining different segments of the code. Comments would also be used to mark unused or unfinished functions with a TODO, followed by what the function needs to do or what needs fixing if unfinished or with "NOT WORKING" if its unused or outdated.
+
+
+The naming convention we used follows like the link above describes. Some of these conventions are forced on the programmer as android studio would give an error if for example any packages were written with a upper-case first letter. Most of our naming convention were a wide-spread usage of camel case for functions and variables regardless of what value they held. For most classes and files, names would contain camel case and upper case first letter. XML files and ID, as well as themes and any other names declared in an XML file, have names which are written in snake case. Every name given to a file, class, function or variable had to be a small description of what it does, for example "logInAsStudent", so the purpose of the function is conveyed in its name.
+
+
+The coding convention for classes were universal to maintain consistency between them. Declaration of variables and the onCreate function would come first as the code written inside the built-in function would be ran as soon as the fragment which used that class were used, otherwise onCreate would set up onClickListeners which executes code when activated, thus giving interactability to the fragment.
+After that comes onCreatedView to make sure view is fully created, this is only used for classes which use lists and lastly come the functions defined for the classes. This layout makes it easier to get an overview for what the class does at a first glance and declaration and initialization comes first and functions comes last.
 
 ## Libraries, and Modularisation of Product
 
