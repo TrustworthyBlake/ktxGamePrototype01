@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.ashley.entity
@@ -43,7 +44,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     override fun show() {
         createMapEntities()
         createUserEntityFromPlayerData()
-        createTeacherEntities(teacherDataList)
+        createTeachers(teacherDataList)
     }
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, false)
@@ -132,110 +133,116 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
 
         }else{LOG.debug { "Error: Can not find player data" }}
 }
-    /*private val teachers = mutableListOf<String>(
-            "Mr.TeacherMan", "head1", "body1",
-            "Mrs.TeacherWoman", "head2", "body2"
-    )*/
-    private fun createTeacherEntities(teacherList : List<String>?){     //userName : String
-        var teacherPosArray = Array<Vector2>()
 
+    private fun createTeachers(teacherList : List<String>?) {
+        val teacherPosArray = Array<Vector2>()
         var teacherPosX = 26f
         var teacherPosY = 18f   // Starting values slightly above default spawn pos of player
         var count = 0
-        var pos = 0
         var teacherName = ""
         var head = ""
         var body = ""
-        val maxLength = 24
-        LOG.debug { "Teacher list data: $teacherList" }
-        if (!teacherList.isNullOrEmpty()) {
-            val helpFun = HelperFunctions()
-            for (i in 0 until teacherList.size) {
-                // Sets the name of teacher, avatar body and head to the correct variables
-                var line = teacherList.elementAt(i)
-                when (pos) {
-                    1 -> {
-                        head = line; LOG.debug { "Teachers head: $line" }
-                    }
-                    2 -> {
-                        body = line; LOG.debug { "Teachers body: $line" }
-                    }
-                    else -> {
-                        teacherName = line; LOG.debug { "Teachers name: $line" }
-                    }
-                }
-                // Chops the string
-                var (teacherNameChopped , spacer) = helpFun.chopString(teacherName, maxLength)
-                pos += 1
-                // Each time 3 elements have been iterated trough a new teacher entity is created
-                if (pos % 3 == 0) {
-                    pos = 0
-                    // Dynamically adding new position to Array for every teacher
-                    teacherPosArray.add(Vector2(teacherPosX, teacherPosY))
+        var dataTag : String
+        var data : String
 
-                    val teacherEntityBody = engine.entity {
-                        with<TransformComponent> {
-                            // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y, -1f)
-                        }
-                        with<SpriteComponent> {
-                            sprite.run {
-                                // Sets the entity's texture based on the string
-                                when (body) {
-                                    "body1" -> setRegion(playerTextureBody1)
-                                    "body2" -> setRegion(playerTextureBody2)
-                                    "body3" -> setRegion(playerTextureBody3)
-                                    "body4" -> setRegion(playerTextureBody4)
-                                    else -> setRegion(playerTextureBody)
-                                }
-                                setSize(texture.width * unitScale, texture.height * unitScale)
-                                setOriginCenter()
-                            }
-                        }
-                        with<InteractableComponent> { isTeacher = true }
-                        with<QuizQuestComponent> { teacherStr = teacherName }
+        LOG.debug { "Teacher list data: $teacherList" }
+
+        if (!teacherList.isNullOrEmpty()) {
+            teacherList.forEach {
+
+                // Index 0 is data tag
+                dataTag = it.split("-")[0]
+
+                // Index 1 is where the actual data is
+                data = it.split("-")[1]
+
+                // Sets the name of teacher, avatar body and head to the correct variables
+                when(dataTag){
+                    "name" -> teacherName = data
+                    "head" -> head = data
+                    "body" -> body = data
+
+                    // When completed the teacher data is passed to createTeacherEntity()
+                    "complete" -> {
+
+                        // Dynamically adding new position to Array for every teacher
+                        teacherPosArray.add(Vector2(teacherPosX, teacherPosY))
+                        createTeacherEntity(teacherName, head, body, teacherPosArray[count])
+                        count += 1
+
+                        // For placing the teachers in a grid
+                        teacherPosX += 6f
+                        if (count % 2 == 0) {teacherPosY += 4f; teacherPosX = 26f}
                     }
-                    val teacherEntityHead = engine.entity {
-                        with<TransformComponent> {
-                            // Where the entity is positioned in the game world, uses the pos from array
-                            posVec3.set(teacherPosArray[count].x-offsetPos, teacherPosArray[count].y + 1f, -1f)
-                        }
-                        with<SpriteComponent> {
-                            sprite.run {
-                                // Sets the entity's texture based on the string
-                                when (head) {
-                                    "head1" -> setRegion(playerTextureHead1)
-                                    "head2" -> setRegion(playerTextureHead2)
-                                    "head3" -> setRegion(playerTextureHead3)
-                                    "head4" -> setRegion(playerTextureHead4)
-                                    else -> setRegion(playerTextureHead)
-                                }
-                                setSize(texture.width * unitScale, texture.height * unitScale)
-                                setOriginCenter()
-                            }
-                        }
-                        with<TextComponent> {
-                            isText = true
-                            textStr = teacherNameChopped
-                            // Makes text clearer
-                            font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-                            // Scales the text up by 4
-                            font.data.setScale(4.0f, 4.0f)
-                            // Position of text in the game world
-                            posTextVec2.set(teacherPosArray[count].x, teacherPosArray[count].y + spacer + 1.7f)
-                        }
-                        with<InteractableComponent>()
-                        with<QuizQuestComponent> { teacherStr = teacherName }
+                    else -> LOG.debug { "Error in teacher list data" }
                     }
-                    count += 1
-                    // For placing the teachers in a grid
-                    teacherPosX += 6f
-                    when {
-                        count % 2 == 0  -> {teacherPosY += 4f; teacherPosX = 26f}
+            }
+        } else {LOG.debug { "Error: Can not find teacher list" }}
+    }
+
+    // Creates one teacher entity, takes the teacher's name, head and body as String
+    // and the position vector as a Vector2
+    private fun createTeacherEntity(teacherName : String, head : String, body: String, teacherPos : Vector2){
+        val maxLength = 24
+        val helpFun = HelperFunctions()
+        // Chops the string
+        val (teacherNameChopped , spacer) = helpFun.chopString(teacherName, maxLength)
+
+        val teacherEntityBody = engine.entity {
+            with<TransformComponent> {
+                // Where the entity is positioned in the game world, uses the pos from array
+                posVec3.set(teacherPos.x-offsetPos, teacherPos.y, -1f)
+            }
+            with<SpriteComponent> {
+                sprite.run {
+                    // Sets the entity's texture based on the string
+                    when (body) {
+                        "body1" -> setRegion(playerTextureBody1)
+                        "body2" -> setRegion(playerTextureBody2)
+                        "body3" -> setRegion(playerTextureBody3)
+                        "body4" -> setRegion(playerTextureBody4)
+                        else -> setRegion(playerTextureBody)
                     }
+                    setSize(texture.width * unitScale, texture.height * unitScale)
+                    setOriginCenter()
                 }
             }
-        }else{LOG.debug { "Error: Can not find teacher list" }}
+            with<InteractableComponent> { isTeacher = true }
+            with<QuizQuestComponent> { teacherStr = teacherName }
+        }
+
+        val teacherEntityHead = engine.entity {
+            with<TransformComponent> {
+                // Where the entity is positioned in the game world, uses the pos from array
+                posVec3.set(teacherPos.x-offsetPos, teacherPos.y + 1f, -1f)
+            }
+            with<SpriteComponent> {
+                sprite.run {
+                    // Sets the entity's texture based on the string
+                    when (head) {
+                        "head1" -> setRegion(playerTextureHead1)
+                        "head2" -> setRegion(playerTextureHead2)
+                        "head3" -> setRegion(playerTextureHead3)
+                        "head4" -> setRegion(playerTextureHead4)
+                        else -> setRegion(playerTextureHead)
+                    }
+                    setSize(texture.width * unitScale, texture.height * unitScale)
+                    setOriginCenter()
+                }
+            }
+            with<TextComponent> {
+                isText = true
+                textStr = teacherNameChopped
+                // Makes text clearer
+                font.region.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                // Scales the text up by 4
+                font.data.setScale(4.0f, 4.0f)
+                // Position of text in the game world
+                posTextVec2.set(teacherPos.x, teacherPos.y + spacer + 1.7f)
+            }
+            with<InteractableComponent>()
+            with<QuizQuestComponent> { teacherStr = teacherName }
+        }
     }
 
     // Creates the map entities from map.txt file
