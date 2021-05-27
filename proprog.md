@@ -70,11 +70,11 @@ digitally is that it is a lot easier to talk over each other, which at times can
  motivated and helped each other throughout the development process.  
 
 
-### Version Control System
+## Version Control System
 
-### Programming Style Guide
+## Programming Style Guide
 
-### Libraries, and Modularisation of Product
+## Libraries, and Modularisation of Product
 
 ### Libraries
 
