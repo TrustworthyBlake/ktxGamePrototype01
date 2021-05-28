@@ -100,8 +100,9 @@ not prioritize adding comments, as I wrote the code to be a working prototype an
 have to move on to the next task and the planned refactor was never done (it was always put on the “backburner”, and I never got time to fix it). Trying to decide what the right thing to do, 
 was difficult and obviously I could have done this better.  It has however been a good learning experience as I will now prioritize to write all comments as I implement the core functionality, 
 since its too easy to think, it will get done later. Otherwise, I think I did a good job by sticking to the object-oriented programming paradigm. The entity component system in the game engine 
-is an object-oriented approach to dealing with “actors” or objects within a “scene” or game world. One system that got a little out of control and was given to much responsibility in the end was 
-the InteractableSystem it is primarily for handling collisions between objects, but it currently also has the responsibility to remove entities from the engine. Removal of entities should be moved 
-into a new system specifically designed for that functionality. Automated tests would have been nice to have Implemented but was not prioritized and never implemented. This made testing a little 
-tedious in general but made little difference to the testing of the game as that needed actual playtesting by a user. I feel I did a good job with testing the code before pushing into the main 
-branch and creating new branches when new major functionality was being developed. 
+is an object-oriented approach combined with a data-oriented design for dealing with “actors” or objects within a “scene” or game world. The data-oriented design approach optimizes and helps with 
+the performance of the game engine. One system that got a little out of control and was given to much responsibility in the end was the InteractableSystem it is primarily for handling collisions 
+between objects, but it currently also has the responsibility to remove entities from the engine. Removal of entities should be moved into a new system specifically designed for that functionality. 
+Automated tests would have been nice to have Implemented but was not prioritized and never implemented. This made testing a little tedious in general but made little difference to the testing of 
+the game as that needed actual playtesting by a user. I feel I did a good job with testing the code before pushing into the main branch and creating new branches when new major functionality was 
+being developed. 
