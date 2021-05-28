@@ -45,7 +45,8 @@ object DBObject {
                 getTeachersFromCourses(courseList)
                 getQuizesFromCourses(courseList)
                 getTeachersForQuizzes(courseList)
-
+            } else {
+                Log.e(failTAG, "Error getting user data from firestore")
             }
         }
     }
