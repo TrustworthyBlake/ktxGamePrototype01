@@ -6,7 +6,8 @@
 ## Code I consider to be good: createUserEntityFromPlayerData()
 
 Direct link to code: https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/b26b6c9c500a6510d5c8d5bc46f010f9b2c53cf2/core/src/main/kotlin/ktxGamePrototype01/screen/OpenWorldScreen.kt
-\ <strong>createUserEntityFromPlayerData() starts on line 64. </strong>
+
+<strong>createUserEntityFromPlayerData() starts on line 64. </strong>
 
 I consider this code to be good because it is well written and offers good readability. Let me explain in a little more detail: The main purpose of this function is to create the player 
 entity with the structure from the ECS (Entity Component System). The player entity is the avatar the player plays as in-game and it is composed of two entites: playerEntityBody and 
@@ -27,12 +28,13 @@ is done, it is also made in mind with the object-oriented programming paradigm.
 
 ## Code I consider to be bad is two functions inside the class QuizSystem: processEntity (entity: Entity, deltaTime: Float) and createQuizTextEntities( quizName: String) 
 
-Direct link to code: https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/b26b6c9c500a6510d5c8d5bc46f010f9b2c53cf2/core/src/main/kotlin/ktxGamePrototype01/entityComponentSystem/system/QuizSystem.kt
-\ The reason why I am mentioning these to functions is because they are interconnected with each other. While they are not horrible, they both suffer from flawed logic and bad code practice. They were 
+Direct link to code: https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/b26b6c9c500a6510d5c8d5bc46f010f9b2c53cf2/core/src/main/kotlin/ktxGamePrototype01/entityComponentSystem/system/QuizSystem.kt <br/>
+The reason why I am mentioning these to functions is because they are interconnected with each other. While they are not horrible, they both suffer from flawed logic and bad code practice. They were 
 initially used as proof of concept and to be pragmatic, other functionality in the application were prioritized. 
 
 The class itself should have some of its private variables removed or moved inside the functions that use them.
-\ <strong>processEntity() starts on line 33. </strong>
+
+<strong>processEntity() starts on line 33. </strong>
 
 The if and else if statements on line 37 and 43 inside processEntity() can be simplified, comments describing what these if’s are for should have been added, because as they are now it can be 
 difficult for others who have not worked on this part of they system to understand what is going on. The while loop on line 51 should be replaced with an if since processEntity() itself is a loop 
