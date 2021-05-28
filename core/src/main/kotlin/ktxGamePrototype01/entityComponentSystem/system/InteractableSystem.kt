@@ -48,8 +48,24 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         }
     }
 
-    //  Function that edits entities on map
-    private fun hasAnsweredQuiz(interact : InteractableComponent) {
+    //  Function that edits entities on map and updates user information when player has answered a question
+    private fun hasAnsweredQuiz(interact : InteractableComponent, p: PlayerComponent, player: Entity, playerTransform: TransformComponent, correct: Boolean) {
+
+        if(correct) {
+            p.playerScore += interact.maxPointsQuestion
+            player[QuizComponent.mapper]?.let { quiz ->
+                quiz.quizResultList.add(interact.maxPointsQuestion.toString())
+            }
+        }else{
+            p.playerScore += WrongAnswerPoints
+            player[QuizComponent.mapper]?.let { quiz ->
+                quiz.quizResultList.add("0")
+            }
+        }
+        // RESET START
+        playerTransform.posVec3.x = 10.5f - offsetPos
+        playerTransform.posVec3.y = 14f
+        //  Removes all answer entities
         interactableEntities.forEach { interactable ->
             if (!interact.isQuest && !interact.isTeacher){
                val temp = interactable[InteractableComponent.mapper]
@@ -58,11 +74,13 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                 }
             }
         }
+        // Removes all text elements (Question/Answers)
         textEntities.forEach { text ->
             val t = text[TextComponent.mapper]
             require(t != null)
             if (t.isQuizAnswer) engine.removeEntity(text)
         }
+        // Sett boolean that allows the quiz system to continue printing the next question
         quizEntities.forEach { quiz ->
             val q = quiz[QuizComponent.mapper]
             require(q != null)
@@ -76,9 +94,26 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             val interact = interactable[InteractableComponent.mapper]
             require(interact != null)
             // If it is a quest entity its removed
-            if(interact.isQuest)engine.removeEntity(interactable)
+            if(interact.type == InteractableType.QUEST)engine.removeEntity(interactable)
         }
     }
+
+    private fun interactWithTeacher(entity: Entity){
+        val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
+        require(qQuestComp != null) { "Error: Missing quiz quest component" }
+        removeQuestEntities()
+        qQuestComp.showAvailableQuizes = true
+    }
+
+    private fun interactWithQuest(p: PlayerComponent, interact: InteractableComponent){
+        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
+        if (p.gameInst.containsScreen<QuizScreen>()) {
+            LOG.debug { "Switching to FirstScreen" }
+            p.gameInst.setScreen<QuizScreen>()
+        }
+    }
+
+
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -107,50 +142,27 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.sizeVec2.x* hitboxScalerMax,
                         playerTransform.sizeVec2.y* hitboxScalerMax)
 
+
+
                 // If playerActivationHitbox overlaps with interactable hitbox
                 if(playerActivationHitbox.overlaps(interactableHitbox)){
                     if(p.playerControl.isPressed) {
 
-                        //  IF CORRECT ANSWER IS SELECTED, CONTINUE QUIZ
-                        if (interact.correctAnswer) {
-                            //  COUNT SCORE
-                            p.playerScore += interact.maxPointsQuestion
-                            player[QuizComponent.mapper]?.let { quiz ->
-                                quiz.quizResultList.add(interact.maxPointsQuestion.toString())
-                            }
-                            // RESET START
-                            playerTransform.posVec3.x = 10.5f - offsetPos
-                            playerTransform.posVec3.y = 14f
-                            //  Run update on entities
-                            hasAnsweredQuiz(interact)
-                        } else if (interact.isQuestOrAnswer && !interact.isQuest && !interact.isTeacher) {
-                            p.playerScore += WrongAnswerPoints
-                            player[QuizComponent.mapper]?.let { quiz ->
-                                quiz.quizResultList.add("0")
-                            }
-                            // RESET START
-                            playerTransform.posVec3.x = 10.5f - offsetPos
-                            playerTransform.posVec3.y = 14f
-                            //  Run update on entities
-                            hasAnsweredQuiz(interact)
+                        //  Based on what type of interactable player interact with, launch relevant function.
+                        when(interact.type){
+                            InteractableType.CORRECTANSWER -> hasAnsweredQuiz(interact, p, player, playerTransform, true)
+                            InteractableType.WRONGANSWER -> hasAnsweredQuiz(interact, p, player, playerTransform, false)
+                            InteractableType.TEACHER -> interactWithTeacher(entity)
+                            InteractableType.QUEST -> interactWithQuest(p, interact)
+                            else -> LOG.debug { "No Collision Type" }
                         }
-                        // If it is teacher entity the QuizQuestSystem will create the quest entities based on showAvailableQuizes bool
-                        if (interact.isTeacher) {
-                            val qQuestComp = entity[QuizQuestComponent.mapper]//quizQuestEntities[QuizQuestComponent.mapper]
-                            require(qQuestComp != null) { "Error: Missing quiz quest component" }
-                            removeQuestEntities()
-                            qQuestComp.showAvailableQuizes = true
-                        }
-                        // Starts the quiz game
-                        if (interact.isQuest) {
-                            p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
-                            if (p.gameInst.containsScreen<QuizScreen>()) {
-                                LOG.debug { "Switching to FirstScreen" }
-                                p.gameInst.setScreen<QuizScreen>()
-                            }
-                        }
+
                     }
                 }
+
+
+
+
                 //  IF PLAYER OVERLAPS WITH HITBOX
                 if (playerHitbox.overlaps(interactableHitbox)) {
 

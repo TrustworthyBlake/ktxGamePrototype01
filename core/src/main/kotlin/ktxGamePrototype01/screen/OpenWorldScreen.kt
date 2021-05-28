@@ -192,7 +192,7 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                                 setOriginCenter()
                             }
                         }
-                        with<InteractableComponent> { isTeacher = true }
+                        with<InteractableComponent> { isTeacher = true; type = InteractableType.TEACHER }
                         with<QuizQuestComponent> { teacherStr = teacherName }
                     }
                     val teacherEntityHead = engine.entity {

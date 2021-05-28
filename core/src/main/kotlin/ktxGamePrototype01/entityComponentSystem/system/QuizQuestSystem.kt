@@ -66,6 +66,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
                     }
                     with<InteractableComponent> {
                         isQuest = true
+                        type = InteractableType.QUEST
                         nameOfQuiz = qName
                     }
                     with<TextComponent> {

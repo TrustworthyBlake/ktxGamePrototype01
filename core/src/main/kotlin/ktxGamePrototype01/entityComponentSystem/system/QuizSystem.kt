@@ -161,6 +161,8 @@ class QuizSystem : IteratingSystem(allOf(QuizComponent::class).get()) {
                                 maxPointsQuestion = maxPoints
                                 correctAnswer = isCorrect
                                 isQuestOrAnswer = true
+                                if(isCorrect) type = InteractableType.CORRECTANSWER
+                                else    type = InteractableType.WRONGANSWER
                             }
                         }
                     }
