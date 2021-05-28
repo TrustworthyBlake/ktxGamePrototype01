@@ -39,7 +39,7 @@ class UserTeacherFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_teacher, container, false)
-        savedDarkData = sharedprefs(requireContext() as AppActivity)
+
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -49,6 +49,11 @@ class UserTeacherFragment : Fragment() {
         readData(userID)
 
         val buttonProfile = binding.root.findViewById<Button>(R.id.btn_profileT)
+
+        //loads the theme
+        loadTheme()
+        //loads the avatar image
+        loadAvatarImage()
 
         buttonProfile.setOnClickListener() {
             findNavController().navigate(R.id.dest_teacher_profile)
@@ -60,52 +65,6 @@ class UserTeacherFragment : Fragment() {
             auth.signOut()
             (activity as AppActivity?)!!.hideMenu()
             findNavController().navigate(R.id.dest_start)
-        }
-
-        val headImage = binding.root.findViewById<ImageView>(R.id.imageHead)
-        val bodyImage = binding.root.findViewById<ImageView>(R.id.imageBody)
-
-        val daImage1 : String = getHead(User.getName())
-        when (daImage1){
-            "colour1" ->  {headImage.setImageResource(R.drawable.head1);}
-            "colour2" ->  {headImage.setImageResource(R.drawable.head2);}
-            "colour3" ->  {headImage.setImageResource(R.drawable.head3);}
-            "colour4" ->  {headImage.setImageResource(R.drawable.head4);}
-        }
-
-        val daImage2 : String = getBody(User.getName())
-        when (daImage2){
-            "colour1" -> {bodyImage.setImageResource(R.drawable.body1);}
-            "colour2" -> {bodyImage.setImageResource(R.drawable.body2);}
-            "colour3" -> {bodyImage.setImageResource(R.drawable.body3);}
-            "colour4" -> {bodyImage.setImageResource(R.drawable.body4);}
-        }
-
-
-        val textName = binding.root.findViewById<TextView>(R.id.user_name)
-        val textEmail = binding.root.findViewById<TextView>(R.id.user_email)
-        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_userT)
-
-        if(savedDarkData.loadRedModeState() == true){
-            textName.setBackgroundResource(R.drawable.textview_borderred)
-            textEmail.setBackgroundResource(R.drawable.textview_borderred)
-            leList.setBackgroundColor(resources.getColor(R.color.redfade))
-        }else if(savedDarkData.loadGreenModeState() == true){
-            textName.setBackgroundResource(R.drawable.textview_bordergreen)
-            textEmail.setBackgroundResource(R.drawable.textview_bordergreen)
-            leList.setBackgroundColor(resources.getColor(R.color.greenfade))
-        }else if(savedDarkData.loadOrangeModeState() == true){
-            textName.setBackgroundResource(R.drawable.textview_borderorange)
-            textEmail.setBackgroundResource(R.drawable.textview_borderorange)
-            leList.setBackgroundColor(resources.getColor(R.color.orangefade))
-        }else if(savedDarkData.loadPurpleModeState() == true){
-            textName.setBackgroundResource(R.drawable.textview_borderpurple)
-            textEmail.setBackgroundResource(R.drawable.textview_borderpurple)
-            leList.setBackgroundColor(resources.getColor(R.color.purplefade))
-        }else{
-            textName.setBackgroundResource(R.drawable.textview_borderblue)
-            textEmail.setBackgroundResource(R.drawable.textview_borderblue)
-            leList.setBackgroundColor(resources.getColor(R.color.bluefade))
         }
 
 
@@ -162,6 +121,55 @@ class UserTeacherFragment : Fragment() {
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
         val bodyPog : String = prefs.getString("avatarBody")
         return bodyPog
+    }
+
+    private fun loadTheme(){
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
+        val textName = binding.root.findViewById<TextView>(R.id.user_name)
+        val textEmail = binding.root.findViewById<TextView>(R.id.user_email)
+        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_userT)
+
+        val themeChosen = savedDarkData.loadThemeColour()
+
+        when (themeChosen){
+            "Red" ->  {textName.setBackgroundResource(R.drawable.textview_borderred)
+                textEmail.setBackgroundResource(R.drawable.textview_borderred)
+                leList.setBackgroundColor(resources.getColor(R.color.redfade))}
+            "Green" ->  {textName.setBackgroundResource(R.drawable.textview_bordergreen)
+                textEmail.setBackgroundResource(R.drawable.textview_bordergreen)
+                leList.setBackgroundColor(resources.getColor(R.color.greenfade))}
+            "Purple" ->  {textName.setBackgroundResource(R.drawable.textview_borderpurple)
+                textEmail.setBackgroundResource(R.drawable.textview_borderpurple)
+                leList.setBackgroundColor(resources.getColor(R.color.purplefade))}
+            "Orange" ->  {textName.setBackgroundResource(R.drawable.textview_borderorange)
+                textEmail.setBackgroundResource(R.drawable.textview_borderorange)
+                leList.setBackgroundColor(resources.getColor(R.color.orangefade))}
+            else -> {textName.setBackgroundResource(R.drawable.textview_borderblue)
+                textEmail.setBackgroundResource(R.drawable.textview_borderblue)
+                leList.setBackgroundColor(resources.getColor(R.color.bluefade))}
+        }
+    }
+
+    private fun loadAvatarImage(){
+        val headImage = binding.root.findViewById<ImageView>(R.id.imageHead)
+        val bodyImage = binding.root.findViewById<ImageView>(R.id.imageBody)
+
+        val daImage1 : String = getHead(User.getName())
+        when (daImage1){
+            "colour1" ->  {headImage.setImageResource(R.drawable.head1);}
+            "colour2" ->  {headImage.setImageResource(R.drawable.head2);}
+            "colour3" ->  {headImage.setImageResource(R.drawable.head3);}
+            "colour4" ->  {headImage.setImageResource(R.drawable.head4);}
+        }
+
+        val daImage2 : String = getBody(User.getName())
+        when (daImage2){
+            "colour1" -> {bodyImage.setImageResource(R.drawable.body1);}
+            "colour2" -> {bodyImage.setImageResource(R.drawable.body2);}
+            "colour3" -> {bodyImage.setImageResource(R.drawable.body3);}
+            "colour4" -> {bodyImage.setImageResource(R.drawable.body4);}
+        }
+
     }
 
 }

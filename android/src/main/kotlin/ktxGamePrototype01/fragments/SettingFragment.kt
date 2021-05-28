@@ -21,21 +21,20 @@ class SettingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
-
-
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        //checks if the switch has been toggled on or of, if it on then dark mode is loaded
+
         binding.dModes.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 savedDarkData = sharedprefs(requireContext() as AppActivity)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 savedDarkData.setDarkModeState(true)
-            } else{
+            } else{ //this else has to duplicate the if, or else the switch won't go back to light mode
                 savedDarkData = sharedprefs(requireContext() as AppActivity)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 savedDarkData.setDarkModeState(false)
@@ -43,58 +42,41 @@ class SettingFragment : Fragment() {
         }
 
         savedDarkData = sharedprefs(requireContext() as AppActivity)
-
+        //because the switch is defaulted to off, toggle will set that on on but only if darkmode was enabled after closing the app.
         if(savedDarkData.loadDarkModeState() == true){
-            binding.dModes.toggle()                   //because the switch is defaulted to off, toggle will set that on on but only if darkmode was enabled after closing the app.
+            binding.dModes.toggle()
         }
 
         binding.button.setOnClickListener{
+            //This is required for every button
             savedDarkData = sharedprefs(requireContext() as AppActivity)
-
-            savedDarkData.setRedModeState(true)
-            savedDarkData.setPurpleModeState(false)
-            savedDarkData.setGreenModeState(false)
-            savedDarkData.setOrangeModeState(false)
+            //sets a string to the keyword in the file, checked by loadThemeColour
+            savedDarkData.setThemeColour("Red")
+            //this is also required for every button, the app needs to recreate itself to the theme to be set
             (activity as AppActivity).recreate();
         }
 
         binding.button2.setOnClickListener{
             savedDarkData = sharedprefs(requireContext() as AppActivity)
-
-            savedDarkData.setRedModeState(false)
-            savedDarkData.setPurpleModeState(false)
-            savedDarkData.setGreenModeState(true)
-            savedDarkData.setOrangeModeState(false)
+            savedDarkData.setThemeColour("Green")
             (activity as AppActivity).recreate();
         }
 
         binding.button3.setOnClickListener{
             savedDarkData = sharedprefs(requireContext() as AppActivity)
-
-            savedDarkData.setRedModeState(false)
-            savedDarkData.setPurpleModeState(true)
-            savedDarkData.setGreenModeState(false)
-            savedDarkData.setOrangeModeState(false)
+            savedDarkData.setThemeColour("Purple")
             (activity as AppActivity).recreate();
         }
 
         binding.button4.setOnClickListener{
             savedDarkData = sharedprefs(requireContext() as AppActivity)
-
-            savedDarkData.setRedModeState(false)
-            savedDarkData.setOrangeModeState(true)
-            savedDarkData.setGreenModeState(false)
-            savedDarkData.setPurpleModeState(false)
+            savedDarkData.setThemeColour("Orange")
             (activity as AppActivity).recreate();
         }
 
         binding.button5.setOnClickListener{
             savedDarkData = sharedprefs(requireContext() as AppActivity)
-
-            savedDarkData.setRedModeState(false)
-            savedDarkData.setOrangeModeState(false)
-            savedDarkData.setGreenModeState(false)
-            savedDarkData.setPurpleModeState(false)
+            savedDarkData.setThemeColour("")
             (activity as AppActivity).recreate();
         }
 

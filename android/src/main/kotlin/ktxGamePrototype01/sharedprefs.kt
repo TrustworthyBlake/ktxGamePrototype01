@@ -8,16 +8,16 @@ class sharedprefs(context: AppActivity) {
 
 
 
-    //--------------------------old code
+    //this variable holds the SharedPreference files "sharedPrefDark"
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences("sharedPrefDark", Context.MODE_PRIVATE)
 
-
-
     //save Night Mode state as TRUE or FALSE
-
     fun setDarkModeState(state: Boolean?){
+        //open the file to edit, given to variable 'editor'
         val editor = sharedPreferences.edit()
+        //puts a boolean value with the keyword "Dark"
         editor.putBoolean("Dark", state!!)
+        //apply or save the change
         editor.apply()
     }
 
@@ -27,48 +27,15 @@ class sharedprefs(context: AppActivity) {
         return (state)
     }
 
-    fun setRedModeState(state: Boolean?){
+    fun setThemeColour(theme: String){
         val editor = sharedPreferences.edit()
-        editor.putBoolean("Red", state!!)
+        editor.putString("Colour", theme!!)
         editor.apply()
     }
 
-    fun loadRedModeState(): Boolean? {
-        val state : Boolean = sharedPreferences.getBoolean("Red", false)
-        return (state)
-    }
-
-    fun setOrangeModeState(state: Boolean?){
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("Orange", state!!)
-        editor.apply()
-    }
-
-    fun loadOrangeModeState(): Boolean? {
-        val state : Boolean = sharedPreferences.getBoolean("Orange", false)
-        return (state)
-    }
-
-    fun setGreenModeState(state: Boolean?){
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("Green", state!!)
-        editor.apply()
-    }
-
-    fun loadGreenModeState(): Boolean? {
-        val state : Boolean = sharedPreferences.getBoolean("Green", false)
-        return (state)
-    }
-
-    fun setPurpleModeState(state: Boolean?){
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("Purple", state!!)
-        editor.apply()
-    }
-
-    fun loadPurpleModeState(): Boolean? {
-        val state : Boolean = sharedPreferences.getBoolean("Purple", false)
-        return (state)
+    fun loadThemeColour(): String? {
+        val chTheme : String? = sharedPreferences.getString("Colour", "Default")
+        return (chTheme)
     }
 
 }

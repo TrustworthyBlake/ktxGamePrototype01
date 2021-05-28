@@ -37,7 +37,7 @@ class UserTeacherProfileFragment : Fragment(){
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile_teacher, container, false)
         // Initialize Firebase Auth
         auth = Firebase.auth
-        savedDarkData = sharedprefs(requireContext() as AppActivity)
+
 
         // get current user id
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -47,6 +47,8 @@ class UserTeacherProfileFragment : Fragment(){
         val buttonLogout = binding.root.findViewById<Button>(R.id.log_out_button)
         val buttonEdit = binding.root.findViewById<Button>(R.id.btn_edit_profT)
 
+        //loads the theme
+        loadTheme()
 
         buttonUserInfo.setOnClickListener(){
             findNavController().navigate(R.id.dest_user_teacher)
@@ -62,19 +64,7 @@ class UserTeacherProfileFragment : Fragment(){
             findNavController().navigate(R.id.dest_edit_profile)
         }
 
-        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_user_profileT)
 
-        if(savedDarkData.loadRedModeState() == true){
-            leList.setBackgroundColor(resources.getColor(R.color.redfade))
-        }else if(savedDarkData.loadGreenModeState() == true){
-            leList.setBackgroundColor(resources.getColor(R.color.greenfade))
-        }else if(savedDarkData.loadOrangeModeState() == true){
-            leList.setBackgroundColor(resources.getColor(R.color.orangefade))
-        }else if(savedDarkData.loadPurpleModeState() == true){
-            leList.setBackgroundColor(resources.getColor(R.color.purplefade))
-        }else{
-            leList.setBackgroundColor(resources.getColor(R.color.bluefade))
-        }
 
         return binding.root
     }
@@ -115,6 +105,20 @@ class UserTeacherProfileFragment : Fragment(){
             list += item
         }
         return list
+    }
+
+    private fun loadTheme(){
+        savedDarkData = sharedprefs(requireContext() as AppActivity)
+        val leList = binding.root.findViewById<RecyclerView>(R.id.recycler_view_user_profileT)
+        val themeChosen = savedDarkData.loadThemeColour()
+
+        when (themeChosen){
+            "Red" ->  { leList.setBackgroundColor(resources.getColor(R.color.redfade))}
+            "Green" ->  {leList.setBackgroundColor(resources.getColor(R.color.greenfade))}
+            "Purple" ->  {leList.setBackgroundColor(resources.getColor(R.color.purplefade))}
+            "Orange" ->  {leList.setBackgroundColor(resources.getColor(R.color.orangefade))}
+            else -> {leList.setBackgroundColor(resources.getColor(R.color.bluefade))}
+        }
     }
 
 }
