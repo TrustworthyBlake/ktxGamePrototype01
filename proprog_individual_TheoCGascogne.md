@@ -26,24 +26,24 @@ This code could use more readability and some refactoring to remove dependence o
 ## Refactoring.
 For refactoring I decided to refactor every code using the sharedpref class. 
 This includes the settingFragment class that sets the themes and every fragment which needs to change based on the theme chosen. Links found here:
-###-Original-
-####Appactivity: (line 39-49)
+### -Original-
+#### Appactivity: (line 39-49)
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/main/android/src/main/kotlin/ktxGamePrototype01/AppActivity.kt
-####sharedprefs:
+#### sharedprefs:
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/main/android/src/main/kotlin/ktxGamePrototype01/sharedprefs.kt
-####settingsFragment:
+#### settingsFragment:
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/main/android/src/main/kotlin/ktxGamePrototype01/fragments/SettingFragment.kt
-####userFragment (Note: the user and teacher fragments have the same changes so im listing only one of them): (line 59-84)
+#### userFragment (Note: the user and teacher fragments have the same changes so im listing only one of them): (line 59-84)
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/main/android/src/main/kotlin/ktxGamePrototype01/fragments/UserFragment.kt
 
-###-Refactored-
-####Appactivity: (line 43-49)
+### -Refactored-
+#### Appactivity: (line 43-49)
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/refactorTheo/android/src/main/kotlin/ktxGamePrototype01/AppActivity.kt
-####sharedprefs:
+#### sharedprefs:
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/refactorTheo/android/src/main/kotlin/ktxGamePrototype01/sharedprefs.kt
-####settingFragment:
+#### settingFragment:
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/refactorTheo/android/src/main/kotlin/ktxGamePrototype01/fragments/SettingFragment.kt
-####userFragment: (line 60-63 and line 198-224)
+#### userFragment: (line 60-63 and line 198-224)
 https://github.com/TrustworthyBlake/ktxGamePrototype01/blob/refactorTheo/android/src/main/kotlin/ktxGamePrototype01/fragments/UserFragment.kt
 The refactoring was primarily done to optimise the function and keep it to a minimum. 
 In the sharedpref class, the set and load functions for each theme were identical to each other which made the usage of those functions poorly optimised in the AppActivity and settingsFragment.  
@@ -54,7 +54,7 @@ Instead of using a boolean for the theme values and having five of them, a strin
 With this simplified version of sharedprefs, the usage of its functions became a lot cleaner and readable, allowing for when cases to load themes and only one set function needed to set any theme to be used, thus removing any nested if else statements and slightly improving performance. 
 During refactoring, improved readability was added to the code by adding more comments where I deemed necessary and any code inside onCreate related to themes (and the user’s avatar) were made into functions instead to de-clutter some of the code inside onCreate.
 
-##Reflecting on professional programming.
+## Reflecting on professional programming.
 Looking back at what I had done in the bachelor project, I feel as if my biggest problem and challenge I had to face was to follow any sort of convention. 
 While coding I would focus too much on getting something done rather than asking myself if I have followed the proper coding convention my group agreed on which, when neglected, my group members made sure I was reprimanded for it. 
 Communication is key when developing a software with a team of colleagues as the code you write is not just for you, they will have to read it one way or another, which is why proper code conventions must be followed to achieve good readability and understandability for your team.
