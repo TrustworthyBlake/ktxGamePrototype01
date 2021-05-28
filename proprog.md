@@ -70,11 +70,11 @@ digitally is that it is a lot easier to talk over each other, which at times can
  motivated and helped each other throughout the development process.  
 
 
-### Version Control System
+## Version Control System
 
-### Programming Style Guide
+## Programming Style Guide
 
-### Libraries, and Modularisation of Product
+## Libraries, and Modularisation of Product
 
 ### Libraries
 
@@ -122,7 +122,7 @@ RecyclerView item a specific fragment type is openee, and the ID of the specific
 the database, and fragment is thereafter filled with relevant information. By using the RecyclerView in this manner, there can be an indefinite amount of classrooms, modules and games.
 This is especially visible when creating a game inside of a module, as the teacher would only need to define what game-type they with to create, which then launches a fragment for filling
 the specific game information. When teacher has completed the creation of a new game, the game ID is added to the modules game list, and the content of the game is added to the database.
-Thus, RecyclerViews of games were developed with the potential to contain any different game type, and adding new game modes will require minimal modification in the existing logic allowing 
+Thus, RecyclerViews of games were developed with the potential to contain any different game type, and adding new game modes will require minimal modification in the existing logic allowing
 teachers to implement new games to their modules. As such the scalability of the application as wanted.
 
 #### Game Engine  
@@ -136,10 +136,10 @@ and all specific game logic can be restricted to the specific LibGDX screen that
 individual games.
 
 
-### Professionalism in Software Development Process  
+## Professionalism in Software Development Process  
 The software development process followed the main principles of Scrum, though a bit modified for a smaller group. The modification came in the form of having product owner and scrum master
 be equally a part of the development team, though had the additional responsibilities. The project was started by product owner creating a defined list of features, i.e. the product backlog,
-that needed to be implemented, thereafter all members would develop prototypes for their expectations surrounding the final product. The prototypes were developed simply by drawing and 
+that needed to be implemented, thereafter all members would develop prototypes for their expectations surrounding the final product. The prototypes were developed simply by drawing and
 explaining the ideas behind the functionalities in group, then concluding on the overall design of the product and developing it as a presentable prototype in Adobe XD. The first finalised
 prototype was thereafter presented to clients and their opinions about what was lacking and what should be modified noted down and taken into consideration for the next prototype. Through this prototyping, multiple necessary features were realized, namely the importance of a highly graphical user experience within the games, and clients’ wish for a playable open world type game
 which could utilise the teaching curricula content for the individual student playing. After the finalised product backlog had been formed, it was separated into smaller, tasks and put into
