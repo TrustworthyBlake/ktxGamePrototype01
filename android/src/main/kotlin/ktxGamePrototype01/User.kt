@@ -2,6 +2,8 @@ package ktxGamePrototype01
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import java.util.*
+import kotlin.collections.HashMap
 
 object User {
 
@@ -20,20 +22,23 @@ object User {
     private var quizTeacherList: List<String> = emptyList()
     private var achievements: List<String> = emptyList()
 
-        fun setUser(id: String, name: String, email: String, score: Int, teacher: Boolean, head: String, body: String, courses: List<String>, achievList: List<String>) {
-            userID = id
-            userName = name
-            userEmail = email
-            userScore = score
-            isTeacher = teacher
+
+        fun setUser(user: HashMap<String, Any>){
             if (userID != "") {
                 userLoaded = true
             }
-            playerHead = head
-            playerBody = body
-            courseList = courses
-            achievements = achievList
+            userID = user["userid"].toString()
+            userName = user["name"].toString()
+            userEmail = user["email"].toString()
+            userScore = user["score"].toString().toInt()
+            isTeacher = user["teacher"] as Boolean
+            playerHead = user["head"].toString()
+            playerBody = user["body"].toString()
+            courseList = user["courses"] as List<String>
+            achievements = user["achievements"] as List<String>
+
         }
+
 
         fun logoutUser() {
             userID = ""

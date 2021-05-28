@@ -1,3 +1,4 @@
+
 package ktxGamePrototype01
 
 import android.util.Log
@@ -24,19 +25,27 @@ object DBObject {
         db.collection("users").document(userID).get().addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 // if query is successful, reads the data and stores in variables
-                AppActivity().userObject.setUser(userID,
-                    task.result?.get("name").toString(), // name
-                    task.result?.get("email").toString(),  // email
-                    task.result?.get("score").toString().toInt(),  // score
-                    task.result?.get("teacher") as Boolean,  // is teacher or not
-                    task.result?.get("head").toString(),
-                    task.result?.get("body").toString(),
-                    task.result?.get("courses") as List<String>,
-                    task.result?.get("achievement") as List<String>
+
+                val user = hashMapOf(
+                        "userid" to userID,
+                        "name" to task.result?.get("name").toString(), // name
+                        "email" to task.result?.get("email").toString(),  // email
+                        "score" to task.result?.get("score").toString().toInt(),  // score
+                        "teacher" to task.result?.get("teacher") as Boolean,  // is teacher or not
+                        "head" to task.result?.get("head").toString(),      // avatar head
+                        "body" to task.result?.get("body").toString(),      // avatar body
+                        "courses" to task.result?.get("courses") as List<String>,   // course list
+                        "achievements" to task.result?.get("achievement") as List<String>  // achievements list
                 )
-                getTeachersFromCourses(task.result?.get("courses") as List<String>)
-                getQuizesFromCourses(task.result?.get("courses") as List<String>)
-                getTeachersForQuizzes(task.result?.get("courses") as List<String>)
+
+                AppActivity().userObject.setUser(user)
+
+                val courseList = task.result?.get("courses") as List<String>
+
+                getTeachersFromCourses(courseList)
+                getQuizesFromCourses(courseList)
+                getTeachersForQuizzes(courseList)
+
             }
         }
     }
