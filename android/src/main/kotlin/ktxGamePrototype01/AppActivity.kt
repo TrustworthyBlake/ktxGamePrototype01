@@ -30,22 +30,23 @@ class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = Firebase.auth
         savedDarkData = sharedprefs(this)
+
+        //checks if dark mode is enabled
         if(savedDarkData.loadDarkModeState() == true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        //set red theme
-        if(savedDarkData.loadRedModeState() == true){
-            setTheme(R.style.RedTheme)
-        }else if(savedDarkData.loadGreenModeState() == true){
-            setTheme(R.style.GreenTheme)
-        }else if(savedDarkData.loadOrangeModeState() == true){
-            setTheme(R.style.OrangeTheme)
-        }else if(savedDarkData.loadPurpleModeState() == true){
-            setTheme(R.style.PurpleTheme)
-        }else{
-            setTheme((R.style.AppTheme))
+
+        //opens sharedprefs file and gets a string for what theme is set
+        val themeChosen = savedDarkData.loadThemeColour()
+
+        when (themeChosen){
+            "Red" ->  {setTheme(R.style.RedTheme)}
+            "Green" ->  {setTheme(R.style.GreenTheme)}
+            "Purple" ->  {setTheme(R.style.PurpleTheme)}
+            "Orange" ->  {setTheme(R.style.OrangeTheme)}
+            else -> {setTheme(R.style.AppTheme)}
         }
 
         super.onCreate(savedInstanceState)

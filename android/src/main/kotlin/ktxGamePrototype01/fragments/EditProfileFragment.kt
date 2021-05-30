@@ -111,6 +111,7 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 position: Int,
                 id: Long
             ) {
+                // setting the previewed characters clothing according to the user's selection of head
                 type1 = parent.getItemAtPosition(position).toString()
                 when (type1){
                     "colour1" ->  {headImage.setImageResource(R.drawable.head1); saveDatahead(type1, User.getName()) }
@@ -125,8 +126,6 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
             }
         }
 
-
-
         // spinner2 on item selected listener
         spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -135,7 +134,7 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 position: Int,
                 id: Long
             ) {
-                // setting the previewed characters clothing according to the user's selection of magic type
+                // setting the previewed characters clothing according to the user's selection of body
                 type2 = parent.getItemAtPosition(position).toString()
                 when (type2) {
                     "colour1" -> {bodyImage.setImageResource(R.drawable.body1); saveDatabody(type2, User.getName()) }
