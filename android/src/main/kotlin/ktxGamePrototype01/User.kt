@@ -101,11 +101,21 @@ object User {
             return quizTeacherList
          }
 
+        // Sets the teachers avatar configuration in a list, takes the teacher's name,
+        // head and body as String
         fun setTeacherAvatars(name: String, head: String, body: String) {
-            if(!teacherAvatarList.contains(name)){
-                teacherAvatarList.add(name)
-                teacherAvatarList.add(head)
-                teacherAvatarList.add(body)
+            // Data tags used by the game engine to sort the types
+            val nameDataTag = "name-"
+            val headDataTag = "head-"
+            val bodyDataTag = "body-"
+            val completeTag = "complete-complete"
+
+            // Adds the teacher data to a list if not already existing in list
+            if(!teacherAvatarList.contains(nameDataTag+name)){
+                teacherAvatarList.add(nameDataTag+name)
+                teacherAvatarList.add(headDataTag+head)
+                teacherAvatarList.add(bodyDataTag+body)
+                teacherAvatarList.add(completeTag)
             }
         }
 
