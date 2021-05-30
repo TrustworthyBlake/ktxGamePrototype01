@@ -4,6 +4,14 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
+enum class InteractableType{
+    CORRECTANSWER,
+    WRONGANSWER,
+    TEACHER,
+    QUEST,
+    DEFAULT
+}
+
 class InteractableComponent : Component, Pool.Poolable{
     var correctAnswer = false
     var maxPointsQuestion = 0
@@ -11,6 +19,7 @@ class InteractableComponent : Component, Pool.Poolable{
     var isQuest = false
     var isQuestOrAnswer = false
     var nameOfQuiz = ""
+    var type = InteractableType.DEFAULT
 
     override fun reset(){
         correctAnswer = false
@@ -19,6 +28,7 @@ class InteractableComponent : Component, Pool.Poolable{
         isQuest = false
         nameOfQuiz = ""
         isQuestOrAnswer = false
+        type = InteractableType.DEFAULT
     }
 
     companion object{
