@@ -17,7 +17,7 @@ import ktxGamePrototype01.unitScale
 
 private val LOG = logger<CategorizeScreen>()
 
-class CategorizeScreen(game: Prot01, qzName : String, private val playerUserName : String) : AbstractScreen(game) {
+class CategorizeScreen(game: Prot01, categorizeName : String, private val playerUserName : String) : AbstractScreen(game) {
 
     private var viewport = FitViewport(9f, 16f)
     var playeContr: playerControl = playerControl(batch as SpriteBatch)
