@@ -5,26 +5,40 @@ import com.badlogic.ashley.systems.IteratingSystem
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktxGamePrototype01.entityComponentSystem.components.BindEntitiesComponent
+import ktxGamePrototype01.entityComponentSystem.components.TextComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
 // The system controls the bound slave entity to its master entity
 class BindEntitiesSystem : IteratingSystem(
     allOf(
-        BindEntitiesComponent::class,
-        TransformComponent::class,
+        BindEntitiesComponent::class, TransformComponent::class, TextComponent::class,
     ).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        val transformComp = entity[TransformComponent.mapper]
-        require(transformComp != null){"Error: Missing transform component"}
+
         val bindComp = entity[BindEntitiesComponent.mapper]
-        require(bindComp != null){"Error: Missing bind entities component"}
-        bindComp.masterEntity[TransformComponent.mapper]?.let { bindTransform ->
-            transformComp.posVec3.set(
-                bindTransform.posVec3.x + bindComp.posOffset.x,
-                bindTransform.posVec3.y + bindComp.posOffset.y,
-                bindTransform.posVec3.z
-            )
+        require(bindComp != null) { "Error: Missing bind entities component" }
+
+        if (!bindComp.isItemEntity) {
+            val transformComp = entity[TransformComponent.mapper]
+            require(transformComp != null) { "Error: Missing transform component" }
+            bindComp.masterEntity[TransformComponent.mapper]?.let { bindTransform ->
+                transformComp.posVec3.set(
+                        bindTransform.posVec3.x + bindComp.posOffset.x,
+                        bindTransform.posVec3.y + bindComp.posOffset.y,
+                        bindTransform.posVec3.z
+                )
+            }
+        }
+        else {
+            val textComp = entity[TextComponent.mapper]
+            require(textComp != null) {"Error: Missing text component"}
+            bindComp.masterEntity[TextComponent.mapper]?.let { bindTransform ->
+                textComp.posTextVec2.set(
+                        bindTransform.posTextVec2.x + bindComp.posOffset.x,
+                        bindTransform.posTextVec2.y + bindComp.posOffset.y
+                )
+            }
         }
     }
 }

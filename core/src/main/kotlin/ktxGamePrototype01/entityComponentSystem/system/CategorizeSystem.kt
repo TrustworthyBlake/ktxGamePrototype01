@@ -52,8 +52,8 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
         var maxLength = 34
 
-        val questionPosList = mutableListOf<Vector2>()
-        var questionPosX = 10f                      // Do not change to val
+        val questionPosList = mutableListOf<Vector2>()  // Todo: Maybe remove this list
+        var questionPosX = 10f                      // Do not change to val, work in progress
         var questionPosY = 21f
 
         val categoryPosList = mutableListOf<Vector2>()
@@ -107,7 +107,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
                 val (dataChopped, spacer) = helpFun.chopString(data, maxLength)
 
-                val textEntity = engine.entity {
+                var textEntity = engine.entity {
                     with<TextComponent> {
                         isText = true
                         textStr = dataChopped
@@ -161,6 +161,13 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                             }
                             with<InteractableComponent> {
 
+                            }
+                        }
+                        textEntity = engine.entity {
+                            with<BindEntitiesComponent> {
+                                masterEntity = itemEntity
+                                posOffset.set(0f, 1f + spacer)
+                                isItemEntity = true
                             }
                         }
                     }

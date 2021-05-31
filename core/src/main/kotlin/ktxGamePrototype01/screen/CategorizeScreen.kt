@@ -125,7 +125,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
 
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
-        val quizMap = Gdx.files.internal("maps/mapOpenWorld01.txt")
+        val quizMap = Gdx.files.internal("maps/map01.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass1.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
         val treeTexture3 = Texture(Gdx.files.internal("graphics/tree3.png"))

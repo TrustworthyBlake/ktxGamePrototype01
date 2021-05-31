@@ -9,9 +9,11 @@ import ktx.ashley.mapperFor
 class BindEntitiesComponent : Component, Pool.Poolable {
     lateinit var masterEntity : Entity
     var posOffset = Vector2()
+    var isItemEntity = false
 
     override fun reset() {
         posOffset.set(0f,0f)
+        isItemEntity = false
     }
     companion object{
         val mapper = mapperFor<BindEntitiesComponent>()
