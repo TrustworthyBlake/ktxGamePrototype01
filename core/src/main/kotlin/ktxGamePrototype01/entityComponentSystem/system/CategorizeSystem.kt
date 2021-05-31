@@ -5,6 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
+import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -19,8 +20,13 @@ private val LOG = logger<CategorizeSystem>()
 
 class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()){
 
+    private var doneOnce = false
+
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        TODO("Not yet implemented")
+        if (!doneOnce){
+        createCategorizeEntities("sumting")
+            doneOnce = true
+        }
     }
 
     enum class EntityType{
@@ -45,7 +51,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var item: String
         var count = 0
         var dataTag = ""
-        var data = ""
+        var data = mutableListOf<String>()
         var maxScore = 0
 
         var type = EntityType.QUESTION
@@ -70,31 +76,40 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         val itemTexture = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
 
         var belongsToNr = 0
+        var tempCharToNum : Char
 
         var tempVecPos = Vector2(Vector2.Zero)
 
         if (!tempList.isNullOrEmpty()) {
             tempList.forEach {
                 dataTag = it.split("-")[0]
-                data = it.split("-")[1]
+                data = it.split("-").toMutableList()
+
+                LOG.debug { "dataTag = $dataTag" }
+                //LOG.debug { "data = $data" }
 
                 when(dataTag){
                     "question" -> {
-                        maxScore = data.split("-")[1].toInt()
-                        data = data.split("-")[0]
+                        maxScore = data[2].toInt()
                         maxLength = 34
                         questionPosList.add(Vector2(questionPosX, questionPosY))
                     }
                     "category" -> {
-                        belongsToNr = data.first().toInt()
-                        data.drop(1)
+                        tempCharToNum = data[1].first()
+                        belongsToNr = Character.getNumericValue(tempCharToNum)
+                        //data.elementAt(1).drop(1).add
+                        LOG.debug { "data = ${data[1]}" }
+                        LOG.debug { "number = $belongsToNr" }
+                        data[1] = data[1].drop(1)
+                        LOG.debug { "data = ${data[1]}" }
                         maxLength = 24
                         categoryPosList.add(Vector2(catPosX, catPosY))
                         catPosX += 10
                     }
                     "item" -> {
-                        belongsToNr = data.first().toInt()
-                        data.drop(1)
+                        tempCharToNum = data[1].first()
+                        belongsToNr = Character.getNumericValue(tempCharToNum)
+                        data[1] = data[1].drop(1)
                         maxLength = 24
                         // Todo: make more performance friendly
                         allPosLists.clear()
@@ -105,7 +120,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                     else -> LOG.debug{"Error in categorizeList"}
                 }
 
-                val (dataChopped, spacer) = helpFun.chopString(data, maxLength)
+                val (dataChopped, spacer) = helpFun.chopString(data[1], maxLength)
 
                 var textEntity = engine.entity {
                     with<TextComponent> {
@@ -163,12 +178,12 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
                             }
                         }
-                        textEntity = engine.entity {
-                            with<BindEntitiesComponent> {
+                        textEntity.addComponent<BindEntitiesComponent>(engine) {
+                            //with<> {
                                 masterEntity = itemEntity
-                                posOffset.set(0f, 1f + spacer)
+                                posOffset.set(0f, 5f + spacer) //todo fix
                                 isItemEntity = true
-                            }
+                            //}
                         }
                     }
                 }

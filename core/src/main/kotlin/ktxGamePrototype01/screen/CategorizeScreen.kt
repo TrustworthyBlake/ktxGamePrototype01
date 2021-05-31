@@ -31,7 +31,8 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
 
     override fun show() {
-        // Todo call create player
+        createUserEntityFromPlayerData()
+        createMapEntities()
     }
 
     override fun resize(width: Int, height: Int) {
@@ -40,6 +41,8 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
 
     override fun render(delta: Float) {
         // Todo victory screen
+        engine.update(delta)
+        playeContr.draw()
     }
 
     override fun dispose() {
@@ -59,7 +62,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(29.5f- offsetPos, 15f, -1f)
+                    posVec3.set(10.5f- offsetPos, 14f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -118,6 +121,9 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
                     posOffset.set(0f, 1f)
                 }
                 with<OrientationComponent>()
+                with<CategorizeComponent> {
+                // todo
+                }
             }
 
         }else{LOG.debug { "Error: Can not find player data" }}
@@ -125,7 +131,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
 
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
-        val quizMap = Gdx.files.internal("maps/map01.txt")
+        val quizMap = Gdx.files.internal("maps/map0.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass1.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
         val treeTexture3 = Texture(Gdx.files.internal("graphics/tree3.png"))

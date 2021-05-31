@@ -11,7 +11,7 @@ import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 // The system controls the bound slave entity to its master entity
 class BindEntitiesSystem : IteratingSystem(
     allOf(
-        BindEntitiesComponent::class, TransformComponent::class, TextComponent::class,
+        BindEntitiesComponent::class, TransformComponent::class,
     ).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {

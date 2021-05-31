@@ -12,6 +12,7 @@ import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.system.*
+import ktxGamePrototype01.screen.CategorizeScreen
 import ktxGamePrototype01.screen.QuizScreen
 import ktxGamePrototype01.screen.OpenWorldScreen
 
@@ -41,6 +42,7 @@ class Prot01(private val showScreen: String, private val playerName : String,
         addSystem(QuizSystem())
         addSystem(BindEntitiesSystem())
         addSystem(QuizQuestSystem())
+        addSystem(CategorizeSystem())
     }  }
 
     // Adds and sets the game screen based on the showScreen string, defaults to OpenWorldScreen
@@ -53,8 +55,10 @@ class Prot01(private val showScreen: String, private val playerName : String,
                 setScreen<QuizScreen>()
             }
             else -> {
-                addScreen(OpenWorldScreen(this, teacherDataList, playerName))
-                setScreen<OpenWorldScreen>()
+                //addScreen(OpenWorldScreen(this, teacherDataList, playerName))
+                //setScreen<OpenWorldScreen>()
+                addScreen(CategorizeScreen(this, "dong", playerName))
+                setScreen<CategorizeScreen>()
             }
         }
     }
