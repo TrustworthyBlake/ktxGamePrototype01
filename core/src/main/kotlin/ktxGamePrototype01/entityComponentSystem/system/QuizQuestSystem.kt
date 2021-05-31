@@ -35,7 +35,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         val signPostTexture = Texture(Gdx.files.internal("graphics/signpost.png"))
         val helpFun = HelperFunctions()
 
-        // Array that holds the vector position for 4 entities
+        // Array that holds the vector position for entities, added to dynamically
         var qPosArray = Array<Vector2>()
         var questPosX = 26f
         var questPosY = 10f
