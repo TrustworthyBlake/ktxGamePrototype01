@@ -28,7 +28,8 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
-    val items = arrayOf("colour1", "colour2", "colour3", "colour4")
+    val headItems = arrayOf("head1", "head2", "head3", "head4")
+    val bodyItems = arrayOf("body1", "body2", "body3", "body4")
     //val imegs = arrayOf(R.drawable.default1, R.drawable.default2, R.drawable.ebin, R.drawable.gond)
 
 
@@ -49,10 +50,10 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         val spinner1 = binding.root.findViewById<Spinner>(R.id.spinner1)
         val spinner2 = binding.root.findViewById<Spinner>(R.id.spinner2)
 
-        val adapter: ArrayAdapter<String> = object: ArrayAdapter<String>(
+        val adapterHead: ArrayAdapter<String> = object: ArrayAdapter<String>(
             this.requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            items
+            headItems
         ){
             override fun getDropDownView(
                 position: Int,
@@ -81,25 +82,57 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
             }
         }
 
-        spinner1.adapter = adapter
-        spinner2.adapter = adapter
+        val adapterBody: ArrayAdapter<String> = object: ArrayAdapter<String>(
+                this.requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                bodyItems
+        ){
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+                // set item text bold
+                view.setTypeface(view.typeface, Typeface.BOLD)
+
+                // set selected item style for both spinners
+                if (position == spinner1.selectedItemPosition){
+                    view.background = ColorDrawable(Color.parseColor("#FAEBD7"))
+                    view.setTextColor(Color.parseColor("#008000"))
+                }
+                if (position == spinner2.selectedItemPosition){
+                    view.background = ColorDrawable(Color.parseColor("#FAEBD7"))
+                    view.setTextColor(Color.parseColor("#EB6C49"))
+                }
+
+                return view
+            }
+        }
+
+        spinner1.adapter = adapterHead
+        spinner2.adapter = adapterBody
 
 
         val setswitch1 = getHead(User.getName())
         val setswitch2 = getBody(User.getName())
 
         when (setswitch1){
-            "colour1" ->  {spinner1.setSelection(0)}
-            "colour2" ->  {spinner1.setSelection(1)}
-            "colour3" ->  {spinner1.setSelection(2)}
-            "colour4" ->  {spinner1.setSelection(3)}
+            "head1" ->  {spinner1.setSelection(0)}
+            "head2" ->  {spinner1.setSelection(1)}
+            "head3" ->  {spinner1.setSelection(2)}
+            "head4" ->  {spinner1.setSelection(3)}
         }
 
         when (setswitch2) {
-            "colour1" -> {spinner2.setSelection(0)}
-            "colour2" -> {spinner2.setSelection(1)}
-            "colour3" -> {spinner2.setSelection(2)}
-            "colour4" -> {spinner2.setSelection(3)}
+            "body1" -> {spinner2.setSelection(0)}
+            "body2" -> {spinner2.setSelection(1)}
+            "body3" -> {spinner2.setSelection(2)}
+            "body4" -> {spinner2.setSelection(3)}
         }
 
 
@@ -114,11 +147,13 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 // setting the previewed characters clothing according to the user's selection of head
                 type1 = parent.getItemAtPosition(position).toString()
                 when (type1){
-                    "colour1" ->  {headImage.setImageResource(R.drawable.head1); saveDatahead(type1, User.getName()) }
-                    "colour2" ->  {headImage.setImageResource(R.drawable.head2); saveDatahead(type1, User.getName()) }
-                    "colour3" ->  {headImage.setImageResource(R.drawable.head3); saveDatahead(type1, User.getName()) }
-                    "colour4" ->  {headImage.setImageResource(R.drawable.head4); saveDatahead(type1, User.getName()) }
+                    "head1" ->  {headImage.setImageResource(R.drawable.head1); saveDatahead(type1, User.getName()) }
+                    "head2" ->  {headImage.setImageResource(R.drawable.head2); saveDatahead(type1, User.getName()) }
+                    "head3" ->  {headImage.setImageResource(R.drawable.head3); saveDatahead(type1, User.getName()) }
+                    "head4" ->  {headImage.setImageResource(R.drawable.head4); saveDatahead(type1, User.getName()) }
                 }
+                User.setHead(type1)
+                User.updateFirestoreUser()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -137,11 +172,13 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                 // setting the previewed characters clothing according to the user's selection of body
                 type2 = parent.getItemAtPosition(position).toString()
                 when (type2) {
-                    "colour1" -> {bodyImage.setImageResource(R.drawable.body1); saveDatabody(type2, User.getName()) }
-                    "colour2" -> {bodyImage.setImageResource(R.drawable.body2); saveDatabody(type2, User.getName()) }
-                    "colour3" -> {bodyImage.setImageResource(R.drawable.body3); saveDatabody(type2, User.getName()) }
-                    "colour4" -> {bodyImage.setImageResource(R.drawable.body4); saveDatabody(type2, User.getName()) }
+                    "body1" -> {bodyImage.setImageResource(R.drawable.body1); saveDatabody(type2, User.getName()) }
+                    "body2" -> {bodyImage.setImageResource(R.drawable.body2); saveDatabody(type2, User.getName()) }
+                    "body3" -> {bodyImage.setImageResource(R.drawable.body3); saveDatabody(type2, User.getName()) }
+                    "body4" -> {bodyImage.setImageResource(R.drawable.body4); saveDatabody(type2, User.getName()) }
                 }
+                User.setBody(type2)
+                User.updateFirestoreUser()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

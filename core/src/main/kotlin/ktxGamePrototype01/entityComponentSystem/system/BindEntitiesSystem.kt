@@ -4,14 +4,18 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.log.debug
+import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.BindEntitiesComponent
 import ktxGamePrototype01.entityComponentSystem.components.TextComponent
 import ktxGamePrototype01.entityComponentSystem.components.TransformComponent
 
+private val LOG = logger<BindEntitiesSystem>()
+
 // The system controls the bound slave entity to its master entity
 class BindEntitiesSystem : IteratingSystem(
     allOf(
-        BindEntitiesComponent::class, TransformComponent::class,
+        BindEntitiesComponent::class,
     ).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
@@ -33,12 +37,12 @@ class BindEntitiesSystem : IteratingSystem(
         else {
             val textComp = entity[TextComponent.mapper]
             require(textComp != null) {"Error: Missing text component"}
-            bindComp.masterEntity[TextComponent.mapper]?.let { bindTransform ->
+            bindComp.masterEntity[TransformComponent.mapper]?.let { bindTransform ->
                 textComp.posTextVec2.set(
-                        bindTransform.posTextVec2.x + bindComp.posOffset.x,
-                        bindTransform.posTextVec2.y + bindComp.posOffset.y
-                )
-            }
+                        bindTransform.posVec3.x + bindComp.posOffset.x,
+                        bindTransform.posVec3.y + bindComp.posOffset.y
+                    )
+                }
         }
     }
 }

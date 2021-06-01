@@ -210,18 +210,18 @@ class UserProfileFragment : Fragment() {
 
         val daImage1 : String = getHead(User.getName())
         when (daImage1){
-            "colour1" ->  {headImage.setImageResource(R.drawable.head1);}
-            "colour2" ->  {headImage.setImageResource(R.drawable.head2);}
-            "colour3" ->  {headImage.setImageResource(R.drawable.head3);}
-            "colour4" ->  {headImage.setImageResource(R.drawable.head4);}
+            "head1" ->  {headImage.setImageResource(R.drawable.head1);}
+            "head2" ->  {headImage.setImageResource(R.drawable.head2);}
+            "head3" ->  {headImage.setImageResource(R.drawable.head3);}
+            "head4" ->  {headImage.setImageResource(R.drawable.head4);}
         }
 
         val daImage2 : String = getBody(User.getName())
         when (daImage2){
-            "colour1" -> {bodyImage.setImageResource(R.drawable.body1);}
-            "colour2" -> {bodyImage.setImageResource(R.drawable.body2);}
-            "colour3" -> {bodyImage.setImageResource(R.drawable.body3);}
-            "colour4" -> {bodyImage.setImageResource(R.drawable.body4);}
+            "body1" -> {bodyImage.setImageResource(R.drawable.body1);}
+            "body2" -> {bodyImage.setImageResource(R.drawable.body2);}
+            "body3" -> {bodyImage.setImageResource(R.drawable.body3);}
+            "body4" -> {bodyImage.setImageResource(R.drawable.body4);}
         }
 
     }

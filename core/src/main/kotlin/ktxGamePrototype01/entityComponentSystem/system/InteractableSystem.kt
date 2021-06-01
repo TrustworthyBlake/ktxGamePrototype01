@@ -40,6 +40,9 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     }
 
     private val interactables = mutableListOf<Int>()
+    private var numOfBoundEntities = 0
+
+
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
         if (interactables.isEmpty()) {
@@ -116,6 +119,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
+
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
         val interact = entity[InteractableComponent.mapper]
@@ -144,6 +148,19 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
 
 
+                if(p.playerControl.isPressed) {
+
+                    if (numOfBoundEntities <= 1) {
+                        removeBindEntitiesComp(entity)
+                        //numOfBoundEntities -= 1
+
+
+                    }
+                    LOG.debug { "Numofboundents = $numOfBoundEntities" }
+                }
+
+
+
                 // If playerActivationHitbox overlaps with interactable hitbox
                 if(playerActivationHitbox.overlaps(interactableHitbox)){
                     if(p.playerControl.isPressed) {
@@ -154,10 +171,21 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             InteractableType.WRONGANSWER -> hasAnsweredQuiz(interact, p, player, playerTransform, false)
                             InteractableType.TEACHER -> interactWithTeacher(entity)
                             InteractableType.QUEST -> interactWithQuest(p, interact)
+                            InteractableType.CATEGORY -> {}
+                            InteractableType.ITEM -> {
+                                addBindEntitiesComp(player, entity)
+
+                            }
                             else -> LOG.debug { "No Collision Type" }
                         }
 
+
+
+
                     }
+
+
+
                 }
 
 
@@ -173,6 +201,26 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     if (playerTransform.posVec3.y > interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.069f
                 }
             }
+        }
+    }
+
+    private fun addBindEntitiesComp(playerEnt : Entity, interactEnt : Entity){
+        if(!interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)) {
+            numOfBoundEntities += 1
+
+            interactEnt.addComponent<BindEntitiesComponent>(engine) {
+                masterEntity = playerEnt
+                posOffset.set(1f, 0.25f)
+            }
+        }
+    }
+
+    private fun removeBindEntitiesComp(interactEnt : Entity) {
+        LOG.debug { "Called remove func" }
+        if(interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)){
+            interactEnt.remove<BindEntitiesComponent>()
+            numOfBoundEntities -= 1
+            LOG.debug { "removing bind" }
         }
     }
 }

@@ -5,10 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
-import ktx.ashley.addComponent
-import ktx.ashley.allOf
-import ktx.ashley.entity
-import ktx.ashley.with
+import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.HelperFunctions
@@ -54,7 +51,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var data = mutableListOf<String>()
         var maxScore = 0
 
-        var type = EntityType.QUESTION
+        //var type = EntityType.QUESTION
 
         var maxLength = 34
 
@@ -122,7 +119,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
                 val (dataChopped, spacer) = helpFun.chopString(data[1], maxLength)
 
-                var textEntity = engine.entity {
+                val textEntity = engine.entity {
                     with<TextComponent> {
                         isText = true
                         textStr = dataChopped
@@ -144,6 +141,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                         font.data.setScale(4.0f, 4.0f)
                     }
                 }
+                //LOG.debug { textEntity.components.toString() }
                 when(dataTag) {
                     "category" -> {
                         val categoryEntity = engine.entity {
@@ -175,16 +173,17 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                                 }
                             }
                             with<InteractableComponent> {
-
+                                type = InteractableType.ITEM
                             }
                         }
+
                         textEntity.addComponent<BindEntitiesComponent>(engine) {
-                            //with<> {
-                                masterEntity = itemEntity
-                                posOffset.set(0f, 5f + spacer) //todo fix
-                                isItemEntity = true
-                            //}
+                            masterEntity = itemEntity
+                            posOffset.set(0f + offsetPos, 0.6f + spacer) //todo fix
+                            isItemEntity = true
+                            LOG.debug { "Bind component added" }
                         }
+                        LOG.debug { textEntity.components.toString() }
                     }
                 }
                 count += 1
@@ -193,7 +192,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
     }
 
     private fun randomizePositionVector(posArray : List<Vector2>) : Vector2 {
-        val maxPosValue = 40
+        val maxPosValue = 20
         val minPosValue = 0
         var rndmX = (minPosValue..maxPosValue).random().toFloat()
         var rndmY = (minPosValue..maxPosValue).random().toFloat()

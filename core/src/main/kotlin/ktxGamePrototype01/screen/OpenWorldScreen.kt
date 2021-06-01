@@ -78,10 +78,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     sprite.run{
                         // Sets the entity's texture based on the string
                         when(playerBody){
-                            "colour1" -> setRegion(playerTextureBody1)
-                            "colour2" -> setRegion(playerTextureBody2)
-                            "colour3" -> setRegion(playerTextureBody3)
-                            "colour4" -> setRegion(playerTextureBody4)
+                            "body1" -> setRegion(playerTextureBody1)
+                            "body2" -> setRegion(playerTextureBody2)
+                            "body3" -> setRegion(playerTextureBody3)
+                            "body4" -> setRegion(playerTextureBody4)
                             else -> setRegion(playerTextureBody1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -113,10 +113,10 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                     sprite.run{
                         // Sets the entity's texture based on the string
                         when(playerHead){
-                            "colour1" -> setRegion(playerTextureHead1)
-                            "colour2" -> setRegion(playerTextureHead2)
-                            "colour3" -> setRegion(playerTextureHead3)
-                            "colour4" -> setRegion(playerTextureHead4)
+                            "head1" -> setRegion(playerTextureHead1)
+                            "head2" -> setRegion(playerTextureHead2)
+                            "head3" -> setRegion(playerTextureHead3)
+                            "head4" -> setRegion(playerTextureHead4)
                             else -> setRegion(playerTextureHead1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)

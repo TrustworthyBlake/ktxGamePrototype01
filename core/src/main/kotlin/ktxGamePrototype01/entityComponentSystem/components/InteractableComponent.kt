@@ -9,6 +9,8 @@ enum class InteractableType{
     WRONGANSWER,
     TEACHER,
     QUEST,
+    ITEM,
+    CATEGORY,
     DEFAULT
 }
 

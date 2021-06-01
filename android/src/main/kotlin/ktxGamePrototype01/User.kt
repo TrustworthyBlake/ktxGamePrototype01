@@ -49,6 +49,14 @@ object User {
             playerBody = body
         }
 
+        fun setHead(head : String){
+            playerHead = head
+        }
+
+        fun setBody(body : String){
+            playerBody = body
+        }
+
         fun getHeadAndBody(): List<String> {
              return listOf(userName, playerHead, playerBody)
         }
