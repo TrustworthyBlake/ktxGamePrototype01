@@ -2,7 +2,6 @@ package ktxGamePrototype01.entityComponentSystem.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import ktx.ashley.*
 import ktx.log.debug
@@ -20,7 +19,6 @@ const val hitboxScalerMin = 0.5f
 class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class, TransformComponent::class).get()) {
 
     private val playerHitbox = Rectangle()
-    private val interactableHitbox = Rectangle()
     private val playerActivationHitbox = Rectangle()
 
     private val playerEntities by lazy {
@@ -38,10 +36,13 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private val quizQuestEntities by lazy {
         engine.getEntitiesFor(allOf(QuizQuestComponent::class).get())
     }
+    private val categorizeEntities by lazy {
+        engine.getEntitiesFor(allOf(CategorizeComponent::class).get())
+    }
 
     private val interactables = mutableListOf<Int>()
     private var numOfBoundEntities = 0
-
+    private var timeCounter = 0f
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -49,6 +50,8 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             interactables.add(1)
             LOG.debug { "Spawned" }
         }
+        timeCounter += deltaTime
+        if (timeCounter > 1000f) timeCounter = 0f
     }
 
     //  Function that edits entities on map and updates user information when player has answered a question
@@ -119,17 +122,30 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
         val interact = entity[InteractableComponent.mapper]
         require(interact != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
-        interactableHitbox.set(
+
+        when(interact.type){
+            InteractableType.CATEGORY -> {
+                interact.interactableHitbox.set( // Todo make bigger
+                transform.posVec3.x + 0.25f,
+                transform.posVec3.y,
+                transform.sizeVec2.x * hitboxScalerMin,
+                transform.sizeVec2.y * hitboxScalerMin
+                )
+            }
+            else -> {
+                interact.interactableHitbox.set(
                 transform.posVec3.x + 0.25f,
                 transform.posVec3.y - 0.0f,
                 transform.sizeVec2.x  * hitboxScalerMin,
                 transform.sizeVec2.y  * hitboxScalerMin
-        )
+                )
+            }
+        }
+
         playerEntities.forEach { player ->
             val p = player[PlayerComponent.mapper]
             require(p != null)
@@ -146,23 +162,13 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.sizeVec2.x* hitboxScalerMax,
                         playerTransform.sizeVec2.y* hitboxScalerMax)
 
-
-
                 if(p.playerControl.isPressed) {
-
-                    if (numOfBoundEntities <= 1) {
-                        removeBindEntitiesComp(entity)
-                        //numOfBoundEntities -= 1
-
-
-                    }
-                    LOG.debug { "Numofboundents = $numOfBoundEntities" }
+                    removeBindEntitiesComp(entity, timeCounter, p)
+                    //LOG.debug { "Numofboundents = $numOfBoundEntities" }
                 }
 
-
-
                 // If playerActivationHitbox overlaps with interactable hitbox
-                if(playerActivationHitbox.overlaps(interactableHitbox)){
+                if(playerActivationHitbox.overlaps(interact.interactableHitbox)){
                     if(p.playerControl.isPressed) {
 
                         //  Based on what type of interactable player interact with, launch relevant function.
@@ -173,57 +179,135 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             InteractableType.QUEST -> interactWithQuest(p, interact)
                             InteractableType.CATEGORY -> {}
                             InteractableType.ITEM -> {
-                                addBindEntitiesComp(player, entity)
+                                addBindEntitiesComp(player, entity, timeCounter)
 
                             }
                             else -> LOG.debug { "No Collision Type" }
                         }
-
-
-
-
                     }
-
-
-
                 }
 
-
-
-
                 //  IF PLAYER OVERLAPS WITH HITBOX
-                if (playerHitbox.overlaps(interactableHitbox)) {
+                if (playerHitbox.overlaps(interact.interactableHitbox)) {
 
                     //  SET STANDARD COLLISION
-                    if (playerTransform.posVec3.x < interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.069f
-                    if (playerTransform.posVec3.x > interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.069f
-                    if (playerTransform.posVec3.y < interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y - 0.069f
-                    if (playerTransform.posVec3.y > interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.069f
+                    if (playerTransform.posVec3.x < interact.interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x - 0.069f
+                    if (playerTransform.posVec3.x > interact.interactableHitbox.x) playerTransform.posVec3.x = playerTransform.posVec3.x + 0.069f
+                    if (playerTransform.posVec3.y < interact.interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y - 0.069f
+                    if (playerTransform.posVec3.y > interact.interactableHitbox.y) playerTransform.posVec3.y = playerTransform.posVec3.y + 0.069f
                 }
             }
         }
     }
 
-    private fun addBindEntitiesComp(playerEnt : Entity, interactEnt : Entity){
-        if(!interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)) {
+    private fun addBindEntitiesComp(playerEnt : Entity, interactEnt : Entity, timeCount: Float){
+        if(!interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)
+                && numOfBoundEntities < 1 && timeCounter > 1.0f) {  // < less than
             numOfBoundEntities += 1
 
             interactEnt.addComponent<BindEntitiesComponent>(engine) {
                 masterEntity = playerEnt
-                posOffset.set(1f, 0.25f)
+                posOffset.set(1.0f, 0.25f)
             }
+            timeCounter = 0f
         }
     }
 
-    private fun removeBindEntitiesComp(interactEnt : Entity) {
-        LOG.debug { "Called remove func" }
-        if(interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)){
+    private fun removeBindEntitiesComp(interactEnt : Entity, timeCount: Float, p: PlayerComponent) {
+        if(interactEnt.contains<BindEntitiesComponent>(BindEntitiesComponent.mapper)
+                && numOfBoundEntities >= 1 && timeCounter > 0.5f) { // < less than
             interactEnt.remove<BindEntitiesComponent>()
             numOfBoundEntities -= 1
-            LOG.debug { "removing bind" }
+            timeCounter = 0f
+            val x = categorizedItemCheck(interactEnt, p)
+            if (x) LOG.debug { "Categorize Completed" }
         }
     }
-}
 
+    var numOfItemsInCorrectCategory = 0
+    var numOfItemsInWrongCategory = 0
+    private fun categorizedItemCheck(interactEnt : Entity, p: PlayerComponent) : Boolean { // This is retarded
+                                                                     // Todo find a better solution
+
+        var sumOfCategorizedItems = 0
+        var maxPoints = 0
+        var pointSplitOnNumOfItems = 0
+        var categorizeGameCompleted = false
+
+
+        val interact = interactEnt[InteractableComponent.mapper]
+        require(interact != null)
+
+        //Todo fix numOfItems correct and wrong, must be decremented when moved outside hitbox
+        if(interact.type == InteractableType.ITEM) {
+            LOG.debug { "Inside if for type: category" }
+            interactableEntities.forEach { interactable2 ->
+                val interact2 = interactable2[InteractableComponent.mapper]
+                require(interact2 != null)
+                if (interact2.type == InteractableType.CATEGORY && interact.interactableHitbox.overlaps(interact2.interactableHitbox)){
+                    maxPoints = interact2.maxPointsQuestion
+                    if (interact.belongsToCategory == interact2.belongsToCategory) {
+                        numOfItemsInCorrectCategory += 1
+                        LOG.debug { "numOfItemsInCorrectCategory= $numOfItemsInCorrectCategory" }
+                    }else{
+                        numOfItemsInWrongCategory += 1
+                        LOG.debug { "numOfItemsInWrongCategory= $numOfItemsInWrongCategory" }
+                    }
+                }
+            }
+        }
+
+        val (numOfCategories, numOfItems) = categoriesAndItemsCount()
+        sumOfCategorizedItems = numOfItemsInCorrectCategory + numOfItemsInWrongCategory
+
+        if(sumOfCategorizedItems == numOfItems) {
+            categorizeGameCompleted = true
+            pointSplitOnNumOfItems = maxPoints / numOfItems
+            p.playerScore += pointSplitOnNumOfItems * numOfItemsInCorrectCategory
+            LOG.debug { "Score= ${pointSplitOnNumOfItems * numOfItemsInCorrectCategory}" }
+        }
+        return categorizeGameCompleted
+    }
+
+    private fun categoriesAndItemsCount() : Pair<Int, Int> {
+        var numOfCategories = 0
+        var numOfItems = 0
+        interactableEntities.forEach { interactable ->
+            val interact = interactable[InteractableComponent.mapper]
+            require(interact != null)
+            when(interact.type){
+                InteractableType.CATEGORY -> numOfCategories += 1
+                InteractableType.ITEM -> numOfItems += 1
+            }
+        }
+        return Pair(numOfCategories, numOfItems)
+    }
+}
+/*
+Commit: Added Moved interactablehitbox to InteractableComponent
+ */
+
+/*
+        interactableEntities.forEach { interactable ->
+            val interact = interactable[InteractableComponent.mapper]
+            require(interact != null)
+
+            if(interact.type == InteractableType.CATEGORY){
+                interactableEntities.forEach { interactable2 ->
+                    val interact2 = interactable2[InteractableComponent.mapper]
+                    require(interact2 != null)
+                    if (interact2.type == InteractableType.ITEM && interact.interactableHitbox.overlaps(interact2.interactableHitbox)){
+                        maxPoints = interact2.maxPointsQuestion
+                        if (interact.belongsToCategory == interact2.belongsToCategory) {
+                            numOfItemsInCorrectCategory += 1
+                        }else{
+                            numOfItemsInWrongCategory += 1
+                        }
+                    }
+                }
+            }
+        }
+
+ */
 
 

@@ -156,7 +156,9 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                                 }
                             }
                             with<InteractableComponent> {
-
+                                type = InteractableType.CATEGORY
+                                belongsToCategory = belongsToNr
+                                maxPointsQuestion = maxScore
                             }
                         }
                     }
@@ -174,16 +176,16 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                             }
                             with<InteractableComponent> {
                                 type = InteractableType.ITEM
+                                belongsToCategory = belongsToNr
+                                maxPointsQuestion = maxScore
                             }
                         }
 
                         textEntity.addComponent<BindEntitiesComponent>(engine) {
                             masterEntity = itemEntity
-                            posOffset.set(0f + offsetPos, 0.6f + spacer) //todo fix
+                            posOffset.set(0f + offsetPos, 0.6f + spacer)
                             isItemEntity = true
-                            LOG.debug { "Bind component added" }
                         }
-                        LOG.debug { textEntity.components.toString() }
                     }
                 }
                 count += 1
