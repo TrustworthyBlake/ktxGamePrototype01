@@ -43,6 +43,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private val interactables = mutableListOf<Int>()
     private var numOfBoundEntities = 0
     private var timeCounter = 0f
+    private var categorizeGameEnd = false
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -162,8 +163,14 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.sizeVec2.x* hitboxScalerMax,
                         playerTransform.sizeVec2.y* hitboxScalerMax)
 
-                if(p.playerControl.isPressed) {
+                /*player[CategorizeComponent.mapper]?.let {
+                    catComp ->
+                    categorizeGameEnd = catComp.categorizeIsCompleted
+                }*/
+
+                if(p.playerControl.isPressed && !categorizeGameEnd) {
                     removeBindEntitiesComp(entity, timeCounter, p)
+                    LOG.debug { "problem is here" }
                 }
 
                 // If playerActivationHitbox overlaps with interactable hitbox
@@ -228,7 +235,9 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     catComp.categorizeIsCompleted = true
                     catComp.showResultList = true
                 }
-               // val catComp = categorizeEntities[CategorizeComponent.mapper]
+                interactableEntities.forEach {
+                    comp -> comp.removeAll()
+                }
             }
         }
     }
@@ -236,7 +245,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private var numOfItemsInCorrectCategory = 0
     private var numOfItemsInWrongCategory = 0
     private var itemsList = mutableListOf<Entity>()
-    private var itemTypeNrList = mutableListOf<Pair<String,Int>>()
+    private var itemTypeIsCorrectList = mutableListOf<Boolean>()
 
     private fun categorizedItemCheck(interactEnt : Entity, p: PlayerComponent) : Boolean { // This is retarded
                                                                      // Todo find a better solution
@@ -260,17 +269,29 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     maxPoints = interact2.maxPointsQuestion
                     if (interact.belongsToCategory == interact2.belongsToCategory) {
                         numOfItemsInCorrectCategory += 1
-                        //itemsList.add(interactEnt)
+                        itemsList.add(interactEnt)
+                        itemTypeIsCorrectList.add(true)
+                        check = true
                         //itemTypeNrList.add(0, Pair("numOfItemsInCorrectCategory", numOfItemsInCorrectCategory))
                         LOG.debug { "numOfItemsInCorrectCategory= $numOfItemsInCorrectCategory" }
                     }else{
                         numOfItemsInWrongCategory += 1
-                        //itemsList.add(interactEnt)
+                        itemsList.add(interactEnt)
+                        itemTypeIsCorrectList.add(false)
+                        check = true
                         //itemTypeNrList.add(1, Pair("numOfItemsInWrongCategory", numOfItemsInWrongCategory))
                         LOG.debug { "numOfItemsInWrongCategory= $numOfItemsInWrongCategory" }
                     }
+                }else if(itemsList.contains(interactEnt) && !check){
+                    val index = itemsList.indexOf(interactEnt)
+                    if (itemTypeIsCorrectList.elementAt(index)) numOfItemsInCorrectCategory -= 1
+                    else numOfItemsInWrongCategory -= 1
+                    itemsList.remove(interactEnt)
+                    itemTypeIsCorrectList.removeAt(index)
                 }
             }
+            LOG.debug { "numOfItemsInCorrectCategory= $numOfItemsInCorrectCategory" }
+            LOG.debug { "numOfItemsInWrongCategory= $numOfItemsInWrongCategory" }
         }
 
 
