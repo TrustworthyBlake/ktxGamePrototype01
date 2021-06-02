@@ -61,8 +61,6 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var data = mutableListOf<String>()
         var maxScore = 0
 
-        //var type = EntityType.QUESTION
-
         var maxLength = 34
 
         val questionPosList = mutableListOf<Vector2>()  // Todo: Maybe remove this list
@@ -215,6 +213,35 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         }
 
         return Vector2(rndmX,rndmY)
+    }
+
+    // Reads the categorize file from local Android storage, takes the name of the quiz as a string without
+    // the file type .txt, returns the quiz as a list of strings
+    private fun readQuizFromFile(categorizeName : String): MutableList<String> {
+        val isLocAvailable = Gdx.files.isLocalStorageAvailable
+        LOG.debug { "Local is available $isLocAvailable" }
+        val isDirectory = Gdx.files.local("assets/categorizeFiles/").isDirectory
+        LOG.debug { "Dir exists $isDirectory" }
+        val quizTextFile = Gdx.files.local("assets/categorizeFiles/" + categorizeName + ".txt")        // Change this to quizName parameter later
+        val categorizeList = mutableListOf<String>()
+        if (quizTextFile.exists()){
+            try{
+                val lines:List<String> = (quizTextFile.readString()).lines()
+                lines.forEach { line ->
+                    categorizeList.add(line)
+                    LOG.debug { line }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                LOG.debug { "Reading Failed" }
+            }finally{
+                LOG.debug { "Done Reading" }
+
+            }
+        }else{
+            LOG.debug { "Error: Cannot find categorize file!" }
+        }
+        return categorizeList
     }
 
     // Saves the player score to xml in shared_prefs folder
