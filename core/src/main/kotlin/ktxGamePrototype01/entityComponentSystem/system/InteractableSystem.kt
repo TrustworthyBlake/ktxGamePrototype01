@@ -8,6 +8,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.components.*
 import ktxGamePrototype01.offsetPos
+import ktxGamePrototype01.screen.CategorizeScreen
 import ktxGamePrototype01.screen.QuizScreen
 
 private val LOG = logger<InteractableSystem>()
@@ -44,6 +45,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
     private var numOfBoundEntities = 0
     private var timeCounter = 0f
     private var categorizeGameEnd = false
+    private var isCategorizeGameMode = false
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -101,7 +103,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             val interact = interactable[InteractableComponent.mapper]
             require(interact != null)
             // If it is a quest entity its removed
-            if(interact.type == InteractableType.QUEST)engine.removeEntity(interactable)
+            if(interact.type == InteractableType.QUEST_QUIZ)engine.removeEntity(interactable)
         }
     }
 
@@ -112,11 +114,19 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         qQuestComp.showAvailableQuizes = true
     }
 
-    private fun interactWithQuest(p: PlayerComponent, interact: InteractableComponent){
-        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfQuiz, p.playerName))
+    private fun interactWithQuestQuiz(p: PlayerComponent, interact: InteractableComponent){
+        p.gameInst.addScreen(QuizScreen(p.gameInst, interact.nameOfGame, p.playerName))
         if (p.gameInst.containsScreen<QuizScreen>()) {
             LOG.debug { "Switching to FirstScreen" }
             p.gameInst.setScreen<QuizScreen>()
+        }
+    }
+
+    private fun interactWithQuestCategorize(p: PlayerComponent, interact: InteractableComponent){
+        p.gameInst.addScreen(CategorizeScreen(p.gameInst, interact.nameOfGame, p.playerName))
+        if (p.gameInst.containsScreen<CategorizeScreen>()) {
+            LOG.debug { "Switching to FirstScreen" }
+            p.gameInst.setScreen<CategorizeScreen>()
         }
     }
 
@@ -163,14 +173,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                         playerTransform.sizeVec2.x* hitboxScalerMax,
                         playerTransform.sizeVec2.y* hitboxScalerMax)
 
-                /*player[CategorizeComponent.mapper]?.let {
-                    catComp ->
-                    categorizeGameEnd = catComp.categorizeIsCompleted
-                }*/
+                if(player[CategorizeComponent.mapper] != null) isCategorizeGameMode = true
 
-                if(p.playerControl.isPressed && !categorizeGameEnd) {
+                if(p.playerControl.isPressed && !categorizeGameEnd && isCategorizeGameMode) {
                     removeBindEntitiesComp(entity, timeCounter, p)
-                    LOG.debug { "problem is here" }
                 }
 
                 // If playerActivationHitbox overlaps with interactable hitbox
@@ -182,12 +188,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                             InteractableType.CORRECTANSWER -> hasAnsweredQuiz(interact, p, player, playerTransform, true)
                             InteractableType.WRONGANSWER -> hasAnsweredQuiz(interact, p, player, playerTransform, false)
                             InteractableType.TEACHER -> interactWithTeacher(entity)
-                            InteractableType.QUEST -> interactWithQuest(p, interact)
+                            InteractableType.QUEST_QUIZ -> interactWithQuestQuiz(p, interact)
+                            InteractableType.QUEST_CATEGORIZE -> interactWithQuestCategorize(p, interact)
                             InteractableType.CATEGORY -> {}
-                            InteractableType.ITEM -> {
-                                addBindEntitiesComp(player, entity, timeCounter)
-
-                            }
+                            InteractableType.ITEM -> addBindEntitiesComp(player, entity, timeCounter)
                             else -> LOG.debug { "No Collision Type" }
                         }
                     }
@@ -235,9 +239,10 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     catComp.categorizeIsCompleted = true
                     catComp.showResultList = true
                 }
-                interactableEntities.forEach {
+                categorizeGameEnd = true
+                /*interactableEntities.forEach {
                     comp -> comp.removeAll()
-                }
+                }*/
             }
         }
     }
@@ -321,31 +326,3 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         return Pair(numOfCategories, numOfItems)
     }
 }
-/*
-Commit: Added Moved interactablehitbox to InteractableComponent
- */
-
-/*
-        interactableEntities.forEach { interactable ->
-            val interact = interactable[InteractableComponent.mapper]
-            require(interact != null)
-
-            if(interact.type == InteractableType.CATEGORY){
-                interactableEntities.forEach { interactable2 ->
-                    val interact2 = interactable2[InteractableComponent.mapper]
-                    require(interact2 != null)
-                    if (interact2.type == InteractableType.ITEM && interact.interactableHitbox.overlaps(interact2.interactableHitbox)){
-                        maxPoints = interact2.maxPointsQuestion
-                        if (interact.belongsToCategory == interact2.belongsToCategory) {
-                            numOfItemsInCorrectCategory += 1
-                        }else{
-                            numOfItemsInWrongCategory += 1
-                        }
-                    }
-                }
-            }
-        }
-
- */
-
-
