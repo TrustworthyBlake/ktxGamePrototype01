@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.FitViewport
+import ktx.ashley.allOf
 import ktx.ashley.entity
+import ktx.ashley.get
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
@@ -20,7 +22,7 @@ private val LOG = logger<CategorizeScreen>()
 class CategorizeScreen(game: Prot01, categorizeName : String, private val playerUserName : String) : AbstractScreen(game) {
 
     private var viewport = FitViewport(9f, 16f)
-    var playeContr: playerControl = playerControl(batch as SpriteBatch)
+
     private val playerTextureHead1 = Texture(Gdx.files.internal("graphics/head1.png"))
     private val playerTextureHead2 = Texture(Gdx.files.internal("graphics/head2.png"))
     private val playerTextureHead3 = Texture(Gdx.files.internal("graphics/head3.png"))
@@ -29,6 +31,14 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
     private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
+
+    val errorList = mutableListOf<String>("Error: No results found")
+    var categorizeInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
+    var playeContr: playerControl = playerControl(batch as SpriteBatch)
+    var gameEndFlag = false
+    private val playerEntities by lazy {
+        engine.getEntitiesFor(allOf(PlayerComponent::class).get())
+    }
 
     override fun show() {
         createUserEntityFromPlayerData()
@@ -40,9 +50,17 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
     }
 
     override fun render(delta: Float) {
-        // Todo victory screen
+       playerEntities.forEach { player ->
+            player[CategorizeComponent.mapper]?.let { categorize ->
+                if (categorize.showResultList) {
+                    categorizeInfo = QuizInfo(batch as SpriteBatch, categorize.categorizeResultList)
+                    gameEndFlag = true
+                }
+            }
+        }
         engine.update(delta)
         playeContr.draw()
+        if (gameEndFlag) categorizeInfo.draw()
     }
 
     override fun dispose() {
@@ -96,6 +114,9 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
                     // Scales the text up by 4
                     font.data.setScale(4.0f, 4.0f)
                 }
+                with<CategorizeComponent> {
+                    // todo
+                }
             }
             val playerEntityHead = engine.entity {
                 with<TransformComponent>{
@@ -121,9 +142,6 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
                     posOffset.set(0f, 1f)
                 }
                 with<OrientationComponent>()
-                with<CategorizeComponent> {
-                // todo
-                }
             }
 
         }else{LOG.debug { "Error: Can not find player data" }}

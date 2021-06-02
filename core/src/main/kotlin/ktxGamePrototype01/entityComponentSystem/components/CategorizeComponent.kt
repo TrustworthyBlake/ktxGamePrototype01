@@ -6,9 +6,15 @@ import ktx.ashley.mapperFor
 
 class CategorizeComponent : Component, Pool.Poolable {
     var categorizeName = ""
+    var categorizeResultList = mutableListOf<String>()
+    var categorizeIsCompleted = false
+    var showResultList = false
 
     override fun reset() {
         categorizeName = ""
+        categorizeResultList = mutableListOf<String>()
+        categorizeIsCompleted = false
+        showResultList = false
     }
 
     companion object{

@@ -164,7 +164,6 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
 
                 if(p.playerControl.isPressed) {
                     removeBindEntitiesComp(entity, timeCounter, p)
-                    //LOG.debug { "Numofboundents = $numOfBoundEntities" }
                 }
 
                 // If playerActivationHitbox overlaps with interactable hitbox
@@ -220,12 +219,25 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             numOfBoundEntities -= 1
             timeCounter = 0f
             val x = categorizedItemCheck(interactEnt, p)
-            if (x) LOG.debug { "Categorize Completed" }
+            if (x) {
+                LOG.debug { "Categorize Completed" }
+                categorizeEntities.forEach { category ->
+                    val catComp = category[CategorizeComponent.mapper]
+                    require(catComp != null)
+                    catComp.categorizeResultList.add(p.playerScore.toString())
+                    catComp.categorizeIsCompleted = true
+                    catComp.showResultList = true
+                }
+               // val catComp = categorizeEntities[CategorizeComponent.mapper]
+            }
         }
     }
 
-    var numOfItemsInCorrectCategory = 0
-    var numOfItemsInWrongCategory = 0
+    private var numOfItemsInCorrectCategory = 0
+    private var numOfItemsInWrongCategory = 0
+    private var itemsList = mutableListOf<Entity>()
+    private var itemTypeNrList = mutableListOf<Pair<String,Int>>()
+
     private fun categorizedItemCheck(interactEnt : Entity, p: PlayerComponent) : Boolean { // This is retarded
                                                                      // Todo find a better solution
 
@@ -233,7 +245,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
         var maxPoints = 0
         var pointSplitOnNumOfItems = 0
         var categorizeGameCompleted = false
-
+        var check = false
 
         val interact = interactEnt[InteractableComponent.mapper]
         require(interact != null)
@@ -248,14 +260,19 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
                     maxPoints = interact2.maxPointsQuestion
                     if (interact.belongsToCategory == interact2.belongsToCategory) {
                         numOfItemsInCorrectCategory += 1
+                        //itemsList.add(interactEnt)
+                        //itemTypeNrList.add(0, Pair("numOfItemsInCorrectCategory", numOfItemsInCorrectCategory))
                         LOG.debug { "numOfItemsInCorrectCategory= $numOfItemsInCorrectCategory" }
                     }else{
                         numOfItemsInWrongCategory += 1
+                        //itemsList.add(interactEnt)
+                        //itemTypeNrList.add(1, Pair("numOfItemsInWrongCategory", numOfItemsInWrongCategory))
                         LOG.debug { "numOfItemsInWrongCategory= $numOfItemsInWrongCategory" }
                     }
                 }
             }
         }
+
 
         val (numOfCategories, numOfItems) = categoriesAndItemsCount()
         sumOfCategorizedItems = numOfItemsInCorrectCategory + numOfItemsInWrongCategory

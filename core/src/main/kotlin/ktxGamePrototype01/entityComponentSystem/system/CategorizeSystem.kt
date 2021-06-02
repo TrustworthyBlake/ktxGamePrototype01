@@ -3,6 +3,7 @@ package ktxGamePrototype01.entityComponentSystem.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.*
@@ -17,32 +18,41 @@ private val LOG = logger<CategorizeSystem>()
 
 class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()){
 
+    private val gameCompletedSound = Gdx.audio.newSound(Gdx.files.internal("sounds/quizCompletedSound.mp3"));
     private var doneOnce = false
+    private var gameCompleted = false
 
-    override fun processEntity(entity: Entity?, deltaTime: Float) {
+    override fun processEntity(entity: Entity, deltaTime: Float) {
+
+        val catComp = entity[CategorizeComponent.mapper]
+        require(catComp != null)
+
         if (!doneOnce){
         createCategorizeEntities("sumting")
             doneOnce = true
         }
-    }
 
-    enum class EntityType{
-        QUESTION,
-        CATEGORY,
-        ITEM
+
+
+        if (catComp.categorizeIsCompleted){
+            savePlayerScore(entity)
+            gameCompletedSound.play(1.0f)
+            catComp.categorizeIsCompleted = false
+        }
+
     }
 
     private fun createCategorizeEntities(categorizeName : String) {
         val tempList = mutableListOf<String>()
-        tempList.add("question-Question-120")
+        tempList.add("question-Question-10")
         tempList.add("category-1CategoryX")
         tempList.add("item-1ItemX1")
-        tempList.add("item-1ItemX2")
-        tempList.add("item-1ItemX3")
+        //tempList.add("item-1ItemX2")
+        //tempList.add("item-1ItemX3")
         tempList.add("category-2CategoryY")
         tempList.add("item-2ItemY1")
-        tempList.add("item-2ItemY2")
-        tempList.add("item-2ItemY3")
+        //tempList.add("item-2ItemY2")
+        //tempList.add("item-2ItemY3")
 
         var question: String
         var item: String
@@ -205,5 +215,19 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         }
 
         return Vector2(rndmX,rndmY)
+    }
+
+    // Saves the player score to xml in shared_prefs folder
+    private fun savePlayerScore(entity: Entity) {
+        val player = entity[PlayerComponent.mapper]
+        require(player != null) {"Error: Missing player component"}
+        LOG.debug { "Adding score = ${player.playerScore}" }
+        var score : Float
+        val prefs: Preferences = Gdx.app.getPreferences("playerData"+player.playerName)
+        score = prefs.getFloat("totalPlayerScore")
+        score += player.playerScore
+        prefs.putFloat("totalPlayerScore", score)
+        prefs.flush()
+        LOG.debug { "Saving new total player score = $score" }
     }
 }
