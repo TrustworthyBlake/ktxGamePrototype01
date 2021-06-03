@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.badlogic.gdx.Preferences
+import ktxGamePrototype01.DBObject
 import ktxGamePrototype01.User
 
 class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListener*/{
@@ -28,8 +29,8 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
-    val headItems = arrayOf("head1", "head2", "head3", "head4")
-    val bodyItems = arrayOf("body1", "body2", "body3", "body4")
+    val headItems = mutableListOf<String>()
+    val bodyItems = mutableListOf<String>()
     //val imegs = arrayOf(R.drawable.default1, R.drawable.default2, R.drawable.ebin, R.drawable.gond)
 
 
@@ -41,7 +42,7 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         // Initialize Firebase Auth
         auth = Firebase.auth
 
-
+        addAvatarOutfits()
         var type1 = ""
         var type2 = ""
         val headImage = binding.root.findViewById<ImageView>(R.id.headPicture)
@@ -121,19 +122,9 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         val setswitch1 = getHead(User.getName())
         val setswitch2 = getBody(User.getName())
 
-        when (setswitch1){
-            "head1" ->  {spinner1.setSelection(0)}
-            "head2" ->  {spinner1.setSelection(1)}
-            "head3" ->  {spinner1.setSelection(2)}
-            "head4" ->  {spinner1.setSelection(3)}
-        }
+        spinner1.setSelection(findIndex(headItems, setswitch1))
+        spinner2.setSelection(findIndex(bodyItems, setswitch2))
 
-        when (setswitch2) {
-            "body1" -> {spinner2.setSelection(0)}
-            "body2" -> {spinner2.setSelection(1)}
-            "body3" -> {spinner2.setSelection(2)}
-            "body4" -> {spinner2.setSelection(3)}
-        }
 
 
         // spinner1 on item selected listener
@@ -176,6 +167,8 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
                     "body2" -> {bodyImage.setImageResource(R.drawable.body2); saveDatabody(type2, User.getName()) }
                     "body3" -> {bodyImage.setImageResource(R.drawable.body3); saveDatabody(type2, User.getName()) }
                     "body4" -> {bodyImage.setImageResource(R.drawable.body4); saveDatabody(type2, User.getName()) }
+                    "bodyA" -> {bodyImage.setImageResource(R.drawable.bodya); saveDatabody(type2, User.getName()) }
+                    "bodyB" -> {bodyImage.setImageResource(R.drawable.bodyb); saveDatabody(type2, User.getName()) }
                 }
                 User.setBody(type2)
                 User.updateFirestoreUser()
@@ -215,6 +208,30 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         val prefs: Preferences = Gdx.app.getPreferences("playerData" + userName)
         val bodyPog : String = prefs.getString("avatarBody")
         return bodyPog
+    }
+
+    private fun findIndex(list: List<String>, item: String): Int {
+        return list.indexOf(item)
+    }
+
+    private fun addAvatarOutfits(){
+        headItems.clear()
+        bodyItems.clear()
+        headItems.add("head1")
+        headItems.add("head2")
+        headItems.add("head3")
+        headItems.add("head4")
+        bodyItems.add("body1")
+        bodyItems.add("body2")
+        bodyItems.add("body3")
+        bodyItems.add("body4")
+
+        val scoreuser = User.getScore()
+        when{
+            scoreuser >= 100 -> bodyItems.add("bodyA");
+            scoreuser >= 1000 -> bodyItems.add("bodyB");
+            else -> print("No achievements)")
+        }
     }
 
 

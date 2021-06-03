@@ -168,6 +168,8 @@ class UserTeacherFragment : Fragment() {
             "body2" -> {bodyImage.setImageResource(R.drawable.body2);}
             "body3" -> {bodyImage.setImageResource(R.drawable.body3);}
             "body4" -> {bodyImage.setImageResource(R.drawable.body4);}
+            "bodyA" -> {bodyImage.setImageResource(R.drawable.bodya);}
+            "bodyB" -> {bodyImage.setImageResource(R.drawable.bodyb);}
         }
 
     }
