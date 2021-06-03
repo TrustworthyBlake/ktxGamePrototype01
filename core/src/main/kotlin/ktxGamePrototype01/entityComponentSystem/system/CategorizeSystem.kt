@@ -86,6 +86,8 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var tempVecPos = Vector2(Vector2.Zero)
 
         val listOfCategorizeData = readCategorizeFromFile(categorizeName)
+        LOG.debug { listOfCategorizeData.toString() }
+        LOG.debug { "Above this" }
 
         if (!listOfCategorizeData.isNullOrEmpty()) {
             listOfCategorizeData.forEach {
@@ -230,7 +232,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
             try{
                 val lines:List<String> = (quizTextFile.readString()).lines()
                 lines.forEach { line ->
-                    categorizeList.add(line)
+                    if(line != "") categorizeList.add(line)
                     LOG.debug { line }
                 }
             }catch (e: Exception){
