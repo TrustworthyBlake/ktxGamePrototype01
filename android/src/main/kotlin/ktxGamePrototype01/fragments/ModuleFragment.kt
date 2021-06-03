@@ -36,7 +36,7 @@ class ModuleFragment : Fragment() {
     private val classroomVM: ClassroomViewModel by activityViewModels()
     private val db = FirebaseFirestore.getInstance()
 
-    val gameTypes = arrayOf("Quiz", "Theory")
+    val gameTypes = arrayOf("Quiz", "Categorization")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_module, container, false)
@@ -89,7 +89,7 @@ class ModuleFragment : Fragment() {
             val module = binding.lblModuleName.text.toString()
             val bundle = bundleOf("module" to module)
             when (binding.gameSpinner.selectedItem.toString()){
-                "Theory" -> print("PLACEHOLDER")
+                "Categorization" -> findNavController().navigate(R.id.dest_create_categorisation, bundle)
                 "Quiz" -> findNavController().navigate(R.id.dest_create_quiz, bundle)
             }
         }

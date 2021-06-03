@@ -200,5 +200,11 @@
         android:label="Module"
         tools:layout="@layout/fragment_world_edit"/>
 
+    <fragment
+        android:id="@+id/dest_create_categorisation"
+        android:name="ktxGamePrototype01.fragments.CreateCategorizationFragment"
+        android:label="Categorisation"
+        tools:layout="@layout/fragment_create_categorization"/>
+
 
 </navigation>

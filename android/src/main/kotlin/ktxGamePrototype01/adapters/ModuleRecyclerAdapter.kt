@@ -92,29 +92,47 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>, private val
             this.gType = gameEntity.gametype
 
             var newGameName = this!!.gName!!.split("-")
-            view.game_name.text = newGameName[0]
+            val tempName = newGameName[1]
+            view.game_name.text = tempName
         }
 
         //4
         override fun onClick(v: View) {
 
             val gameName = this.gName.toString()
-            var tempQuizName = (gameName + "-" + User.getName())
+            val newGameName = this!!.gName!!.split("-")
+            val gameType = newGameName[0].replace(" ", "")
+            val dbGameName = gameType+"-"+newGameName[1]+"-"+newGameName[2]
 
+            Log.d("asdasdsdsssssssssssssssssssssssssssssssssssssssssss",dbGameName)
+
+            val tempQuizName = (newGameName[1] + "-" + User.getName())
+            var gameTypeString = "assets/miscFiles"
+            var screenTypeString = "ERROR 404"
             val db = FirebaseFirestore.getInstance()
 
 
-            db.collection("quiz").document(gameName).get().addOnCompleteListener() { task ->
+            db.collection("quiz").document(dbGameName).get().addOnCompleteListener() { task ->
                 if(task.isSuccessful){
                     val quizList = task.result?.get("question") as? MutableList<String>
 
                     val pathInternal = view.context?.filesDir
                     if (pathInternal != null) {
-                        val pathTextFile = File(pathInternal, "assets/quizFiles")
+
+
+                        when(gameType){
+                            "quiz" -> gameTypeString = "assets/quizFiles"
+                            "categorization" -> gameTypeString = "assets/categorizeFiles"
+                            else -> gameTypeString = "ERROR 404"
+                        }
+
+
+                        val pathTextFile = File(pathInternal, gameTypeString)
                         if (!pathTextFile.exists()){
                             pathTextFile.mkdirs()
                             Toast.makeText(view.context, "Creating dir", Toast.LENGTH_SHORT).show()
                         }
+
                         Toast.makeText(view.context, "Creating dir", Toast.LENGTH_SHORT).show()
                         val quizTextFile = File(pathTextFile, tempQuizName + ".txt")
                         var tempStr = ""
@@ -130,7 +148,18 @@ class ModuleRecyclerAdapter(private val gameObject: ArrayList<Game>, private val
             sleep(200)
              val x = User.getTeacherAvatars()
              val y = User.getName()
-             (view.context as AppActivity?)!!.launchGame("QuizScreen", y, tempQuizName, x)
+
+            val screenTypeName = newGameName[0].replace(" ", "")
+            when(gameType){
+                "quiz" -> screenTypeString = "QuizScreen"
+                "categorization" ->  screenTypeString = "CategorizeScreen"
+                else -> gameTypeString = "ERROR 404"
+            }
+
+
+
+
+            (view.context as AppActivity?)!!.launchGame(screenTypeString, y, tempQuizName, x)
         }
 
     }

@@ -1,6 +1,8 @@
 package ktxGamePrototype01.fragments
 
 import android.os.Bundle
+import android.util.Log
+import android.util.Log.DEBUG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.codinginflow.recyclerviewexample.ListAdapter
+import com.github.trustworthyblake.ktxGamePrototype01.BuildConfig.DEBUG
 import com.github.trustworthyblake.ktxGamePrototype01.R
 import com.github.trustworthyblake.ktxGamePrototype01.databinding.FragmentUserProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -156,14 +159,29 @@ class UserProfileFragment : Fragment() {
     private fun writeQuizToFile(quizName: String, quizData: MutableList<String>, tName: String) {
         val pathInternal = activity?.filesDir
         if (pathInternal != null) {
-            val pathTextFile = File(pathInternal, "assets/quizFiles")
+
+
+            var splitQuizName = quizName!!.split("-")
+            val gameTypeName = splitQuizName[0]
+            var newQuizName = splitQuizName[1] + "-" + tName
+            var folderTypeHolder = "assets/miscFiles"
+
+            when(gameTypeName){
+                "quiz" -> folderTypeHolder="assets/quizFiles"
+                "categorization" -> folderTypeHolder="assets/categorizeFiles"
+                else -> folderTypeHolder="assets/miscFiles"
+            }
+
+
+            var  pathTextFile = File(pathInternal, folderTypeHolder)
+
+
+
             if (!pathTextFile.exists()){
                 pathTextFile.mkdirs()
                 Toast.makeText(activity, "Creating dir", Toast.LENGTH_SHORT).show()
             }
 
-            var splitQuizName = quizName!!.split("-")
-            var newQuizName = splitQuizName[0] + "-" + tName
 
             val quizTextFile = File(pathTextFile, newQuizName + ".txt")
             var tempStr = ""
