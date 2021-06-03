@@ -31,6 +31,8 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
     private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
+    private val playerTextureBodyA = Texture(Gdx.files.internal("graphics/bodya.png"))
+    private val playerTextureBodyB = Texture(Gdx.files.internal("graphics/bodyb.png"))
 
     val tempCategorizeName = categorizeName
     val errorList = mutableListOf<String>("Error: No results found")
@@ -92,6 +94,8 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
                             "body2" -> setRegion(playerTextureBody2)
                             "body3" -> setRegion(playerTextureBody3)
                             "body4" -> setRegion(playerTextureBody4)
+                            "bodyA" -> setRegion(playerTextureBodyA)
+                            "bodyB" -> setRegion(playerTextureBodyB)
                             else -> setRegion(playerTextureBody1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)

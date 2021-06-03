@@ -36,6 +36,8 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
     private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
+    private val playerTextureBodyA = Texture(Gdx.files.internal("graphics/bodya.png"))
+    private val playerTextureBodyB = Texture(Gdx.files.internal("graphics/bodyb.png"))
     private val quizMap = Gdx.files.internal("maps/map0.txt");
     private val tempQuizName = qzName
     val errorList = mutableListOf<String>("Error: No results found")
@@ -102,6 +104,8 @@ class QuizScreen(game: Prot01, qzName : String, private val playerUserName : Str
                             "body2" -> setRegion(playerTextureBody2)
                             "body3" -> setRegion(playerTextureBody3)
                             "body4" -> setRegion(playerTextureBody4)
+                            "bodyA" -> setRegion(playerTextureBodyA)
+                            "bodyB" -> setRegion(playerTextureBodyB)
                             else -> setRegion(playerTextureBody)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)

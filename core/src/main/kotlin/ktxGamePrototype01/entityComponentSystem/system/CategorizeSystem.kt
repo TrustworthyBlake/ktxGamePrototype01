@@ -77,8 +77,8 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var allPosLists = mutableListOf<Vector2>()
 
         val helpFun = HelperFunctions()
-        val categorizeTexture = Texture(Gdx.files.internal("graphics/skill_icons16.png"))
-        val itemTexture = Texture(Gdx.files.internal("graphics/skill_icons19.png"))
+        val categorizeTexture = Texture(Gdx.files.internal("graphics/chest.png"))
+        val itemTexture = Texture(Gdx.files.internal("graphics/ruby2.png"))
 
         var belongsToNr = 0
         var tempCharToNum : Char

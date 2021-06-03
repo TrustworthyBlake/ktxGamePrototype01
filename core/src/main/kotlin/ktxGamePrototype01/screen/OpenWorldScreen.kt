@@ -37,6 +37,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
     private val playerTextureBody2 = Texture(Gdx.files.internal("graphics/body2.png"))
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
+    private val playerTextureBodyA = Texture(Gdx.files.internal("graphics/bodya.png"))
+    private val playerTextureBodyB = Texture(Gdx.files.internal("graphics/bodyb.png"))
     private val blankTexture = Texture(Gdx.files.internal("graphics/blank.png"))
     private var playeContr: playerControl = playerControl(batch as SpriteBatch)
 
@@ -82,6 +84,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                             "body2" -> setRegion(playerTextureBody2)
                             "body3" -> setRegion(playerTextureBody3)
                             "body4" -> setRegion(playerTextureBody4)
+                            "bodyA" -> setRegion(playerTextureBodyA)
+                            "bodyB" -> setRegion(playerTextureBodyB)
                             else -> setRegion(playerTextureBody1)
                         }
                         setSize(texture.width * unitScale, texture.height * unitScale)
@@ -204,6 +208,8 @@ class OpenWorldScreen(game : Prot01, private val teacherDataList: List<String>?,
                         "body2" -> setRegion(playerTextureBody2)
                         "body3" -> setRegion(playerTextureBody3)
                         "body4" -> setRegion(playerTextureBody4)
+                        "bodyA" -> setRegion(playerTextureBodyA)
+                        "bodyB" -> setRegion(playerTextureBodyB)
                         else -> setRegion(playerTextureBody)
                     }
                     setSize(texture.width * unitScale, texture.height * unitScale)
