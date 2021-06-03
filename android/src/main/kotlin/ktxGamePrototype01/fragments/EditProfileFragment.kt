@@ -227,11 +227,9 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
         bodyItems.add("body4")
 
         val scoreuser = User.getScore()
-        when{
-            scoreuser >= 100 -> bodyItems.add("bodyA");
-            scoreuser >= 1000 -> bodyItems.add("bodyB");
-            else -> print("No achievements)")
-        }
+
+        if(scoreuser >= 100){bodyItems.add("bodyA")}
+        if(scoreuser >= 1000){bodyItems.add("bodyB")}
     }
 
 

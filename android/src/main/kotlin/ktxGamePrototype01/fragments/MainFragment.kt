@@ -69,16 +69,6 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.dest_register)
         }
 
-        //check of achievements:
-        val scoreuser = User.getScore()
-        when{
-            scoreuser >= 1 -> DBObject.addAchievement(User.getId(), "One of many");
-            scoreuser >= 100 -> DBObject.addAchievement(User.getId(), "Value of C");
-            scoreuser >= 250 -> DBObject.addAchievement(User.getId(), "Quarter of a thousand");
-            scoreuser >= 500 -> DBObject.addAchievement(User.getId(), "Value of D");
-            scoreuser >= 1000 -> DBObject.addAchievement(User.getId(), "Value of M");
-            else -> print("No achievements)")
-        }
 
         return binding.root
     }

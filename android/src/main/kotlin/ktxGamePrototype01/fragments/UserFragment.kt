@@ -41,6 +41,7 @@ class UserFragment : Fragment() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+
         // TODO REMOVE BEFORE LAUNCH
         // To test db functionality (Adding classrooms and adding students to classrooms)
         val test = DBTest()

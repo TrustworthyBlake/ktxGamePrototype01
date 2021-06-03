@@ -28,6 +28,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.game_entry.view.*
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.DBObject
 import ktxGamePrototype01.User
 import ktxGamePrototype01.adapters.ListItem
 import ktxGamePrototype01.sharedprefs
@@ -58,6 +59,22 @@ class UserProfileFragment : Fragment() {
         loadTheme()
         //loads the avatar image
         loadAvatarImage()
+        //check of achievements:
+        val scoreuser = User.getScore()
+
+        Toast.makeText(activity, scoreuser.toString(), Toast.LENGTH_SHORT).show()
+
+        if(scoreuser >= 1){
+            DBObject.addAchievement(User.getId(), "One of many")}
+        if(scoreuser >= 100){
+            DBObject.addAchievement(User.getId(), "Score 100")}
+        if(scoreuser >= 250){
+            DBObject.addAchievement(User.getId(), "Score 250")}
+        if(scoreuser >= 500){
+            DBObject.addAchievement(User.getId(), "Halfway there")}
+        if(scoreuser >= 1000){
+            DBObject.addAchievement(User.getId(), "Score 1K")}
+
 
 
         buttonUserInfo.setOnClickListener(){
