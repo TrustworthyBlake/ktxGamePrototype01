@@ -49,8 +49,12 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
 
         // If the teacher entity has no quizzes then no quest entities will be created
         if (!list.isNullOrEmpty()){
-            list.forEach {
-                if (it == "quiz" || it == "categorize") dataType = it
+            LOG.debug { list.toString() }
+            list.forEach dirty@{
+                if (it == "quiz" || it == "categorize") {
+                    dataType = it
+                    return@dirty
+                }
                 qPosArray.add(Vector2(questPosX, questPosY))
                 qName = it.replace(".txt", "")
                 qNameSplit = it.split("-")[0]
@@ -87,6 +91,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
                 // For placing the quest's in a grid
                 questPosY += 4f
                 if(count % 2 == 0) {questPosX += 6f; questPosY = 10f;}
+                LOG.debug { it.toString() }
             }
         }
     }

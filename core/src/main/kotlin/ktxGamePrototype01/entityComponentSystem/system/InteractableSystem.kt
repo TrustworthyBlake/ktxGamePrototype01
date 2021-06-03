@@ -104,6 +104,7 @@ class InteractableSystem() : IteratingSystem(allOf(InteractableComponent::class,
             require(interact != null)
             // If it is a quest entity its removed
             if(interact.type == InteractableType.QUEST_QUIZ)engine.removeEntity(interactable)
+            else if (interact.type == InteractableType.QUEST_CATEGORIZE)engine.removeEntity(interactable)
         }
     }
 

@@ -32,6 +32,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
     private val playerTextureBody3 = Texture(Gdx.files.internal("graphics/body3.png"))
     private val playerTextureBody4 = Texture(Gdx.files.internal("graphics/body4.png"))
 
+    val tempCategorizeName = categorizeName
     val errorList = mutableListOf<String>("Error: No results found")
     var categorizeInfo: QuizInfo = QuizInfo(batch as SpriteBatch, errorList)
     var playeContr: playerControl = playerControl(batch as SpriteBatch)
@@ -115,7 +116,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
                     font.data.setScale(4.0f, 4.0f)
                 }
                 with<CategorizeComponent> {
-                    // todo
+                    categorizeName = tempCategorizeName
                 }
             }
             val playerEntityHead = engine.entity {
