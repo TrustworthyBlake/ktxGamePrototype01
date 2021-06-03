@@ -64,11 +64,11 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         var maxLength = 34
 
         val questionPosList = mutableListOf<Vector2>()  // Todo: Maybe remove this list
-        var questionPosX = 10f                      // Do not change to val, work in progress
+        var questionPosX = 13f                      // Do not change to val, work in progress
         var questionPosY = 21f
 
         val categoryPosList = mutableListOf<Vector2>()
-        var catPosX = 5f
+        var catPosX = 10f
         var catPosY = 17f
         val itemPosList = mutableListOf<Vector2>()
         var itemPosX = 0f
@@ -112,7 +112,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                         LOG.debug { "data = ${data[1]}" }
                         maxLength = 24
                         categoryPosList.add(Vector2(catPosX, catPosY))
-                        catPosX += 10
+                        catPosX += 6
                     }
                     "item" -> {
                         tempCharToNum = data[1].first()
@@ -206,14 +206,16 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
     private fun randomizePositionVector(posArray : List<Vector2>) : Vector2 {
         //LOG.debug { posArray.toString() }
-        val maxPosValue = 20
-        val minPosValue = 0
-        var rndmX = (minPosValue..maxPosValue).random().toFloat()
-        var rndmY = (minPosValue..maxPosValue).random().toFloat()
+        val maxPosValueX = 21
+        val minPosValueX = 6
+        val maxPosValueY = 25
+        val minPosValueY = 10
+        var rndmX = (minPosValueX..maxPosValueX).random().toFloat()
+        var rndmY = (minPosValueY..maxPosValueY).random().toFloat()
 
         while(posArray.contains(Vector2(rndmX, rndmY))){
-            rndmX = (minPosValue..maxPosValue).random().toFloat()
-            rndmY = (minPosValue..maxPosValue).random().toFloat()
+            rndmX = (minPosValueX..maxPosValueX).random().toFloat()
+            rndmY = (minPosValueY..maxPosValueY).random().toFloat()
         }
 
         return Vector2(rndmX,rndmY)

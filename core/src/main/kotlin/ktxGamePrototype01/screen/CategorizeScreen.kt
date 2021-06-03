@@ -81,7 +81,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
             val playerEntityBody = engine.entity {
                 with<TransformComponent>{
                     // Where the entity is positioned in the game world
-                    posVec3.set(10.5f- offsetPos, 14f, -1f)
+                    posVec3.set(13.5f- offsetPos, 14f, -1f)
                 }
                 with<MovementComponent>()
                 with<SpriteComponent>{
@@ -150,7 +150,7 @@ class CategorizeScreen(game: Prot01, categorizeName : String, private val player
 
     // Creates the map entities from map.txt file
     private fun createMapEntities(){
-        val quizMap = Gdx.files.internal("maps/map0.txt")
+        val quizMap = Gdx.files.internal("maps/mapCategorize01.txt")
         val grassTexture = Texture(Gdx.files.internal("graphics/Grass1.png"))
         val treeTexture1 = Texture(Gdx.files.internal("graphics/tree1.png"))
         val treeTexture3 = Texture(Gdx.files.internal("graphics/tree3.png"))
