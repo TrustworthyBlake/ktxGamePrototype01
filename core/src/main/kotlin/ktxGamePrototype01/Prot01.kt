@@ -12,6 +12,7 @@ import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
 import ktxGamePrototype01.entityComponentSystem.system.*
+import ktxGamePrototype01.screen.CategorizeScreen
 import ktxGamePrototype01.screen.QuizScreen
 import ktxGamePrototype01.screen.OpenWorldScreen
 
@@ -22,7 +23,7 @@ const val offsetPos = 0.80f
 // Main class for game engine creation, takes four input values: which game screen to create,
 // username of player, name of the locally stored quiz and a list containing teacher data
 class Prot01(private val showScreen: String, private val playerName : String,
-             private val quizToUse : String, private val teacherDataList : List<String>?) : KtxGame<KtxScreen>() {
+             private val gameNameToUse : String, private val teacherDataList : List<String>?) : KtxGame<KtxScreen>() {
 
     // Aspect ratio 9:16 horizontal
     val gameViewport = FitViewport(9f, 16f)
@@ -41,6 +42,7 @@ class Prot01(private val showScreen: String, private val playerName : String,
         addSystem(QuizSystem())
         addSystem(BindEntitiesSystem())
         addSystem(QuizQuestSystem())
+        addSystem(CategorizeSystem())
     }  }
 
     // Adds and sets the game screen based on the showScreen string, defaults to OpenWorldScreen
@@ -49,8 +51,12 @@ class Prot01(private val showScreen: String, private val playerName : String,
         LOG.debug { "Game instance created" }
         when (showScreen) {
             "QuizScreen" -> {
-                addScreen(QuizScreen(this, quizToUse, playerName))
+                addScreen(QuizScreen(this, gameNameToUse, playerName))
                 setScreen<QuizScreen>()
+            }
+            "CategorizeScreen" -> {
+                addScreen(CategorizeScreen(this, gameNameToUse, playerName))
+                setScreen<CategorizeScreen>()
             }
             else -> {
                 addScreen(OpenWorldScreen(this, teacherDataList, playerName))

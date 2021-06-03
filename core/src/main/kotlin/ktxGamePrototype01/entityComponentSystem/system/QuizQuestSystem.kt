@@ -35,7 +35,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         val signPostTexture = Texture(Gdx.files.internal("graphics/signpost.png"))
         val helpFun = HelperFunctions()
 
-        // Array that holds the vector position for 4 entities
+        // Array that holds the vector position for entities, added to dynamically
         var qPosArray = Array<Vector2>()
         var questPosX = 26f
         var questPosY = 10f
@@ -45,10 +45,12 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         var qNameSplit : String
         val maxLength = 24
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
+        var dataType = ""
 
         // If the teacher entity has no quizzes then no quest entities will be created
         if (!list.isNullOrEmpty()){
             list.forEach {
+                if (it == "quiz" || it == "categorize") dataType = it
                 qPosArray.add(Vector2(questPosX, questPosY))
                 qName = it.replace(".txt", "")
                 qNameSplit = it.split("-")[0]
@@ -66,8 +68,12 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
                     }
                     with<InteractableComponent> {
                         isQuest = true
-                        type = InteractableType.QUEST
-                        nameOfQuiz = qName
+                        when(dataType){
+                            "quiz" -> type = InteractableType.QUEST_QUIZ
+                            "categorize" -> type = InteractableType.QUEST_CATEGORIZE
+                        }
+
+                        nameOfGame = qName
                     }
                     with<TextComponent> {
                         isText = true
@@ -89,16 +95,33 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
     private fun findAllQuizBelongingToTeacher(tName : String): MutableList<String>{
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }
-        val directory = Gdx.files.local("assets/quizFiles/")
-        val quizNameList = mutableListOf<String>()
-        if (directory.isDirectory){
-            directory.file().walk().forEach {
+        val dirQuiz = Gdx.files.local("assets/quizFiles/")
+        val dirCategorize = Gdx.files.local("assets/categorizeFiles/")
+        val gameNameList = mutableListOf<String>()
+        var doneOnce = false
+
+        if (dirQuiz.isDirectory){
+            dirQuiz.file().walk().forEach {
                 if(it.name.contains(tName, true)){
-                    quizNameList.add(it.name)
-                    LOG.debug { "File name: ${it.name}" }
+                    if (!doneOnce) gameNameList.add("quiz")
+                    gameNameList.add(it.name)
+                    doneOnce = true
+                    //LOG.debug { "File name: ${it.name}" }
                 }
             }
         }else{LOG.debug { "Error: Quiz directory does not exist" }}
-        return quizNameList
+
+        doneOnce = false
+
+        if (dirCategorize.isDirectory){
+            dirCategorize.file().walk().forEach {
+                if(it.name.contains(tName, true)){
+                    if (!doneOnce) gameNameList.add("categorize")
+                    gameNameList.add(it.name)
+                    doneOnce = true
+                }
+            }
+        }else{LOG.debug { "Error: Categorize directory does not exist" }}
+        return gameNameList
     }
 }
