@@ -121,7 +121,8 @@ class CreateCategorizationFragment : Fragment() {
 
                         Toast.makeText(activity, "Added question", Toast.LENGTH_SHORT).show()
                     }
-                    isCategory && (hasCreatedQuestion) && questAnsw.count() < 170 && amountOfCategories < 2-> {
+                    isCategory && (hasCreatedQuestion) && questAnsw.count() < 170 && amountOfCategories <= 2-> {
+                        amountOfCategories += 1
                         tempQuizList.add("category-" + amountOfCategories.toString() + questAnsw)
                         hasAddedAnswer = false
                         hasAddedCategory = true
@@ -132,7 +133,6 @@ class CreateCategorizationFragment : Fragment() {
                         binding.createQuestionTextIn.setText("")
 
                         Toast.makeText(activity, "Added category", Toast.LENGTH_SHORT).show()
-                        amountOfCategories += 1
                     }
                     isAnswer && (hasAddedCategory) && questAnsw.count() < 170 && amountOfAnswers < 20-> {
                         tempQuizList.add("item-" + amountOfCategories.toString() + questAnsw)
@@ -148,7 +148,7 @@ class CreateCategorizationFragment : Fragment() {
                     }
 
 
-                    amountOfCategories >= 2 -> Toast.makeText(activity, "Error: Max amount of 4 answers exceeded", Toast.LENGTH_SHORT).show()
+                    amountOfCategories > 2 -> Toast.makeText(activity, "Error: Max amount of 4 answers exceeded", Toast.LENGTH_SHORT).show()
                     !hasCreatedQuestion && !isQuestion -> Toast.makeText(activity, "Error: You must add a question before creating a categorization!", Toast.LENGTH_SHORT).show()
                     !hasAddedCategory && !isCategory -> Toast.makeText(activity, "Error: You must add a category before creating an answer!", Toast.LENGTH_SHORT).show()
                     //hasCreatedQuestion && isQuestion -> Toast.makeText(activity, "Error: You must add an answer before creating a new question!", Toast.LENGTH_SHORT).show()
