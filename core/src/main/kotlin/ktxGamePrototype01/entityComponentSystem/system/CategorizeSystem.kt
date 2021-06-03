@@ -28,7 +28,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         require(catComp != null)
 
         if (!doneOnce){
-        createCategorizeEntities("sumting")
+        createCategorizeEntities(catComp.categorizeName)
             doneOnce = true
         }
 
@@ -47,12 +47,12 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
         tempList.add("question-Question-10")
         tempList.add("category-1CategoryX")
         tempList.add("item-1ItemX1")
-        //tempList.add("item-1ItemX2")
-        //tempList.add("item-1ItemX3")
+        tempList.add("item-1ItemX2")
+        tempList.add("item-1ItemX3")
         tempList.add("category-2CategoryY")
         tempList.add("item-2ItemY1")
-        //tempList.add("item-2ItemY2")
-        //tempList.add("item-2ItemY3")
+        tempList.add("item-2ItemY2")
+        tempList.add("item-2ItemY3")
 
         var question: String
         var item: String
@@ -85,11 +85,12 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
         var tempVecPos = Vector2(Vector2.Zero)
 
-        if (!tempList.isNullOrEmpty()) {
-            tempList.forEach {
+        val listOfCategorizeData = readCategorizeFromFile(categorizeName)
+
+        if (!listOfCategorizeData.isNullOrEmpty()) {
+            listOfCategorizeData.forEach {
                 dataTag = it.split("-")[0]
                 data = it.split("-").toMutableList()
-
                 LOG.debug { "dataTag = $dataTag" }
                 //LOG.debug { "data = $data" }
 
@@ -202,6 +203,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
     }
 
     private fun randomizePositionVector(posArray : List<Vector2>) : Vector2 {
+        //LOG.debug { posArray.toString() }
         val maxPosValue = 20
         val minPosValue = 0
         var rndmX = (minPosValue..maxPosValue).random().toFloat()
@@ -217,7 +219,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
 
     // Reads the categorize file from local Android storage, takes the name of the quiz as a string without
     // the file type .txt, returns the quiz as a list of strings
-    private fun readQuizFromFile(categorizeName : String): MutableList<String> {
+    private fun readCategorizeFromFile(categorizeName : String): MutableList<String> {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         LOG.debug { "Local is available $isLocAvailable" }
         val isDirectory = Gdx.files.local("assets/categorizeFiles/").isDirectory
