@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.activityViewModels
@@ -85,7 +86,8 @@ class AppActivity : AppCompatActivity() {
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = true
             menu.findItem(R.id.dest_user_profile).isVisible = false
             botMenu.findItem(R.id.dest_user_profile).isVisible = false
-        }else{menu.findItem(R.id.dest_user_profile).isVisible = true
+        }else{
+            menu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = false
             menu.findItem(R.id.dest_teacher_profile).isVisible = false}
