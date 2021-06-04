@@ -62,7 +62,6 @@ class UserProfileFragment : Fragment() {
         //check of achievements:
         val scoreuser = User.getScore()
 
-        Toast.makeText(activity, scoreuser.toString(), Toast.LENGTH_SHORT).show()
 
         if(scoreuser >= 1){
             DBObject.addAchievement(User.getId(), "One of many")}

@@ -51,9 +51,10 @@ class MainFragment : Fragment() {
             if (currentUser != null) {
                 val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
                 DBObject.getUserData(userID)
-                (activity as AppActivity?)!!.showMenu()
                 // check if user data has been loaded, and if user is teacher or student
                 checkTeacherDB(userID)
+                (activity as AppActivity?)!!.showMenu()
+
             } else {
                 // else they get sent to login page
                 findNavController().navigate(R.id.dest_login)

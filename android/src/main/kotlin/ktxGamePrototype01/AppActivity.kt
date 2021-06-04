@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.activityViewModels
@@ -18,6 +19,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ktxGamePrototype01.fragments.ClassroomViewModel
+import java.lang.Thread.sleep
 
 class AppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppBinding
@@ -64,7 +66,6 @@ class AppActivity : AppCompatActivity() {
         if (currentUser != null) {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
             DBObject.getUserData(userID)
-            showMenu()
         }
         
 
@@ -76,6 +77,7 @@ class AppActivity : AppCompatActivity() {
     override fun onSupportNavigateUp() = findNavController(R.id.nav_fragment).navigateUp()
 
     fun showMenu(){
+
         binding.bottomNav.visibility = View.VISIBLE
         val botMenu = binding.bottomNav.menu
         val menu = binding.navigationView.menu

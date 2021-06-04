@@ -49,8 +49,6 @@ class UserFragment : Fragment() {
         getClassroomData(className)
 
 
-        // display bottom navigation menu bar
-        (activity as AppActivity?)!!.showMenu()
         // display user data
         showUserData()
 

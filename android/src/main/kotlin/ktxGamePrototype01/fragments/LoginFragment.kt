@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import ktxGamePrototype01.AndroidLauncher
 import ktxGamePrototype01.AppActivity
 import ktxGamePrototype01.DBObject
+import java.lang.Thread.sleep
 
 class LoginFragment : Fragment() {
 
@@ -65,10 +66,13 @@ class LoginFragment : Fragment() {
                 ) { task ->
                     if (task.isSuccessful) {   // Sign in success
                         val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
-                        (activity as AppActivity?)!!.showMenu()
                         DBObject.getUserData(userID)
                         // check if user data has been loaded, and if user is teacher or student
                         checkTeacherDB(userID)
+
+                        (activity as AppActivity?)!!.showMenu()
+
+
                     } else {
                         loginError()
                     }

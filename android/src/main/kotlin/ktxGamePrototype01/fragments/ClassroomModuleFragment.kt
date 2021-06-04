@@ -43,7 +43,6 @@ class ClassroomModuleFragment : Fragment() {
         adapter = ClassroomModuleRecyclerAdapter(classroomModuleList, classroomVM.selected)
         binding.recyclerViewModules.adapter = adapter
         binding.recyclerViewModules.layoutManager = LinearLayoutManager(context)
-        binding.lblClassroomName.text = classroomVM.selected
 
         if(User.checkForTeacher()){
             binding.btnImportModule.visibility = View.VISIBLE
