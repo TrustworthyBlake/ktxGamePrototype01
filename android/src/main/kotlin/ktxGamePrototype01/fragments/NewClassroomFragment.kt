@@ -103,6 +103,11 @@ class NewClassroomFragment : Fragment() {
                     db.collection("users")
                             .document(userID)
                             .update("courses", FieldValue.arrayUnion("$grade grade $courseName $year"))
+
+                    db.collection("classrooms")
+                            .document("$grade grade $courseName $year")
+                            .update("students", FieldValue.arrayUnion(userID))
+
                     findNavController().navigateUp()}
                 .addOnFailureListener { e -> Log.w(failTAG, "Error adding classroom to DB", e)
                     Toast.makeText(activity, "Classroom creation error", Toast.LENGTH_LONG).show()}
