@@ -66,6 +66,7 @@ class AppActivity : AppCompatActivity() {
         if (currentUser != null) {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid  // get current user id
             DBObject.getUserData(userID)
+            showMenu()
         }
         
 
@@ -87,8 +88,7 @@ class AppActivity : AppCompatActivity() {
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = true
             menu.findItem(R.id.dest_user_profile).isVisible = false
             botMenu.findItem(R.id.dest_user_profile).isVisible = false
-        }else{
-            menu.findItem(R.id.dest_user_profile).isVisible = true
+        }else{menu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = false
             menu.findItem(R.id.dest_teacher_profile).isVisible = false}
