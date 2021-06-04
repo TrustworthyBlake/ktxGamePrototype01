@@ -168,4 +168,9 @@ object User {
             DBObject.updateUser(userID, userName, userEmail, userScore, playerHead, playerBody)
         }
 
+        fun clearLists(){
+            courseList = emptyList()
+            teacherList = emptyList()
+            teacherAvatarList.clear()
+        }
 }

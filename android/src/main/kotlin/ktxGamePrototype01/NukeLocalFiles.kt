@@ -33,7 +33,8 @@ class NukeLocalFiles {
                  }
              }else {
                  Toast.makeText(activity, "Error: Path is null", Toast.LENGTH_SHORT).show()}
-         }else {
+         }
+         /* else {
              Toast.makeText(activity, "Error: Internal path is null", Toast.LENGTH_SHORT).show()}
          if (pathInternal != null) {
              val pathTextFile = File(pathInternal, "assets/miscFiles")
@@ -46,7 +47,8 @@ class NukeLocalFiles {
                  }
              }else {
                  Toast.makeText(activity, "Error: Path is null", Toast.LENGTH_SHORT).show()}
-         }else {
+         }*/
+         else {
              Toast.makeText(activity, "Error: Internal path is null", Toast.LENGTH_SHORT).show()}
     }
     fun nukeSharedPrefs(activity: AppActivity){

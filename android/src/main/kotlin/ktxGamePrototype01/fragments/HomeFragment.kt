@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.github.trustworthyblake.ktxGamePrototype01.R
@@ -15,6 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ktxGamePrototype01.AppActivity
+import ktxGamePrototype01.DBObject
 import ktxGamePrototype01.User
 
 class HomeFragment : Fragment() {
@@ -33,6 +35,10 @@ class HomeFragment : Fragment() {
         auth = Firebase.auth
 
         showUserData()
+
+        User.clearLists()
+        DBObject.getUserData(User.getId())
+
 
         binding.btnLaunchGame.setOnClickListener {
             val x = User.getTeacherAvatars()
