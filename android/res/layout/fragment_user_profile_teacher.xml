@@ -33,7 +33,7 @@
             android:id="@+id/textView14"
             android:layout_width="150dp"
             android:layout_height="35dp"
-            android:text="Current Modules"
+            android:text="Current Classes"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
