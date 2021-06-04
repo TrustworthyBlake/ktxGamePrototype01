@@ -163,7 +163,7 @@ class CreateQuizFragment : Fragment() {
                 binding.createQuizButton.isEnabled = false
                 binding.createQuizTextIn.isEnabled = false
 
-                qzName = "$quizName-" + User.getName()
+                qzName = "quiz-$quizName-" + User.getName()
 
                 addQuizToModuleDatabase(module)
                 addQuizToDatabase(module)
