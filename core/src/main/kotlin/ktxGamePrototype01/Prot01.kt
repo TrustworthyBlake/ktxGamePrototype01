@@ -18,7 +18,7 @@ import ktxGamePrototype01.screen.OpenWorldScreen
 
 private val LOG = logger<Prot01>()
 const val unitScale = 1 / 16f
-const val offsetPos = 0.80f
+const val offsetPos = 0.88f
 
 // Main class for game engine creation, takes four input values: which game screen to create,
 // username of player, name of the locally stored quiz and a list containing teacher data

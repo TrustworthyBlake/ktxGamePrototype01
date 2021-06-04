@@ -157,7 +157,7 @@ class CategorizeSystem : IteratingSystem(allOf(CategorizeComponent::class).get()
                     "category" -> {
                         val categoryEntity = engine.entity {
                             with<TransformComponent> {
-                                posVec3.set(tempVecPos.x - offsetPos, tempVecPos.y, -1f)
+                                posVec3.set(tempVecPos.x - offsetPos, tempVecPos.y - 0.6f, -1f)
                             }
                             with<SpriteComponent> {
                                 sprite.run {

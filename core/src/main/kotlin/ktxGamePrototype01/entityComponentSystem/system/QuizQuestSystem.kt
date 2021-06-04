@@ -43,7 +43,7 @@ class QuizQuestSystem : IteratingSystem(allOf(QuizQuestComponent::class).get()){
         var count = 0
         var qName : String
         var qNameSplit : String
-        val maxLength = 24
+        val maxLength = 25
         val list = findAllQuizBelongingToTeacher(qQuestComp.teacherStr)
         var dataType = ""
 

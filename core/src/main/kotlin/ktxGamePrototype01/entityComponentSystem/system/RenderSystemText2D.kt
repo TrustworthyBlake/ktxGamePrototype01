@@ -58,7 +58,7 @@ class RenderSystemText2D(
                         // Draws the strings for text entities
                         textComp.isText && !textComp.drawPlayScoreHUD -> {
                             textComp.font.draw(batchText, textComp.textStr,
-                                    ((textComp.posTextVec2.x * viewportSizeMultiplier)-w)
+                                    ((textComp.posTextVec2.x * viewportSizeMultiplier)-w -30f)
                                             - (trans.posVec3.x * viewportSizeMultiplier),
                                     (textComp.posTextVec2.y * viewportSizeMultiplier)
                                             - (trans.posVec3.y * viewportSizeMultiplier))
