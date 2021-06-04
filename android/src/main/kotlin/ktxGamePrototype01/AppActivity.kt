@@ -87,7 +87,8 @@ class AppActivity : AppCompatActivity() {
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = true
             menu.findItem(R.id.dest_user_profile).isVisible = false
             botMenu.findItem(R.id.dest_user_profile).isVisible = false
-        }else{menu.findItem(R.id.dest_user_profile).isVisible = true
+        }else{
+            menu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_user_profile).isVisible = true
             botMenu.findItem(R.id.dest_teacher_profile).isVisible = false
             menu.findItem(R.id.dest_teacher_profile).isVisible = false}

@@ -70,9 +70,6 @@ class LoginFragment : Fragment() {
                         // check if user data has been loaded, and if user is teacher or student
                         checkTeacherDB(userID)
 
-                        (activity as AppActivity?)!!.showMenu()
-
-
                     } else {
                         loginError()
                     }
@@ -109,7 +106,7 @@ class LoginFragment : Fragment() {
     // log in as teacher, go to teacher page
     private fun logInAsTeacher() {
         Toast.makeText(activity, "Logged in as teacher!", Toast.LENGTH_SHORT).show()
-
+        (activity as AppActivity?)!!.showMenu()
         findNavController().navigate(R.id.dest_home)
 
         //findNavController().navigate(R.id.dest_user_teacher)
@@ -119,6 +116,7 @@ class LoginFragment : Fragment() {
     // log in as student, go to student page
     private fun logInAsStudent() {
         Toast.makeText(activity, "Logged in as student!", Toast.LENGTH_SHORT).show()
+        (activity as AppActivity?)!!.showMenu()
         findNavController().navigate(R.id.dest_home)
     }
 
