@@ -13,14 +13,16 @@
 
             <TextView
                 android:id="@+id/textView13"
-                android:layout_width="181dp"
-                android:layout_height="63dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
                 android:text="Welcome"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                android:layout_gravity="center"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/homeUser_name"
@@ -36,8 +38,8 @@
 
             <TextView
                 android:id="@+id/text_getStarted"
-                android:layout_width="285dp"
-                android:layout_height="72dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="300dp"
                 android:gravity="center"
                 android:text="Use the NavBar or swipe right to access modules or profile."
@@ -56,10 +58,9 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/text_getStarted"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/homeUser_name"
-                app:layout_constraintVertical_bias="0.535"
+                app:layout_constraintVertical_bias="0.5"
                 android:layout_gravity="center"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
