@@ -11,68 +11,56 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="181dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="76dp"
-        android:text="Welcome"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="181dp"
+                android:layout_height="63dp"
+                android:text="Welcome"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="29dp"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:id="@+id/homeUser_name"
-                android:layout_width="171dp"
-                android:layout_height="102dp"
-                android:layout_marginStart="160dp"
-                android:layout_marginTop="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
                 android:text="TextView"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.75"
-                app:layout_constraintStart_toStartOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/text_home" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <TextView
-        android:id="@+id/text_getStarted"
-        android:layout_width="285dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="300dp"
-        android:gravity="center"
-        android:text="Use the NavBar or swipe right to access modules or profile."
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeUser_name" />
-
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="318dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="44dp"
-        android:gravity="center"
-        android:text="Home"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/text_getStarted"
+                android:layout_width="285dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="300dp"
+                android:gravity="center"
+                android:text="Use the NavBar or swipe right to access modules or profile."
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeUser_name"
+                android:layout_gravity="center"/>
 
             <Button
                 android:id="@+id/btn_launch_game"
                 android:layout_width="214dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="232dp"
                 android:text="Enter World"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/text_getStarted"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_home"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/homeUser_name"
+                app:layout_constraintVertical_bias="0.535"
+                android:layout_gravity="center"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
