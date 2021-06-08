@@ -55,6 +55,7 @@ class UserTeacherProfileFragment : Fragment(){
         }
 
         buttonLogout.setOnClickListener(){
+            (activity as AppActivity?)!!.hideMenu()
             auth.signOut()
             Toast.makeText(activity,"Logged out!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.dest_login)

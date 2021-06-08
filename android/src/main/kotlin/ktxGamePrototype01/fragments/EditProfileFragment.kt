@@ -228,8 +228,14 @@ class EditProfileFragment : Fragment() /*ListAdapterProfileEdit.ListClickListene
 
         val scoreuser = User.getScore()
 
-        if(scoreuser >= 100){bodyItems.add("bodyA")}
-        if(scoreuser >= 1000){bodyItems.add("bodyB")}
+        if(!User.checkForTeacher()) {
+            if (scoreuser >= 100) {
+                bodyItems.add("bodyA")
+            }
+            if (scoreuser >= 1000) {
+                bodyItems.add("bodyB")
+            }
+        }
     }
 
 

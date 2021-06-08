@@ -85,7 +85,7 @@ class OpenWorldGameRecyclerAdapter(private val openWorldGameObject: ArrayList<Ga
             this.gType = gameEntity.gametype
 
             var newGameName = this!!.gName!!.split("-")
-            view.game_name.text = newGameName[0]
+            view.game_name.text = newGameName[1]
         }
 
         override fun onClick(v: View?) {
